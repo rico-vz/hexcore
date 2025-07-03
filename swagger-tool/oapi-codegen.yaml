@@ -1,0 +1,5 @@
+package: lcu
+output: ../lcu/client.gen.go
+generate:
+  - types
+  - client
