@@ -13,6 +13,7 @@ type HexcoreClient struct {
 	*ClientWithResponses
 	Params     *ConnectionParams
 	httpClient *http.Client
+	wsClient   *WSClient
 }
 
 type HexcoreClientConfig struct {
@@ -77,10 +78,14 @@ func NewHexcoreClientWithConfig(config *HexcoreClientConfig) (*HexcoreClient, er
 		ClientWithResponses: clientWithResponses,
 		Params:              params,
 		httpClient:          httpClient,
+		wsClient:            nil,
 	}, nil
 }
 
 func (c *HexcoreClient) Close() error {
+	if c.wsClient != nil {
+		c.wsClient.Close()
+	}
 	if c.httpClient != nil {
 		c.httpClient.CloseIdleConnections()
 	}
@@ -89,4 +94,37 @@ func (c *HexcoreClient) Close() error {
 
 func (c *HexcoreClient) GetHTTPClient() *http.Client {
 	return c.httpClient
+}
+
+func (c *HexcoreClient) GetWSClient() (*WSClient, error) {
+	if c.wsClient == nil {
+		var err error
+		c.wsClient, err = NewWSClient(c.Params)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create WebSocket client: %w", err)
+		}
+	}
+	return c.wsClient, nil
+}
+
+func (c *HexcoreClient) Subscribe(topic string, handler EventHandler) error {
+	wsClient, err := c.GetWSClient()
+	if err != nil {
+		return err
+	}
+	return wsClient.Subscribe(topic, handler)
+}
+
+func (c *HexcoreClient) Unsubscribe(topic string, handler EventHandler) error {
+	if c.wsClient == nil {
+		return fmt.Errorf("WebSocket client not initialized")
+	}
+	return c.wsClient.Unsubscribe(topic, handler)
+}
+
+func (c *HexcoreClient) UnsubscribeAll(topic string) error {
+	if c.wsClient == nil {
+		return fmt.Errorf("WebSocket client not initialized")
+	}
+	return c.wsClient.UnsubscribeAll(topic)
 }
