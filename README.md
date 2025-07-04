@@ -45,10 +45,12 @@ import (
 
 func main() {
 	log.Println("Connecting to LCU API...")
-	client, err := lcu.NewLCUClient()
+
+	client, err := lcu.NewHexcoreClient()
 	if err != nil {
-		log.Fatalf("Failed to create LCU client: %v", err)
+		log.Fatalf("Failed to create client: %v", err)
 	}
+	defer client.Close()
 
 	log.Printf("Connected to LCU on port %s\n", client.Params.Port)
 
@@ -61,12 +63,11 @@ func main() {
 		var summonerData lcu.LolSummonerSummoner
 		err := json.Unmarshal(summonerResponse.Body, &summonerData)
 		if err != nil {
-			log.Fatalf("Failed to parse summoner data from response body: %v", err)
+			log.Fatalf("Failed to response body: %v", err)
 		}
 
 		fmt.Printf("Current Player: %s\n", summonerData.GameName)
 		fmt.Printf("Summoner Level: %d\n", summonerData.SummonerLevel)
-
 	} else {
 		fmt.Println("Could not retrieve summoner data.")
 		fmt.Printf("Response status: %s\n", summonerResponse.Status())
@@ -75,13 +76,22 @@ func main() {
 }
 ```
 
+Output example:
+
+```text
+2025/07/04 02:05:17 Connecting to LCU API...                                                                                                                                                                                                           
+2025/07/04 02:05:17 Connected to LCU on port 4218                                                                                                                                                                                                      
+Current Player: Z
+Summoner Level: 205
+```
+
 ---
 
 ## Contributing
 
 Contributions are welcome. Please feel free to submit a pull request or open an issue for any bugs or feature requests.
 
-Hexcore uses [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) for all commit messages, so please follow that.   
+Hexcore follows [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) for all commit messages.
 Allowed types: `fix`, `feat`, `build`, `chore`, `ci`, `docs`, `style`, `refactor`, `perf` & `test`
 
 1. Fork the repository
@@ -94,6 +104,8 @@ Allowed types: `fix`, `feat`, `build`, `chore`, `ci`, `docs`, `style`, `refactor
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
+
+***Disclaimer:***  
 *Hexcore isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends.*
