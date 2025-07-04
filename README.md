@@ -12,7 +12,7 @@ Hexcore is an easy-to-use library for interacting with the League of Legends Cli
 
 -   Automatic finding of LCU port and authorization token.
 -   Typed structs for the LCU API endpoints.
--   WebSocket support for LCU events.
+-   WebSocket support for LCU events with type-safe event topics.
 
 ---
 
