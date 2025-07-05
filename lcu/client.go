@@ -14,11 +14,42 @@ type HexcoreClient struct {
 	Params     *ConnectionParams
 	httpClient *http.Client
 	wsClient   *WSClient
+	wsProvider WSClientProvider
 }
 
 type HexcoreClientConfig struct {
 	Timeout          time.Duration
 	RequestEditorFns []RequestEditorFn
+}
+
+type ConnectionParamsProvider interface {
+	GetConnectionParams() (*ConnectionParams, error)
+}
+
+type DefaultConnectionParamsProvider struct{}
+
+func (p *DefaultConnectionParamsProvider) GetConnectionParams() (*ConnectionParams, error) {
+	return GetConnectionParams()
+}
+
+type ClientWithResponsesProvider interface {
+	NewClientWithResponses(serverURL string, options ...ClientOption) (*ClientWithResponses, error)
+}
+
+type DefaultClientWithResponsesProvider struct{}
+
+func (p *DefaultClientWithResponsesProvider) NewClientWithResponses(serverURL string, options ...ClientOption) (*ClientWithResponses, error) {
+	return NewClientWithResponses(serverURL, options...)
+}
+
+type WSClientProvider interface {
+	NewWSClient(params *ConnectionParams) (*WSClient, error)
+}
+
+type DefaultWSClientProvider struct{}
+
+func (p *DefaultWSClientProvider) NewWSClient(params *ConnectionParams) (*WSClient, error) {
+	return NewWSClient(params)
 }
 
 func DefaultHexcoreClientConfig() *HexcoreClientConfig {
@@ -32,14 +63,28 @@ func NewHexcoreClient() (*HexcoreClient, error) {
 }
 
 func NewHexcoreClientWithConfig(config *HexcoreClientConfig) (*HexcoreClient, error) {
-	params, err := GetConnectionParams()
+	return NewHexcoreClientWithProviders(
+		config,
+		&DefaultConnectionParamsProvider{},
+		&DefaultClientWithResponsesProvider{},
+		&DefaultWSClientProvider{},
+	)
+}
+
+func NewHexcoreClientWithProviders(
+	config *HexcoreClientConfig,
+	paramsProvider ConnectionParamsProvider,
+	clientProvider ClientWithResponsesProvider,
+	wsProvider WSClientProvider,
+) (*HexcoreClient, error) {
+	params, err := paramsProvider.GetConnectionParams()
 	if err != nil {
 		return nil, fmt.Errorf("could not get LCU connection params: %w", err)
 	}
 
 	transport := &http.Transport{
 		TLSClientConfig: &tls.Config{
-			InsecureSkipVerify: true, // TODO: Should we use the riotgames.pem instead?
+			InsecureSkipVerify: true,
 			MinVersion:         tls.VersionTLS12,
 		},
 		MaxIdleConns:        10,
@@ -69,7 +114,7 @@ func NewHexcoreClientWithConfig(config *HexcoreClientConfig) (*HexcoreClient, er
 		options = append(options, WithRequestEditorFn(editor))
 	}
 
-	clientWithResponses, err := NewClientWithResponses(serverURL, options...)
+	clientWithResponses, err := clientProvider.NewClientWithResponses(serverURL, options...)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create client: %w", err)
 	}
@@ -79,6 +124,7 @@ func NewHexcoreClientWithConfig(config *HexcoreClientConfig) (*HexcoreClient, er
 		Params:              params,
 		httpClient:          httpClient,
 		wsClient:            nil,
+		wsProvider:          wsProvider,
 	}, nil
 }
 
@@ -99,7 +145,7 @@ func (c *HexcoreClient) GetHTTPClient() *http.Client {
 func (c *HexcoreClient) GetWSClient() (*WSClient, error) {
 	if c.wsClient == nil {
 		var err error
-		c.wsClient, err = NewWSClient(c.Params)
+		c.wsClient, err = c.wsProvider.NewWSClient(c.Params)
 		if err != nil {
 			return nil, fmt.Errorf("failed to create WebSocket client: %w", err)
 		}
