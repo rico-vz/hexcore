@@ -1,8 +1,7 @@
 # Hexcore
 
 ![Go Version](https://img.shields.io/badge/go-1.24-blue.svg)
-![License](https://img.shields.io/github/license/rico-vz/hexcore)
-![Go Report Card](https://goreportcard.com/badge/github.com/rico-vz/hexcore)
+![GitHub License](https://img.shields.io/github/license/rico-vz/hexcore?color=blue)
 
 Hexcore is an easy-to-use library for interacting with the League of Legends Client Update (LCU) API in Go.
 
