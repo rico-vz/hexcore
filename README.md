@@ -21,7 +21,7 @@ Hexcore is an easy-to-use library for interacting with the League of Legends Cli
 To install the Hexcore package, use the `go get` command:
 
 ```bash
-go get https://github.com/rico-vz/hexcore/lcu
+go get github.com/rico-vz/hexcore/lcu
 ```
 
 ---
