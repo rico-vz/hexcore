@@ -78,7 +78,7 @@ func main() {
 		fmt.Printf("Response body: %s\n", string(summonerResponse.Body))
 	}
 
-	// Subscribing to an event (End of Game event in this examople)
+	// Subscribing to an event (End of Game event in this example)
 	log.Println("Subscribing to End of Game events...")
 	err = client.Subscribe(lcu.Events.EndOfGameV1EogStatsBlock(), OnEndOfGameEvent)
 	if err != nil {
