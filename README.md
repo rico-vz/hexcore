@@ -131,6 +131,15 @@ Allowed types: `fix`, `feat`, `build`, `chore`, `ci`, `docs`, `style`, `refactor
 
 ---
 
+## Acknowledgments
+
+- [dysolix/hasagi-types](https://github.com/dysolix/hasagi-types/) - Used to get the latest `swagger.json` file for the LCU API.
+- [oapi-codegen](https://github.com/oapi-codegen/oapi-codegen) - Used to generate the API client code from the OpenAPI specification.
+- [Riot Third Party Developer Discord](https://discord.com/invite/riotgamesdevrel) - Nice community. Useful for information about the LCU API and libraries.
+- [HextechDocs](https://hextechdocs.dev/) - Community maintained developer documentation for games made by Riot Games.
+
+---
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
