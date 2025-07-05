@@ -28,7 +28,7 @@ go get https://github.com/rico-vz/hexcore/lcu
 
 ## Usage
 
-Basic example of how to init a new client and get the current summoner's information. The client will automatically find the LoL/LCU process to connect to.
+Basic example of how to init a new client, get the current player's information and subscribe to an event:
 
 ```go
 package main
@@ -39,6 +39,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/rico-vz/hexcore/lcu"
 )
@@ -54,6 +57,7 @@ func main() {
 
 	log.Printf("Connected to LCU on port %s\n", client.Params.Port)
 
+	// Getting the current player their information
 	summonerResponse, err := client.GetLolSummonerV1CurrentSummonerWithResponse(context.Background())
 	if err != nil {
 		log.Fatalf("Failed to get current summoner: %v", err)
@@ -63,7 +67,7 @@ func main() {
 		var summonerData lcu.LolSummonerSummoner
 		err := json.Unmarshal(summonerResponse.Body, &summonerData)
 		if err != nil {
-			log.Fatalf("Failed to response body: %v", err)
+			log.Fatalf("Failed to parse response body: %v", err)
 		}
 
 		fmt.Printf("Current Player: %s\n", summonerData.GameName)
@@ -73,17 +77,42 @@ func main() {
 		fmt.Printf("Response status: %s\n", summonerResponse.Status())
 		fmt.Printf("Response body: %s\n", string(summonerResponse.Body))
 	}
+
+	// Subscribing to an event (End of Game event in this examople)
+	log.Println("Subscribing to End of Game events...")
+	err = client.Subscribe(lcu.Events.EndOfGameV1EogStatsBlock(), OnEndOfGameEvent)
+	if err != nil {
+		log.Fatalf("Failed to subscribe to End of Game event: %v", err)
+	}
+
+	log.Println("Subscribed to the End of Game event")
+	log.Println("Listening for events...")
+
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
+	<-sigChan
+}
+
+// This gets called when the event we subscribed to gets triggered
+func OnEndOfGameEvent(payload interface{}) {
+	log.Println("[OnEndOfGameEvent] Received the event!")
 }
 ```
 
 Output example:
 
 ```text
-2025/07/04 02:05:17 Connecting to LCU API...                                                                                                                                                                                                           
-2025/07/04 02:05:17 Connected to LCU on port 4218                                                                                                                                                                                                      
+2025/07/05 10:33:44 Connecting to LCU API...
+2025/07/05 10:33:44 Connected to LCU on port 3588
 Current Player: Z
 Summoner Level: 205
+2025/07/05 10:33:44 Subscribing to End of Game events...
+2025/07/05 10:33:44 Subscribed to the End of Game event
+2025/07/05 10:33:44 Listening for events...
+2025/07/05 10:35:11 [OnEndOfGameEvent] Received the event!
 ```
+
+
 
 ---
 
