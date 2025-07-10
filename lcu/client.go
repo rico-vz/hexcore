@@ -84,7 +84,7 @@ func NewHexcoreClientWithProviders(
 
 	transport := &http.Transport{
 		TLSClientConfig: &tls.Config{
-			InsecureSkipVerify: true,
+			InsecureSkipVerify: true, //gosec:disable G402 -- Uses self-signed certificates
 			MinVersion:         tls.VersionTLS12,
 		},
 		MaxIdleConns:        10,
@@ -130,7 +130,9 @@ func NewHexcoreClientWithProviders(
 
 func (c *HexcoreClient) Close() error {
 	if c.wsClient != nil {
-		c.wsClient.Close()
+		if err := c.wsClient.Close(); err != nil {
+			return err
+		}
 	}
 	if c.httpClient != nil {
 		c.httpClient.CloseIdleConnections()

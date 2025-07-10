@@ -73,7 +73,7 @@ func (c *WSClient) connect() error {
 	httpClient := &http.Client{
 		Transport: &http.Transport{
 			TLSClientConfig: &tls.Config{
-				InsecureSkipVerify: true,
+				InsecureSkipVerify: true, //gosec:disable G402 -- Uses self-signed certificates
 			},
 		},
 	}
