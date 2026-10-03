@@ -1,0 +1,94 @@
+name: LCU update
+
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: lcu-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-go@v7
+        with:
+          go-version: stable
+          cache-dependency-path: |
+            go.sum
+            swagger-tool/go.sum
+
+      - name: Download latest spec
+        id: spec
+        run: |
+          spec_version() {
+            awk '/^info:/{f=1;next} f&&/^[^ ]/{exit} f&&/^    version:/{gsub(/"/,"",$2); print $2; exit}' swagger-tool/api.yaml
+          }
+          old=$(spec_version)
+          (cd swagger-tool && go run .)
+          new=$(spec_version)
+          test -n "$new"
+          echo "old=$old" >> "$GITHUB_OUTPUT"
+          echo "new=$new" >> "$GITHUB_OUTPUT"
+          if [ "$old" = "$new" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Spec unchanged at $new"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "Spec changed: $old -> $new"
+          fi
+
+      - name: Regenerate client
+        if: steps.spec.outputs.changed == 'true'
+        working-directory: swagger-tool
+        run: go tool oapi-codegen -config oapi-codegen.yaml api.yaml
+
+      - name: Build and test
+        if: steps.spec.outputs.changed == 'true'
+        run: |
+          go build ./...
+          go vet ./...
+          go test ./...
+
+      - name: Commit and tag
+        id: release
+        if: steps.spec.outputs.changed == 'true'
+        env:
+          SPEC_VERSION: ${{ steps.spec.outputs.new }}
+        run: |
+          scope=$(echo "$SPEC_VERSION" | cut -d. -f1-2)
+          latest=$(git tag --list 'v*' --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -n1)
+          IFS=. read -r major minor patch <<< "${latest#v}"
+          next="v${major}.${minor}.$((patch + 1))"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898333+github-actions[bot]@users.noreply.github.com"
+          git add swagger-tool/api.yaml lcu/client.gen.go
+          git commit -m "feat(${scope}): update api spec + gened client code"
+          git tag "$next"
+          git push --atomic origin HEAD:main "refs/tags/$next"
+          echo "tag=$next" >> "$GITHUB_OUTPUT"
+          echo "Released $next for LCU $SPEC_VERSION"
+
+      - name: Publish to Go proxy
+        if: steps.release.outputs.tag != ''
+        env:
+          TAG: ${{ steps.release.outputs.tag }}
+        run: GOPROXY=https://proxy.golang.org go list -m "$(go list -m)@$TAG"
+
+      - name: Request pkg.go.dev refresh
+        if: steps.release.outputs.tag != ''
+        continue-on-error: true
+        env:
+          TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          curl -fsS -o /dev/null -X POST -H "Content-Length: 0" "https://pkg.go.dev/fetch/$(go list -m)/lcu@$TAG"
