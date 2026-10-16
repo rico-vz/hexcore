@@ -335,47 +335,6 @@ components:
                 - Epytext
                 - Full
             type: string
-        BoostTeamSkinRentalDTO:
-            additionalProperties: false
-            description: ""
-            properties:
-                availableSkins:
-                    items:
-                        format: int64
-                        type: integer
-                    type: array
-                ipReward:
-                    format: int64
-                    type: integer
-                ipRewardForPurchaser:
-                    format: int64
-                    type: integer
-                price:
-                    format: int64
-                    type: integer
-                puuid:
-                    type: string
-                skinUnlockMode:
-                    type: string
-                summonerId:
-                    format: uint64
-                    minimum: 0
-                    type: integer
-                summonerName:
-                    type: string
-                unlocked:
-                    type: boolean
-            required:
-                - summonerName
-                - summonerId
-                - puuid
-                - skinUnlockMode
-                - price
-                - ipReward
-                - ipRewardForPurchaser
-                - availableSkins
-                - unlocked
-            type: object
         Bracket:
             additionalProperties: false
             description: ""
@@ -569,251 +528,6 @@ components:
                 - multiUserChatId
                 - multiUserChatPassword
                 - mucJwtDto
-            type: object
-        ChampSelectLcdsGameDTO:
-            additionalProperties: false
-            description: ""
-            properties:
-                bannedChampions:
-                    items:
-                        $ref: '#/components/schemas/BannedChampion'
-                    type: array
-                gameMutators:
-                    items:
-                        type: string
-                    type: array
-                gameState:
-                    type: string
-                id:
-                    format: uint64
-                    minimum: 0
-                    type: integer
-                mucJwtDto:
-                    $ref: '#/components/schemas/MucJwtDto'
-                name:
-                    type: string
-                optimisticLock:
-                    format: int64
-                    type: integer
-                pickTurn:
-                    format: int32
-                    type: integer
-                playerChampionSelections:
-                    items:
-                        $ref: '#/components/schemas/ChampSelectLcdsPlayerChampionSelectionDTO'
-                    type: array
-                queueTypeName:
-                    type: string
-                roomName:
-                    type: string
-                roomPassword:
-                    type: string
-                spectatorDelay:
-                    format: int64
-                    type: integer
-                statusOfParticipants:
-                    type: string
-                teamOne:
-                    items:
-                        additionalProperties: true
-                        type: object
-                    type: array
-                teamTwo:
-                    items:
-                        additionalProperties: true
-                        type: object
-                    type: array
-            required:
-                - id
-                - gameState
-                - queueTypeName
-                - roomName
-                - roomPassword
-                - mucJwtDto
-                - name
-                - playerChampionSelections
-                - bannedChampions
-                - teamOne
-                - teamTwo
-                - statusOfParticipants
-                - optimisticLock
-                - pickTurn
-                - spectatorDelay
-                - gameMutators
-            type: object
-        ChampSelectLcdsGameTimerDTO:
-            additionalProperties: false
-            description: ""
-            properties:
-                currentGameState:
-                    type: string
-                remainingTimeInMillis:
-                    format: double
-                    type: number
-            required:
-                - currentGameState
-                - remainingTimeInMillis
-            type: object
-        ChampSelectLcdsObfuscatedParticipant:
-            additionalProperties: false
-            description: ""
-            properties:
-                gameUniqueId:
-                    format: uint64
-                    minimum: 0
-                    type: integer
-            required:
-                - gameUniqueId
-            type: object
-        ChampSelectLcdsPlayerChampionSelectionDTO:
-            additionalProperties: false
-            description: ""
-            properties:
-                championId:
-                    format: int32
-                    type: integer
-                puuid:
-                    type: string
-                selectedSkinIndex:
-                    format: int32
-                    type: integer
-                spell1Id:
-                    format: int32
-                    type: integer
-                spell2Id:
-                    format: int32
-                    type: integer
-                summonerId:
-                    format: uint64
-                    minimum: 0
-                    type: integer
-                summonerInternalName:
-                    type: string
-            required:
-                - summonerInternalName
-                - summonerId
-                - puuid
-                - championId
-                - selectedSkinIndex
-                - spell1Id
-                - spell2Id
-            type: object
-        ChampSelectLcdsPlayerParticipant:
-            additionalProperties: false
-            description: ""
-            properties:
-                pickMode:
-                    format: int32
-                    type: integer
-                pickTurn:
-                    format: int32
-                    type: integer
-                puuid:
-                    type: string
-                summonerId:
-                    format: uint64
-                    minimum: 0
-                    type: integer
-                summonerInternalName:
-                    type: string
-                summonerName:
-                    type: string
-            required:
-                - summonerName
-                - summonerInternalName
-                - summonerId
-                - puuid
-                - pickMode
-                - pickTurn
-            type: object
-        ChampSelectLcdsPointSummary:
-            additionalProperties: false
-            description: ""
-            properties:
-                currentPoints:
-                    format: int32
-                    type: integer
-                maxRolls:
-                    format: int32
-                    type: integer
-                numberOfRolls:
-                    format: int32
-                    type: integer
-                pointsCostToRoll:
-                    format: int32
-                    type: integer
-                pointsToNextRoll:
-                    format: int32
-                    type: integer
-            required:
-                - pointsToNextRoll
-                - currentPoints
-                - numberOfRolls
-                - maxRolls
-                - pointsCostToRoll
-            type: object
-        ChampSelectLcdsPotentialTradersDTO:
-            additionalProperties: false
-            description: ""
-            properties:
-                potentialTraders:
-                    items:
-                        type: string
-                    type: array
-            required:
-                - potentialTraders
-            type: object
-        ChampSelectLcdsRollResult:
-            additionalProperties: false
-            description: ""
-            properties:
-                championId:
-                    format: int32
-                    type: integer
-                pointSummary:
-                    $ref: '#/components/schemas/ChampSelectLcdsPointSummary'
-            required:
-                - championId
-                - pointSummary
-            type: object
-        ChampSelectLcdsTradeContractDTO:
-            additionalProperties: false
-            description: ""
-            properties:
-                requesterChampionId:
-                    format: int32
-                    type: integer
-                requesterInternalSummonerName:
-                    type: string
-                requesterPuuid:
-                    type: string
-                requesterSummonerId:
-                    format: uint64
-                    minimum: 0
-                    type: integer
-                responderChampionId:
-                    format: int32
-                    type: integer
-                responderInternalSummonerName:
-                    type: string
-                responderPuuid:
-                    type: string
-                responderSummonerId:
-                    format: uint64
-                    minimum: 0
-                    type: integer
-                state:
-                    type: string
-            required:
-                - requesterInternalSummonerName
-                - requesterSummonerId
-                - requesterPuuid
-                - responderInternalSummonerName
-                - responderSummonerId
-                - responderPuuid
-                - requesterChampionId
-                - responderChampionId
-                - state
             type: object
         ChampSelectMySelection:
             additionalProperties: false
@@ -1118,6 +832,25 @@ components:
                 - gameCount
                 - kda
             type: object
+        ChemtechShoppe-BundleDto:
+            additionalProperties: false
+            description: ""
+            properties:
+                displayMetadata:
+                    additionalProperties: true
+                    type: object
+                id:
+                    type: string
+                name:
+                    type: string
+                productId:
+                    type: string
+            required:
+                - id
+                - name
+                - productId
+                - displayMetadata
+            type: object
         ChemtechShoppe-CatalogEntryDto:
             additionalProperties: false
             description: ""
@@ -1230,6 +963,15 @@ components:
             required:
                 - payments
                 - fulfillment
+            type: object
+        ChemtechShoppe-FinalizerConfigDto:
+            additionalProperties: false
+            description: ""
+            properties:
+                defaultFinalizerName:
+                    type: string
+            required:
+                - defaultFinalizerName
             type: object
         ChemtechShoppe-FulfillmentDto:
             additionalProperties: false
@@ -1358,12 +1100,20 @@ components:
                 finalDelta:
                     format: int64
                     type: integer
+                groupId:
+                    type: string
                 itemId:
                     type: string
                 itemTypeId:
                     type: string
+                managedType:
+                    type: string
                 name:
                     type: string
+                requiredValues:
+                    items:
+                        type: string
+                    type: array
             required:
                 - delta
                 - finalDelta
@@ -1371,6 +1121,9 @@ components:
                 - discountedDelta
                 - itemTypeId
                 - itemId
+                - groupId
+                - managedType
+                - requiredValues
                 - currencyId
                 - discountPercent
             type: object
@@ -1387,6 +1140,18 @@ components:
             required:
                 - key
                 - payments
+            type: object
+        ChemtechShoppe-PersonalizationConfigDto:
+            additionalProperties: false
+            description: ""
+            properties:
+                finalizerConfig:
+                    $ref: '#/components/schemas/ChemtechShoppe-FinalizerConfigDto'
+                rankingConfig:
+                    $ref: '#/components/schemas/ChemtechShoppe-RankingConfigDto'
+            required:
+                - rankingConfig
+                - finalizerConfig
             type: object
         ChemtechShoppe-PrerequisiteDto:
             additionalProperties: false
@@ -1569,6 +1334,15 @@ components:
                 - stats
                 - notes
             type: object
+        ChemtechShoppe-RankingConfigDto:
+            additionalProperties: false
+            description: ""
+            properties:
+                defaultModelName:
+                    type: string
+            required:
+                - defaultModelName
+            type: object
         ChemtechShoppe-RefundDto:
             additionalProperties: false
             description: ""
@@ -1705,8 +1479,14 @@ components:
                     $ref: '#/components/schemas/ChemtechShoppe-RotatingStoreMetadataDto'
                 startTime:
                     type: string
+                type:
+                    type: string
+                version:
+                    type: string
             required:
                 - id
+                - type
+                - version
                 - productId
                 - name
                 - displayMetaData
@@ -1749,6 +1529,10 @@ components:
             additionalProperties: false
             description: ""
             properties:
+                bundles:
+                    items:
+                        $ref: '#/components/schemas/ChemtechShoppe-BundleDto'
+                    type: array
                 catalogEntries:
                     items:
                         $ref: '#/components/schemas/ChemtechShoppe-CatalogEntryDto'
@@ -1758,10 +1542,15 @@ components:
                     type: object
                 endTime:
                     type: string
+                externalRefs:
+                    additionalProperties: true
+                    type: object
                 id:
                     type: string
                 name:
                     type: string
+                personalizationConfig:
+                    $ref: '#/components/schemas/ChemtechShoppe-PersonalizationConfigDto'
                 prerequisiteCatalogEntries:
                     items:
                         $ref: '#/components/schemas/ChemtechShoppe-CatalogEntryDto'
@@ -1772,19 +1561,30 @@ components:
                     $ref: '#/components/schemas/ChemtechShoppe-RotatingStoreMetadataDto'
                 startTime:
                     type: string
+                tags:
+                    items:
+                        type: string
+                    type: array
                 type:
+                    type: string
+                version:
                     type: string
             required:
                 - id
                 - type
+                - version
                 - productId
                 - name
                 - catalogEntries
+                - bundles
                 - displayMetadata
+                - tags
                 - startTime
                 - endTime
                 - rotatingStoreMetadata
+                - personalizationConfig
                 - prerequisiteCatalogEntries
+                - externalRefs
             type: object
         ChemtechShoppe-StoreResponseDto:
             additionalProperties: false
@@ -1878,6 +1678,25 @@ components:
             required:
                 - bulkPurchaseId
                 - purchases
+            type: object
+        ChemtechShoppeV2-BundleDto:
+            additionalProperties: false
+            description: ""
+            properties:
+                displayMetadata:
+                    additionalProperties: true
+                    type: object
+                id:
+                    type: string
+                name:
+                    type: string
+                productId:
+                    type: string
+            required:
+                - id
+                - name
+                - productId
+                - displayMetadata
             type: object
         ChemtechShoppeV2-CatalogEntryDto:
             additionalProperties: false
@@ -1997,10 +1816,23 @@ components:
                 displayPriority:
                     format: int32
                     type: integer
+                groupId:
+                    type: string
                 id:
+                    type: string
+                itemId:
+                    type: string
+                managedType:
                     type: string
                 name:
                     type: string
+                payloadValue:
+                    type: string
+                pityCounterId:
+                    type: string
+                pityThreshold:
+                    format: int32
+                    type: integer
                 rewardQuantity:
                     format: int32
                     type: integer
@@ -2015,6 +1847,12 @@ components:
                 - sourceId
                 - rewardQuantity
                 - type
+                - pityCounterId
+                - pityThreshold
+                - itemId
+                - groupId
+                - managedType
+                - payloadValue
             type: object
         ChemtechShoppeV2-DropTableOddsTreeResponseDto:
             additionalProperties: false
@@ -2138,6 +1976,15 @@ components:
             required:
                 - payments
                 - fulfillment
+            type: object
+        ChemtechShoppeV2-FinalizerConfigDto:
+            additionalProperties: false
+            description: ""
+            properties:
+                defaultFinalizerName:
+                    type: string
+            required:
+                - defaultFinalizerName
             type: object
         ChemtechShoppeV2-FulfillmentDto:
             additionalProperties: false
@@ -2516,12 +2363,20 @@ components:
                 finalDelta:
                     format: int64
                     type: integer
+                groupId:
+                    type: string
                 itemId:
                     type: string
                 itemTypeId:
                     type: string
+                managedType:
+                    type: string
                 name:
                     type: string
+                requiredValues:
+                    items:
+                        type: string
+                    type: array
             required:
                 - delta
                 - finalDelta
@@ -2529,6 +2384,9 @@ components:
                 - discountedDelta
                 - itemTypeId
                 - itemId
+                - groupId
+                - managedType
+                - requiredValues
                 - currencyId
                 - discountPercent
             type: object
@@ -2545,6 +2403,18 @@ components:
             required:
                 - key
                 - payments
+            type: object
+        ChemtechShoppeV2-PersonalizationConfigDto:
+            additionalProperties: false
+            description: ""
+            properties:
+                finalizerConfig:
+                    $ref: '#/components/schemas/ChemtechShoppeV2-FinalizerConfigDto'
+                rankingConfig:
+                    $ref: '#/components/schemas/ChemtechShoppeV2-RankingConfigDto'
+            required:
+                - rankingConfig
+                - finalizerConfig
             type: object
         ChemtechShoppeV2-PrerequisiteDto:
             additionalProperties: false
@@ -2727,6 +2597,15 @@ components:
                 - stats
                 - notes
             type: object
+        ChemtechShoppeV2-RankingConfigDto:
+            additionalProperties: false
+            description: ""
+            properties:
+                defaultModelName:
+                    type: string
+            required:
+                - defaultModelName
+            type: object
         ChemtechShoppeV2-RefundDto:
             additionalProperties: false
             description: ""
@@ -2875,8 +2754,14 @@ components:
                     $ref: '#/components/schemas/ChemtechShoppeV2-RotatingStoreMetadataDto'
                 startTime:
                     type: string
+                type:
+                    type: string
+                version:
+                    type: string
             required:
                 - id
+                - type
+                - version
                 - productId
                 - name
                 - displayMetaData
@@ -2919,6 +2804,10 @@ components:
             additionalProperties: false
             description: ""
             properties:
+                bundles:
+                    items:
+                        $ref: '#/components/schemas/ChemtechShoppeV2-BundleDto'
+                    type: array
                 catalogEntries:
                     items:
                         $ref: '#/components/schemas/ChemtechShoppeV2-CatalogEntryDto'
@@ -2928,10 +2817,15 @@ components:
                     type: object
                 endTime:
                     type: string
+                externalRefs:
+                    additionalProperties: true
+                    type: object
                 id:
                     type: string
                 name:
                     type: string
+                personalizationConfig:
+                    $ref: '#/components/schemas/ChemtechShoppeV2-PersonalizationConfigDto'
                 prerequisiteCatalogEntries:
                     items:
                         $ref: '#/components/schemas/ChemtechShoppeV2-CatalogEntryDto'
@@ -2942,19 +2836,30 @@ components:
                     $ref: '#/components/schemas/ChemtechShoppeV2-RotatingStoreMetadataDto'
                 startTime:
                     type: string
+                tags:
+                    items:
+                        type: string
+                    type: array
                 type:
+                    type: string
+                version:
                     type: string
             required:
                 - id
                 - type
+                - version
                 - productId
                 - name
                 - catalogEntries
+                - bundles
                 - displayMetadata
+                - tags
                 - startTime
                 - endTime
                 - rotatingStoreMetadata
+                - personalizationConfig
                 - prerequisiteCatalogEntries
+                - externalRefs
             type: object
         ChemtechShoppeV2-StoresResponseDto:
             additionalProperties: false
@@ -5141,26 +5046,6 @@ components:
                 - gameVersion
                 - champSelectInventoryJwt
                 - playerGcoTokens
-            type: object
-        LcdsPayloadDto:
-            additionalProperties: false
-            description: ""
-            properties:
-                body:
-                    type: string
-                headers:
-                    additionalProperties:
-                        type: string
-                    type: object
-                method:
-                    type: string
-                path:
-                    type: string
-            required:
-                - method
-                - headers
-                - path
-                - body
             type: object
         LcdsPlayer:
             additionalProperties: false
@@ -8428,609 +8313,6 @@ components:
                     type: object
             required:
                 - lol
-            type: object
-        LolChampSelectLegacyChampSelectAction:
-            additionalProperties: false
-            description: ""
-            properties:
-                actorCellId:
-                    format: int64
-                    type: integer
-                championId:
-                    format: int32
-                    type: integer
-                completed:
-                    type: boolean
-                id:
-                    format: int64
-                    type: integer
-                isAllyAction:
-                    type: boolean
-                isInProgress:
-                    type: boolean
-                pickTurn:
-                    format: int32
-                    type: integer
-                type:
-                    type: string
-            required:
-                - id
-                - actorCellId
-                - championId
-                - type
-                - completed
-                - isAllyAction
-                - isInProgress
-                - pickTurn
-            type: object
-        LolChampSelectLegacyChampSelectBannedChampions:
-            additionalProperties: false
-            description: ""
-            properties:
-                myTeamBans:
-                    items:
-                        format: int32
-                        type: integer
-                    type: array
-                numBans:
-                    format: int32
-                    type: integer
-                theirTeamBans:
-                    items:
-                        format: int32
-                        type: integer
-                    type: array
-            required:
-                - myTeamBans
-                - theirTeamBans
-                - numBans
-            type: object
-        LolChampSelectLegacyChampSelectChatRoomDetails:
-            additionalProperties: false
-            description: ""
-            properties:
-                mucJwtDto:
-                    $ref: '#/components/schemas/LolChampSelectLegacyMucJwtDto'
-                multiUserChatId:
-                    type: string
-                multiUserChatPassword:
-                    type: string
-            required:
-                - multiUserChatId
-                - multiUserChatPassword
-                - mucJwtDto
-            type: object
-        LolChampSelectLegacyChampSelectMySelection:
-            additionalProperties: false
-            description: ""
-            properties:
-                selectedSkinId:
-                    format: int32
-                    type: integer
-                spell1Id:
-                    format: uint64
-                    minimum: 0
-                    type: integer
-                spell2Id:
-                    format: uint64
-                    minimum: 0
-                    type: integer
-            type: object
-        LolChampSelectLegacyChampSelectPlayerSelection:
-            additionalProperties: false
-            description: ""
-            properties:
-                assignedPosition:
-                    type: string
-                cellId:
-                    format: int64
-                    type: integer
-                championId:
-                    format: int32
-                    type: integer
-                championPickIntent:
-                    format: int32
-                    type: integer
-                playerType:
-                    type: string
-                puuid:
-                    type: string
-                selectedSkinId:
-                    format: int32
-                    type: integer
-                spell1Id:
-                    format: uint64
-                    minimum: 0
-                    type: integer
-                spell2Id:
-                    format: uint64
-                    minimum: 0
-                    type: integer
-                summonerId:
-                    format: uint64
-                    minimum: 0
-                    type: integer
-                team:
-                    format: int32
-                    type: integer
-            required:
-                - cellId
-                - championId
-                - selectedSkinId
-                - spell1Id
-                - spell2Id
-                - team
-                - assignedPosition
-                - championPickIntent
-                - playerType
-                - summonerId
-                - puuid
-            type: object
-        LolChampSelectLegacyChampSelectSession:
-            additionalProperties: false
-            description: ""
-            properties:
-                actions:
-                    items:
-                        additionalProperties: true
-                        type: object
-                    type: array
-                allowBattleBoost:
-                    type: boolean
-                allowRerolling:
-                    type: boolean
-                allowSkinSelection:
-                    type: boolean
-                bans:
-                    $ref: '#/components/schemas/LolChampSelectLegacyChampSelectBannedChampions'
-                chatDetails:
-                    $ref: '#/components/schemas/LolChampSelectLegacyChampSelectChatRoomDetails'
-                hasSimultaneousBans:
-                    type: boolean
-                hasSimultaneousPicks:
-                    type: boolean
-                isCustomGame:
-                    type: boolean
-                isLegacyChampSelect:
-                    type: boolean
-                isSpectating:
-                    type: boolean
-                localPlayerCellId:
-                    format: int64
-                    type: integer
-                myTeam:
-                    items:
-                        $ref: '#/components/schemas/LolChampSelectLegacyChampSelectPlayerSelection'
-                    type: array
-                rerollsRemaining:
-                    format: uint64
-                    minimum: 0
-                    type: integer
-                showQuitButton:
-                    type: boolean
-                theirTeam:
-                    items:
-                        $ref: '#/components/schemas/LolChampSelectLegacyChampSelectPlayerSelection'
-                    type: array
-                timer:
-                    $ref: '#/components/schemas/LolChampSelectLegacyChampSelectTimer'
-                trades:
-                    items:
-                        $ref: '#/components/schemas/LolChampSelectLegacyChampSelectSwapContract'
-                    type: array
-            required:
-                - timer
-                - chatDetails
-                - myTeam
-                - theirTeam
-                - trades
-                - actions
-                - bans
-                - localPlayerCellId
-                - isSpectating
-                - allowSkinSelection
-                - allowBattleBoost
-                - allowRerolling
-                - rerollsRemaining
-                - hasSimultaneousBans
-                - hasSimultaneousPicks
-                - showQuitButton
-                - isLegacyChampSelect
-                - isCustomGame
-            type: object
-        LolChampSelectLegacyChampSelectSwapContract:
-            additionalProperties: false
-            description: ""
-            properties:
-                cellId:
-                    format: int64
-                    type: integer
-                id:
-                    format: int64
-                    type: integer
-                state:
-                    $ref: '#/components/schemas/LolChampSelectLegacyChampSelectSwapState'
-            required:
-                - id
-                - cellId
-                - state
-            type: object
-        LolChampSelectLegacyChampSelectSwapState:
-            additionalProperties: false
-            description: ""
-            enum:
-                - SENT
-                - RECEIVED
-                - INVALID
-                - BUSY
-                - AVAILABLE
-            type: string
-        LolChampSelectLegacyChampSelectTimer:
-            additionalProperties: false
-            description: ""
-            properties:
-                adjustedTimeLeftInPhase:
-                    format: int64
-                    type: integer
-                internalNowInEpochMs:
-                    format: uint64
-                    minimum: 0
-                    type: integer
-                isInfinite:
-                    type: boolean
-                phase:
-                    type: string
-                totalTimeInPhase:
-                    format: int64
-                    type: integer
-            required:
-                - adjustedTimeLeftInPhase
-                - totalTimeInPhase
-                - phase
-                - isInfinite
-                - internalNowInEpochMs
-            type: object
-        LolChampSelectLegacyChampionSelectPreferences:
-            additionalProperties: false
-            description: ""
-            properties:
-                skins:
-                    additionalProperties:
-                        format: int32
-                        type: integer
-                    type: object
-                spells:
-                    additionalProperties:
-                        additionalProperties: true
-                        type: object
-                    type: object
-            required:
-                - skins
-                - spells
-            type: object
-        LolChampSelectLegacyCollectionsChampion:
-            additionalProperties: false
-            description: ""
-            properties:
-                active:
-                    type: boolean
-                disabledQueues:
-                    items:
-                        type: string
-                    type: array
-                freeToPlay:
-                    type: boolean
-                id:
-                    format: int32
-                    type: integer
-                ownership:
-                    $ref: '#/components/schemas/LolChampSelectLegacyCollectionsOwnership'
-            required:
-                - disabledQueues
-                - freeToPlay
-                - id
-                - ownership
-                - active
-            type: object
-        LolChampSelectLegacyCollectionsOwnership:
-            additionalProperties: false
-            description: ""
-            properties:
-                loyaltyReward:
-                    type: boolean
-                owned:
-                    type: boolean
-                rental:
-                    $ref: '#/components/schemas/LolChampSelectLegacyCollectionsRental'
-                xboxGPReward:
-                    type: boolean
-            required:
-                - loyaltyReward
-                - xboxGPReward
-                - owned
-                - rental
-            type: object
-        LolChampSelectLegacyCollectionsRental:
-            additionalProperties: false
-            description: ""
-            properties:
-                rented:
-                    type: boolean
-            required:
-                - rented
-            type: object
-        LolChampSelectLegacyGameflowGameClient:
-            additionalProperties: false
-            description: ""
-            properties:
-                running:
-                    type: boolean
-                visible:
-                    type: boolean
-            required:
-                - running
-                - visible
-            type: object
-        LolChampSelectLegacyGameflowGameData:
-            additionalProperties: false
-            description: ""
-            properties:
-                queue:
-                    $ref: '#/components/schemas/LolChampSelectLegacyQueue'
-            required:
-                - queue
-            type: object
-        LolChampSelectLegacyGameflowGameDodge:
-            additionalProperties: false
-            description: ""
-            properties:
-                dodgeIds:
-                    items:
-                        format: uint64
-                        minimum: 0
-                        type: integer
-                    type: array
-                state:
-                    $ref: '#/components/schemas/LolChampSelectLegacyGameflowGameDodgeState'
-            required:
-                - state
-                - dodgeIds
-            type: object
-        LolChampSelectLegacyGameflowGameDodgeState:
-            additionalProperties: false
-            description: ""
-            enum:
-                - TournamentDodged
-                - StrangerDodged
-                - PartyDodged
-                - Invalid
-            type: string
-        LolChampSelectLegacyGameflowPhase:
-            additionalProperties: false
-            description: ""
-            enum:
-                - TerminatedInError
-                - EndOfGame
-                - PreEndOfGame
-                - WaitingForStats
-                - Reconnect
-                - InProgress
-                - FailedToLaunch
-                - GameStart
-                - ChampSelect
-                - ReadyCheck
-                - CheckedIntoTournament
-                - Matchmaking
-                - Lobby
-                - None
-            type: string
-        LolChampSelectLegacyGameflowSession:
-            additionalProperties: false
-            description: ""
-            properties:
-                gameClient:
-                    $ref: '#/components/schemas/LolChampSelectLegacyGameflowGameClient'
-                gameData:
-                    $ref: '#/components/schemas/LolChampSelectLegacyGameflowGameData'
-                phase:
-                    $ref: '#/components/schemas/LolChampSelectLegacyGameflowPhase'
-            required:
-                - phase
-                - gameClient
-                - gameData
-            type: object
-        LolChampSelectLegacyInventoryItemWithPayload:
-            additionalProperties: false
-            description: ""
-            properties:
-                itemId:
-                    format: int64
-                    type: integer
-                payload:
-                    additionalProperties: true
-                    type: object
-            required:
-                - itemId
-                - payload
-            type: object
-        LolChampSelectLegacyLobbyStatus:
-            additionalProperties: false
-            description: ""
-            properties:
-                allowedPlayAgain:
-                    type: boolean
-                isCustom:
-                    type: boolean
-                isLeader:
-                    type: boolean
-                isSpectator:
-                    type: boolean
-                memberSummonerIds:
-                    items:
-                        format: uint64
-                        minimum: 0
-                        type: integer
-                    type: array
-                queueId:
-                    format: int32
-                    type: integer
-            required:
-                - queueId
-                - isCustom
-                - isLeader
-                - isSpectator
-                - allowedPlayAgain
-                - memberSummonerIds
-            type: object
-        LolChampSelectLegacyLoginSession:
-            additionalProperties: false
-            description: ""
-            properties:
-                connected:
-                    type: boolean
-                state:
-                    $ref: '#/components/schemas/LolChampSelectLegacyLoginSessionStates'
-                summonerId:
-                    format: uint64
-                    minimum: 0
-                    type: integer
-            required:
-                - state
-                - summonerId
-                - connected
-            type: object
-        LolChampSelectLegacyLoginSessionStates:
-            additionalProperties: false
-            description: ""
-            enum:
-                - ERROR
-                - LOGGING_OUT
-                - SUCCEEDED
-                - IN_PROGRESS
-            type: string
-        LolChampSelectLegacyMucJwtDto:
-            additionalProperties: false
-            description: ""
-            properties:
-                channelClaim:
-                    type: string
-                domain:
-                    type: string
-                jwt:
-                    type: string
-                targetRegion:
-                    type: string
-            required:
-                - jwt
-                - channelClaim
-                - domain
-                - targetRegion
-            type: object
-        LolChampSelectLegacyPlayerStatus:
-            additionalProperties: false
-            description: ""
-            properties:
-                currentLobbyStatus:
-                    $ref: '#/components/schemas/LolChampSelectLegacyLobbyStatus'
-                lastQueuedLobbyStatus:
-                    $ref: '#/components/schemas/LolChampSelectLegacyLobbyStatus'
-            type: object
-        LolChampSelectLegacyQueue:
-            additionalProperties: false
-            description: ""
-            properties:
-                areFreeChampionsAllowed:
-                    type: boolean
-                gameTypeConfig:
-                    $ref: '#/components/schemas/LolChampSelectLegacyQueueGameTypeConfig'
-            required:
-                - gameTypeConfig
-                - areFreeChampionsAllowed
-            type: object
-        LolChampSelectLegacyQueueGameTypeConfig:
-            additionalProperties: false
-            description: ""
-            properties:
-                allowTrades:
-                    type: boolean
-                battleBoost:
-                    type: boolean
-                maxAllowableBans:
-                    format: int32
-                    type: integer
-                name:
-                    type: string
-            required:
-                - maxAllowableBans
-                - allowTrades
-                - battleBoost
-                - name
-            type: object
-        LolChampSelectLegacySettingCategoryResource:
-            additionalProperties: false
-            description: ""
-            properties:
-                data:
-                    $ref: '#/components/schemas/LolChampSelectLegacyChampionSelectPreferences'
-                schemaVersion:
-                    format: int32
-                    type: integer
-            required:
-                - schemaVersion
-                - data
-            type: object
-        LolChampSelectLegacySummoner:
-            additionalProperties: false
-            description: ""
-            properties:
-                summonerId:
-                    format: uint64
-                    minimum: 0
-                    type: integer
-                summonerLevel:
-                    format: uint32
-                    minimum: 0
-                    type: integer
-            required:
-                - summonerId
-                - summonerLevel
-            type: object
-        LolChampSelectLegacyTeamBoost:
-            additionalProperties: false
-            description: ""
-            properties:
-                availableSkins:
-                    items:
-                        format: int64
-                        type: integer
-                    type: array
-                ipReward:
-                    format: int64
-                    type: integer
-                ipRewardForPurchaser:
-                    format: int64
-                    type: integer
-                price:
-                    format: int64
-                    type: integer
-                puuid:
-                    type: string
-                skinUnlockMode:
-                    type: string
-                summonerId:
-                    format: int64
-                    type: integer
-                unlocked:
-                    type: boolean
-            required:
-                - summonerId
-                - puuid
-                - skinUnlockMode
-                - price
-                - ipReward
-                - ipRewardForPurchaser
-                - availableSkins
-                - unlocked
             type: object
         LolChampionMasteryAllChampionMasterySetReward:
             additionalProperties: false
@@ -25389,6 +24671,7 @@ components:
             additionalProperties: false
             description: ""
             enum:
+                - MayhemCustomHub
                 - Mayhem
                 - Default
             type: string
@@ -28003,43 +27286,6 @@ components:
                 - puuid
                 - spectatorKey
             type: object
-        LolHeartbeatLcdsConnection:
-            additionalProperties: false
-            description: ""
-            properties:
-                stableConnection:
-                    type: boolean
-            required:
-                - stableConnection
-            type: object
-        LolHeartbeatLoginSession:
-            additionalProperties: false
-            description: ""
-            properties:
-                accountId:
-                    format: uint64
-                    minimum: 0
-                    type: integer
-                state:
-                    $ref: '#/components/schemas/LolHeartbeatLoginSessionStates'
-                summonerId:
-                    format: uint64
-                    minimum: 0
-                    type: integer
-            required:
-                - state
-                - summonerId
-                - accountId
-            type: object
-        LolHeartbeatLoginSessionStates:
-            additionalProperties: false
-            description: ""
-            enum:
-                - ERROR
-                - LOGGING_OUT
-                - SUCCEEDED
-                - IN_PROGRESS
-            type: string
         LolHighlightsHighlight:
             additionalProperties: false
             description: ""
@@ -34410,21 +33656,6 @@ components:
                 - timestamp
                 - payload
             type: object
-        LolLobbyServiceProxyPayload:
-            additionalProperties: false
-            description: ""
-            properties:
-                body:
-                    type: string
-                method:
-                    type: string
-                url:
-                    type: string
-            required:
-                - method
-                - url
-                - body
-            type: object
         LolLobbySetGameModeRequestDto:
             additionalProperties: false
             description: ""
@@ -40205,15 +39436,6 @@ components:
                 - phase
                 - gameData
                 - gameDodge
-            type: object
-        LolMatchmakingLcdsConnection:
-            additionalProperties: false
-            description: ""
-            properties:
-                stableConnection:
-                    type: boolean
-            required:
-                - stableConnection
             type: object
         LolMatchmakingLobbyStatus:
             additionalProperties: false
@@ -58986,13 +58208,8 @@ components:
                 honorLevel:
                     format: int32
                     type: integer
-                redemptions:
-                    items:
-                        $ref: '#/components/schemas/LolSummonerProfilesRedemption'
-                    type: array
             required:
                 - honorLevel
-                - redemptions
             type: object
         LolSummonerProfilesJadeVotingSelection:
             additionalProperties: false
@@ -59192,23 +58409,6 @@ components:
                 - topMasteries
                 - recentMatches
                 - positionStats
-            type: object
-        LolSummonerProfilesRedemption:
-            additionalProperties: false
-            description: ""
-            properties:
-                eventType:
-                    type: string
-                remaining:
-                    format: int32
-                    type: integer
-                required:
-                    format: int32
-                    type: integer
-            required:
-                - required
-                - remaining
-                - eventType
             type: object
         LolSummonerProfilesRestriction:
             additionalProperties: false
@@ -65798,6 +64998,7 @@ components:
             additionalProperties: false
             description: ""
             enum:
+                - MayhemCustomHub
                 - Mayhem
                 - Default
             type: string
@@ -72758,15 +71959,6 @@ components:
             required:
                 - expression
             type: object
-        MissionsCompressedPayloadDTO:
-            additionalProperties: false
-            description: ""
-            properties:
-                missionsCompressed:
-                    type: string
-            required:
-                - missionsCompressed
-            type: object
         MucJwtDto:
             additionalProperties: false
             description: ""
@@ -73647,14 +72839,6 @@ components:
                 - bracketId
                 - checkinTime
             type: object
-        PickModes:
-            additionalProperties: false
-            description: ""
-            enum:
-                - DONE
-                - IN_PROGRESS
-                - NOT_PICKING
-            type: string
         PlayerDTO:
             additionalProperties: false
             description: ""
@@ -79938,7 +79122,7 @@ externalDocs:
 info:
     description: "Schema of the League Client Update (LCU) Rest API. Auto-generated using LCU's /help endpoint\n\n### Rules\n\n1.  No interacting with shop\n2.  No interacting with chat\n3.  No interacting with anything authentication related\n4.  Don't automate anything Riot doesn't want you to (e.g. ready check, picks and bans)\n5.  If you can do it using the official Riot API, then don't do it using LCU. Don't spam requests\n6.  Don't try to expose data that Riot wants to hide (e.g. names in ranked champ select)\n7.  Just because something is not listed here does not mean it is allowed\n8.  Register your application with Riot (https://developer.riotgames.com/)\n\n### Disclaimer\n\ndysolix.dev is not endorsed by Riot Games and does not reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. \nRiot Games and all associated properties are trademarks or registered trademarks of Riot Games, Inc"
     title: LCU SCHEMA
-    version: 16.19.820.7193
+    version: 16.20.827.0198
 openapi: 3.0.0
 paths:
     /{plugin}/assets/{+path}:
@@ -81569,375 +80753,6 @@ paths:
                     description: Success response
             tags:
                 - Plugin lol-challenges
-    /lol-champ-select-legacy/v1/bannable-champion-ids:
-        get:
-            description: ""
-            operationId: GetLolChampSelectLegacyV1BannableChampionIds
-            parameters: []
-            responses:
-                2XX:
-                    content:
-                        application/json:
-                            schema:
-                                items:
-                                    format: int32
-                                    type: integer
-                                type: array
-                    description: Success response
-            tags:
-                - Plugin lol-champ-select-legacy
-    /lol-champ-select-legacy/v1/battle-training/launch:
-        post:
-            description: ""
-            operationId: PostLolChampSelectLegacyV1BattleTrainingLaunch
-            parameters: []
-            responses:
-                2XX:
-                    content:
-                        application/json:
-                            schema:
-                                additionalProperties: true
-                                type: object
-                    description: Success response
-            tags:
-                - Plugin lol-champ-select-legacy
-    /lol-champ-select-legacy/v1/current-champion:
-        get:
-            description: ""
-            operationId: GetLolChampSelectLegacyV1CurrentChampion
-            parameters: []
-            responses:
-                2XX:
-                    content:
-                        application/json:
-                            schema:
-                                format: int32
-                                type: integer
-                    description: Success response
-            tags:
-                - Plugin lol-champ-select-legacy
-    /lol-champ-select-legacy/v1/disabled-champion-ids:
-        get:
-            description: ""
-            operationId: GetLolChampSelectLegacyV1DisabledChampionIds
-            parameters: []
-            responses:
-                2XX:
-                    content:
-                        application/json:
-                            schema:
-                                items:
-                                    format: int32
-                                    type: integer
-                                type: array
-                    description: Success response
-            tags:
-                - Plugin lol-champ-select-legacy
-    /lol-champ-select-legacy/v1/implementation-active:
-        get:
-            description: ""
-            operationId: GetLolChampSelectLegacyV1ImplementationActive
-            parameters: []
-            responses:
-                2XX:
-                    content:
-                        application/json:
-                            schema:
-                                type: boolean
-                    description: Success response
-            tags:
-                - Plugin lol-champ-select-legacy
-    /lol-champ-select-legacy/v1/pickable-champion-ids:
-        get:
-            description: ""
-            operationId: GetLolChampSelectLegacyV1PickableChampionIds
-            parameters: []
-            responses:
-                2XX:
-                    content:
-                        application/json:
-                            schema:
-                                items:
-                                    format: int32
-                                    type: integer
-                                type: array
-                    description: Success response
-            tags:
-                - Plugin lol-champ-select-legacy
-    /lol-champ-select-legacy/v1/pickable-skin-ids:
-        get:
-            description: ""
-            operationId: GetLolChampSelectLegacyV1PickableSkinIds
-            parameters: []
-            responses:
-                2XX:
-                    content:
-                        application/json:
-                            schema:
-                                items:
-                                    format: int32
-                                    type: integer
-                                type: array
-                    description: Success response
-            tags:
-                - Plugin lol-champ-select-legacy
-    /lol-champ-select-legacy/v1/session:
-        get:
-            description: ""
-            operationId: GetLolChampSelectLegacyV1Session
-            parameters: []
-            responses:
-                2XX:
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/LolChampSelectLegacyChampSelectSession'
-                    description: Success response
-            tags:
-                - Plugin lol-champ-select-legacy
-    /lol-champ-select-legacy/v1/session/actions/{id}:
-        patch:
-            description: ""
-            operationId: PatchLolChampSelectLegacyV1SessionActionsById
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                    format: uint64
-                    minimum: 0
-                    type: integer
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/LolChampSelectLegacyChampSelectAction'
-            responses:
-                2XX:
-                    content:
-                        application/json:
-                            schema:
-                                additionalProperties: true
-                                type: object
-                    description: Success response
-            tags:
-                - Plugin lol-champ-select-legacy
-    /lol-champ-select-legacy/v1/session/actions/{id}/complete:
-        post:
-            description: ""
-            operationId: PostLolChampSelectLegacyV1SessionActionsByIdComplete
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                    format: int64
-                    type: integer
-            responses:
-                2XX:
-                    content:
-                        application/json:
-                            schema:
-                                additionalProperties: true
-                                type: object
-                    description: Success response
-            tags:
-                - Plugin lol-champ-select-legacy
-    /lol-champ-select-legacy/v1/session/champion-swaps:
-        get:
-            description: ""
-            operationId: GetLolChampSelectLegacyV1SessionChampionSwaps
-            parameters: []
-            responses:
-                2XX:
-                    content:
-                        application/json:
-                            schema:
-                                items:
-                                    $ref: '#/components/schemas/LolChampSelectLegacyChampSelectSwapContract'
-                                type: array
-                    description: Success response
-            tags:
-                - Plugin lol-champ-select-legacy
-    /lol-champ-select-legacy/v1/session/champion-swaps/{id}:
-        get:
-            description: ""
-            operationId: GetLolChampSelectLegacyV1SessionChampionSwapsById
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                    format: int64
-                    type: integer
-            responses:
-                2XX:
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/LolChampSelectLegacyChampSelectSwapContract'
-                    description: Success response
-            tags:
-                - Plugin lol-champ-select-legacy
-    /lol-champ-select-legacy/v1/session/champion-swaps/{id}/accept:
-        post:
-            description: ""
-            operationId: PostLolChampSelectLegacyV1SessionChampionSwapsByIdAccept
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                    format: int64
-                    type: integer
-            responses:
-                2XX:
-                    content:
-                        application/json:
-                            schema:
-                                additionalProperties: true
-                                type: object
-                    description: Success response
-            tags:
-                - Plugin lol-champ-select-legacy
-    /lol-champ-select-legacy/v1/session/champion-swaps/{id}/cancel:
-        post:
-            description: ""
-            operationId: PostLolChampSelectLegacyV1SessionChampionSwapsByIdCancel
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                    format: int64
-                    type: integer
-            responses:
-                2XX:
-                    content:
-                        application/json:
-                            schema:
-                                additionalProperties: true
-                                type: object
-                    description: Success response
-            tags:
-                - Plugin lol-champ-select-legacy
-    /lol-champ-select-legacy/v1/session/champion-swaps/{id}/decline:
-        post:
-            description: ""
-            operationId: PostLolChampSelectLegacyV1SessionChampionSwapsByIdDecline
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                    format: int64
-                    type: integer
-            responses:
-                2XX:
-                    content:
-                        application/json:
-                            schema:
-                                additionalProperties: true
-                                type: object
-                    description: Success response
-            tags:
-                - Plugin lol-champ-select-legacy
-    /lol-champ-select-legacy/v1/session/champion-swaps/{id}/request:
-        post:
-            description: ""
-            operationId: PostLolChampSelectLegacyV1SessionChampionSwapsByIdRequest
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                    format: int64
-                    type: integer
-            responses:
-                2XX:
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/LolChampSelectLegacyChampSelectSwapContract'
-                    description: Success response
-            tags:
-                - Plugin lol-champ-select-legacy
-    /lol-champ-select-legacy/v1/session/my-selection:
-        get:
-            description: ""
-            operationId: GetLolChampSelectLegacyV1SessionMySelection
-            parameters: []
-            responses:
-                2XX:
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/LolChampSelectLegacyChampSelectPlayerSelection'
-                    description: Success response
-            tags:
-                - Plugin lol-champ-select-legacy
-        patch:
-            description: ""
-            operationId: PatchLolChampSelectLegacyV1SessionMySelection
-            parameters: []
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/LolChampSelectLegacyChampSelectMySelection'
-            responses:
-                2XX:
-                    content:
-                        application/json:
-                            schema:
-                                additionalProperties: true
-                                type: object
-                    description: Success response
-            tags:
-                - Plugin lol-champ-select-legacy
-    /lol-champ-select-legacy/v1/session/my-selection/reroll:
-        post:
-            description: ""
-            operationId: PostLolChampSelectLegacyV1SessionMySelectionReroll
-            parameters: []
-            responses:
-                2XX:
-                    content:
-                        application/json:
-                            schema:
-                                additionalProperties: true
-                                type: object
-                    description: Success response
-            tags:
-                - Plugin lol-champ-select-legacy
-    /lol-champ-select-legacy/v1/session/timer:
-        get:
-            description: ""
-            operationId: GetLolChampSelectLegacyV1SessionTimer
-            parameters: []
-            responses:
-                2XX:
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/LolChampSelectLegacyChampSelectTimer'
-                    description: Success response
-            tags:
-                - Plugin lol-champ-select-legacy
-    /lol-champ-select-legacy/v1/team-boost:
-        get:
-            description: ""
-            operationId: GetLolChampSelectLegacyV1TeamBoost
-            parameters: []
-            responses:
-                2XX:
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/LolChampSelectLegacyTeamBoost'
-                    description: Success response
-            tags:
-                - Plugin lol-champ-select-legacy
     /lol-champ-select/v1/all-grid-champions:
         get:
             description: ""
@@ -81982,21 +80797,6 @@ paths:
                                     format: int32
                                     type: integer
                                 type: array
-                    description: Success response
-            tags:
-                - Plugin lol-champ-select
-    /lol-champ-select/v1/battle-training/launch:
-        post:
-            description: ""
-            operationId: PostLolChampSelectV1BattleTrainingLaunch
-            parameters: []
-            responses:
-                2XX:
-                    content:
-                        application/json:
-                            schema:
-                                additionalProperties: true
-                                type: object
                     description: Success response
             tags:
                 - Plugin lol-champ-select
@@ -83861,9 +82661,7 @@ paths:
                   name: id
                   required: true
                   schema:
-                    format: uint64
-                    minimum: 0
-                    type: integer
+                    type: string
             responses:
                 2XX:
                     content:
@@ -88218,21 +87016,6 @@ paths:
                     description: Success response
             tags:
                 - Plugin lol-gameflow
-    /lol-gameflow/v1/basic-tutorial/start:
-        post:
-            description: ""
-            operationId: PostLolGameflowV1BasicTutorialStart
-            parameters: []
-            responses:
-                2XX:
-                    content:
-                        application/json:
-                            schema:
-                                additionalProperties: true
-                                type: object
-                    description: Success response
-            tags:
-                - Plugin lol-gameflow
     /lol-gameflow/v1/battle-training:
         get:
             description: ""
@@ -88244,36 +87027,6 @@ paths:
                         application/json:
                             schema:
                                 type: boolean
-                    description: Success response
-            tags:
-                - Plugin lol-gameflow
-    /lol-gameflow/v1/battle-training/start:
-        post:
-            description: ""
-            operationId: PostLolGameflowV1BattleTrainingStart
-            parameters: []
-            responses:
-                2XX:
-                    content:
-                        application/json:
-                            schema:
-                                additionalProperties: true
-                                type: object
-                    description: Success response
-            tags:
-                - Plugin lol-gameflow
-    /lol-gameflow/v1/battle-training/stop:
-        post:
-            description: ""
-            operationId: PostLolGameflowV1BattleTrainingStop
-            parameters: []
-            responses:
-                2XX:
-                    content:
-                        application/json:
-                            schema:
-                                additionalProperties: true
-                                type: object
                     description: Success response
             tags:
                 - Plugin lol-gameflow
@@ -88919,20 +87672,6 @@ paths:
                     description: Success response
             tags:
                 - Plugin lol-gameflow
-    /lol-heartbeat/v1/connection-status:
-        post:
-            description: ""
-            operationId: PostLolHeartbeatV1ConnectionStatus
-            parameters: []
-            responses:
-                2XX:
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/LolHeartbeatLcdsConnection'
-                    description: Success response
-            tags:
-                - Plugin lol-heartbeat
     /lol-highlights/v1/config:
         get:
             description: ""
@@ -91577,33 +90316,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/LolLobbyLobbyCustomGame'
-                    description: Success response
-            tags:
-                - Plugin lol-lobby
-    /lol-lobby/v1/custom-games/{id}/join:
-        post:
-            description: ""
-            operationId: PostLolLobbyV1CustomGamesByIdJoin
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                    format: uint64
-                    minimum: 0
-                    type: integer
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/LolLobbyLobbyCustomJoinParameters'
-            responses:
-                2XX:
-                    content:
-                        application/json:
-                            schema:
-                                additionalProperties: true
-                                type: object
                     description: Success response
             tags:
                 - Plugin lol-lobby
@@ -95204,6 +93916,20 @@ paths:
                     type: string
             responses:
                 2XX:
+                    description: Success response
+            tags:
+                - Plugin lol-patch
+    /lol-patch/v1/product-dependency:
+        get:
+            description: ""
+            operationId: GetLolPatchV1ProductDependency
+            parameters: []
+            responses:
+                2XX:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/LolPatchProductDependency'
                     description: Success response
             tags:
                 - Plugin lol-patch
@@ -105688,7 +104414,6 @@ tags:
     - name: Plugin lol-catalog
     - name: Plugin lol-challenges
     - name: Plugin lol-champ-select
-    - name: Plugin lol-champ-select-legacy
     - name: Plugin lol-champion-mastery
     - name: Plugin lol-champions
     - name: Plugin lol-chat
@@ -105707,7 +104432,6 @@ tags:
     - name: Plugin lol-game-queues
     - name: Plugin lol-game-settings
     - name: Plugin lol-gameflow
-    - name: Plugin lol-heartbeat
     - name: Plugin lol-highlights
     - name: Plugin lol-honor-v2
     - name: Plugin lol-hovercard

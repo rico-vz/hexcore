@@ -412,33 +412,6 @@ func (e LolChallengesClientState) Valid() bool {
 	}
 }
 
-// Defines values for LolChampSelectLegacyChampSelectSwapState.
-const (
-	LolChampSelectLegacyChampSelectSwapStateAVAILABLE LolChampSelectLegacyChampSelectSwapState = "AVAILABLE"
-	LolChampSelectLegacyChampSelectSwapStateBUSY      LolChampSelectLegacyChampSelectSwapState = "BUSY"
-	LolChampSelectLegacyChampSelectSwapStateINVALID   LolChampSelectLegacyChampSelectSwapState = "INVALID"
-	LolChampSelectLegacyChampSelectSwapStateRECEIVED  LolChampSelectLegacyChampSelectSwapState = "RECEIVED"
-	LolChampSelectLegacyChampSelectSwapStateSENT      LolChampSelectLegacyChampSelectSwapState = "SENT"
-)
-
-// Valid indicates whether the value is a known member of the LolChampSelectLegacyChampSelectSwapState enum.
-func (e LolChampSelectLegacyChampSelectSwapState) Valid() bool {
-	switch e {
-	case LolChampSelectLegacyChampSelectSwapStateAVAILABLE:
-		return true
-	case LolChampSelectLegacyChampSelectSwapStateBUSY:
-		return true
-	case LolChampSelectLegacyChampSelectSwapStateINVALID:
-		return true
-	case LolChampSelectLegacyChampSelectSwapStateRECEIVED:
-		return true
-	case LolChampSelectLegacyChampSelectSwapStateSENT:
-		return true
-	default:
-		return false
-	}
-}
-
 // Defines values for LolChampionsQuestSkinProductType.
 const (
 	LolChampionsQuestSkinProductTypeKQuestSkin  LolChampionsQuestSkinProductType = "kQuestSkin"
@@ -1221,8 +1194,9 @@ func (e LolEventHubRewardTrackItemTag) Valid() bool {
 
 // Defines values for LolEventHubSeasonPassSubType.
 const (
-	LolEventHubSeasonPassSubTypeDefault LolEventHubSeasonPassSubType = "Default"
-	LolEventHubSeasonPassSubTypeMayhem  LolEventHubSeasonPassSubType = "Mayhem"
+	LolEventHubSeasonPassSubTypeDefault         LolEventHubSeasonPassSubType = "Default"
+	LolEventHubSeasonPassSubTypeMayhem          LolEventHubSeasonPassSubType = "Mayhem"
+	LolEventHubSeasonPassSubTypeMayhemCustomHub LolEventHubSeasonPassSubType = "MayhemCustomHub"
 )
 
 // Valid indicates whether the value is a known member of the LolEventHubSeasonPassSubType enum.
@@ -1231,6 +1205,8 @@ func (e LolEventHubSeasonPassSubType) Valid() bool {
 	case LolEventHubSeasonPassSubTypeDefault:
 		return true
 	case LolEventHubSeasonPassSubTypeMayhem:
+		return true
+	case LolEventHubSeasonPassSubTypeMayhemCustomHub:
 		return true
 	default:
 		return false
@@ -4574,6 +4550,14 @@ type ChampionScoutingDTO struct {
 	WinCount   int32   `json:"winCount"`
 }
 
+// ChemtechShoppeBundleDto defines model for ChemtechShoppe-BundleDto.
+type ChemtechShoppeBundleDto struct {
+	DisplayMetadata map[string]interface{} `json:"displayMetadata"`
+	Id              string                 `json:"id"`
+	Name            string                 `json:"name"`
+	ProductId       string                 `json:"productId"`
+}
+
 // ChemtechShoppeCatalogEntryDto defines model for ChemtechShoppe-CatalogEntryDto.
 type ChemtechShoppeCatalogEntryDto struct {
 	DisplayMetadata    map[string]interface{}                `json:"displayMetadata"`
@@ -4599,6 +4583,11 @@ type ChemtechShoppeDropsMultiRollResultsDto struct {
 type ChemtechShoppeDropsRollResultsDto struct {
 	Fulfillments       []map[string]interface{}                    `json:"fulfillments"`
 	RolledFulfillments []ChemtechShoppeRolledFulfillmentWrapperDto `json:"rolledFulfillments"`
+}
+
+// ChemtechShoppeFinalizerConfigDto defines model for ChemtechShoppe-FinalizerConfigDto.
+type ChemtechShoppeFinalizerConfigDto struct {
+	DefaultFinalizerName string `json:"defaultFinalizerName"`
 }
 
 // ChemtechShoppeFulfillmentDto defines model for ChemtechShoppe-FulfillmentDto.
@@ -4638,20 +4627,29 @@ type ChemtechShoppePagingDto struct {
 
 // ChemtechShoppePaymentDto defines model for ChemtechShoppe-PaymentDto.
 type ChemtechShoppePaymentDto struct {
-	CurrencyId      string  `json:"currencyId"`
-	Delta           int64   `json:"delta"`
-	DiscountPercent float64 `json:"discountPercent"`
-	DiscountedDelta int64   `json:"discountedDelta"`
-	FinalDelta      int64   `json:"finalDelta"`
-	ItemId          string  `json:"itemId"`
-	ItemTypeId      string  `json:"itemTypeId"`
-	Name            string  `json:"name"`
+	CurrencyId      string   `json:"currencyId"`
+	Delta           int64    `json:"delta"`
+	DiscountPercent float64  `json:"discountPercent"`
+	DiscountedDelta int64    `json:"discountedDelta"`
+	FinalDelta      int64    `json:"finalDelta"`
+	GroupId         string   `json:"groupId"`
+	ItemId          string   `json:"itemId"`
+	ItemTypeId      string   `json:"itemTypeId"`
+	ManagedType     string   `json:"managedType"`
+	Name            string   `json:"name"`
+	RequiredValues  []string `json:"requiredValues"`
 }
 
 // ChemtechShoppePaymentOptionDto defines model for ChemtechShoppe-PaymentOptionDto.
 type ChemtechShoppePaymentOptionDto struct {
 	Key      string                     `json:"key"`
 	Payments []ChemtechShoppePaymentDto `json:"payments"`
+}
+
+// ChemtechShoppePersonalizationConfigDto defines model for ChemtechShoppe-PersonalizationConfigDto.
+type ChemtechShoppePersonalizationConfigDto struct {
+	FinalizerConfig ChemtechShoppeFinalizerConfigDto `json:"finalizerConfig"`
+	RankingConfig   ChemtechShoppeRankingConfigDto   `json:"rankingConfig"`
 }
 
 // ChemtechShoppePrerequisiteDto defines model for ChemtechShoppe-PrerequisiteDto.
@@ -4669,6 +4667,11 @@ type ChemtechShoppePrerequisiteDto struct {
 type ChemtechShoppePurchaseUnitDto struct {
 	Fulfillment    ChemtechShoppeFulfillmentDto     `json:"fulfillment"`
 	PaymentOptions []ChemtechShoppePaymentOptionDto `json:"paymentOptions"`
+}
+
+// ChemtechShoppeRankingConfigDto defines model for ChemtechShoppe-RankingConfigDto.
+type ChemtechShoppeRankingConfigDto struct {
+	DefaultModelName string `json:"defaultModelName"`
 }
 
 // ChemtechShoppeRolledFulfillmentWrapperDto defines model for ChemtechShoppe-RolledFulfillmentWrapperDto.
@@ -4706,6 +4709,8 @@ type ChemtechShoppeStoreDigestDto struct {
 	ProductId             string                                 `json:"productId"`
 	RotatingStoreMetadata ChemtechShoppeRotatingStoreMetadataDto `json:"rotatingStoreMetadata"`
 	StartTime             string                                 `json:"startTime"`
+	Type                  string                                 `json:"type"`
+	Version               string                                 `json:"version"`
 }
 
 // ChemtechShoppeStoreDigestsDto defines model for ChemtechShoppe-StoreDigestsDto.
@@ -4715,16 +4720,21 @@ type ChemtechShoppeStoreDigestsDto struct {
 
 // ChemtechShoppeStoreDto defines model for ChemtechShoppe-StoreDto.
 type ChemtechShoppeStoreDto struct {
+	Bundles                    []ChemtechShoppeBundleDto              `json:"bundles"`
 	CatalogEntries             []ChemtechShoppeCatalogEntryDto        `json:"catalogEntries"`
 	DisplayMetadata            map[string]interface{}                 `json:"displayMetadata"`
 	EndTime                    string                                 `json:"endTime"`
+	ExternalRefs               map[string]interface{}                 `json:"externalRefs"`
 	Id                         string                                 `json:"id"`
 	Name                       string                                 `json:"name"`
+	PersonalizationConfig      ChemtechShoppePersonalizationConfigDto `json:"personalizationConfig"`
 	PrerequisiteCatalogEntries []ChemtechShoppeCatalogEntryDto        `json:"prerequisiteCatalogEntries"`
 	ProductId                  string                                 `json:"productId"`
 	RotatingStoreMetadata      ChemtechShoppeRotatingStoreMetadataDto `json:"rotatingStoreMetadata"`
 	StartTime                  string                                 `json:"startTime"`
+	Tags                       []string                               `json:"tags"`
 	Type                       string                                 `json:"type"`
+	Version                    string                                 `json:"version"`
 }
 
 // ChemtechShoppeStoresResponseDto defines model for ChemtechShoppe-StoresResponseDto.
@@ -4784,8 +4794,14 @@ type ChemtechShoppeV2DropTableOddsTreeHierarchyEdgeDto struct {
 // ChemtechShoppeV2DropTableOddsTreeNodeDto defines model for ChemtechShoppeV2-DropTableOddsTreeNodeDto.
 type ChemtechShoppeV2DropTableOddsTreeNodeDto struct {
 	DisplayPriority int32  `json:"displayPriority"`
+	GroupId         string `json:"groupId"`
 	Id              string `json:"id"`
+	ItemId          string `json:"itemId"`
+	ManagedType     string `json:"managedType"`
 	Name            string `json:"name"`
+	PayloadValue    string `json:"payloadValue"`
+	PityCounterId   string `json:"pityCounterId"`
+	PityThreshold   int32  `json:"pityThreshold"`
 	RewardQuantity  int32  `json:"rewardQuantity"`
 	SourceId        string `json:"sourceId"`
 	Type            string `json:"type"`
@@ -4834,14 +4850,17 @@ type ChemtechShoppeV2NodeTraKeyDto struct {
 
 // ChemtechShoppeV2PaymentDto defines model for ChemtechShoppeV2-PaymentDto.
 type ChemtechShoppeV2PaymentDto struct {
-	CurrencyId      string  `json:"currencyId"`
-	Delta           int64   `json:"delta"`
-	DiscountPercent float64 `json:"discountPercent"`
-	DiscountedDelta int64   `json:"discountedDelta"`
-	FinalDelta      int64   `json:"finalDelta"`
-	ItemId          string  `json:"itemId"`
-	ItemTypeId      string  `json:"itemTypeId"`
-	Name            string  `json:"name"`
+	CurrencyId      string   `json:"currencyId"`
+	Delta           int64    `json:"delta"`
+	DiscountPercent float64  `json:"discountPercent"`
+	DiscountedDelta int64    `json:"discountedDelta"`
+	FinalDelta      int64    `json:"finalDelta"`
+	GroupId         string   `json:"groupId"`
+	ItemId          string   `json:"itemId"`
+	ItemTypeId      string   `json:"itemTypeId"`
+	ManagedType     string   `json:"managedType"`
+	Name            string   `json:"name"`
+	RequiredValues  []string `json:"requiredValues"`
 }
 
 // ChemtechShoppeV2PaymentOptionDto defines model for ChemtechShoppeV2-PaymentOptionDto.
@@ -5579,115 +5598,6 @@ type LolChallengesUITitle struct {
 	TitleAcquisitionName        *string                          `json:"titleAcquisitionName,omitempty"`
 	TitleAcquisitionType        string                           `json:"titleAcquisitionType"`
 	TitleRequirementDescription *string                          `json:"titleRequirementDescription,omitempty"`
-}
-
-// LolChampSelectLegacyChampSelectAction defines model for LolChampSelectLegacyChampSelectAction.
-type LolChampSelectLegacyChampSelectAction struct {
-	ActorCellId  int64  `json:"actorCellId"`
-	ChampionId   int32  `json:"championId"`
-	Completed    bool   `json:"completed"`
-	Id           int64  `json:"id"`
-	IsAllyAction bool   `json:"isAllyAction"`
-	IsInProgress bool   `json:"isInProgress"`
-	PickTurn     int32  `json:"pickTurn"`
-	Type         string `json:"type"`
-}
-
-// LolChampSelectLegacyChampSelectBannedChampions defines model for LolChampSelectLegacyChampSelectBannedChampions.
-type LolChampSelectLegacyChampSelectBannedChampions struct {
-	MyTeamBans    []int32 `json:"myTeamBans"`
-	NumBans       int32   `json:"numBans"`
-	TheirTeamBans []int32 `json:"theirTeamBans"`
-}
-
-// LolChampSelectLegacyChampSelectChatRoomDetails defines model for LolChampSelectLegacyChampSelectChatRoomDetails.
-type LolChampSelectLegacyChampSelectChatRoomDetails struct {
-	MucJwtDto             LolChampSelectLegacyMucJwtDto `json:"mucJwtDto"`
-	MultiUserChatId       string                        `json:"multiUserChatId"`
-	MultiUserChatPassword string                        `json:"multiUserChatPassword"`
-}
-
-// LolChampSelectLegacyChampSelectMySelection defines model for LolChampSelectLegacyChampSelectMySelection.
-type LolChampSelectLegacyChampSelectMySelection struct {
-	SelectedSkinId *int32  `json:"selectedSkinId,omitempty"`
-	Spell1Id       *uint64 `json:"spell1Id,omitempty"`
-	Spell2Id       *uint64 `json:"spell2Id,omitempty"`
-}
-
-// LolChampSelectLegacyChampSelectPlayerSelection defines model for LolChampSelectLegacyChampSelectPlayerSelection.
-type LolChampSelectLegacyChampSelectPlayerSelection struct {
-	AssignedPosition   string `json:"assignedPosition"`
-	CellId             int64  `json:"cellId"`
-	ChampionId         int32  `json:"championId"`
-	ChampionPickIntent int32  `json:"championPickIntent"`
-	PlayerType         string `json:"playerType"`
-	Puuid              string `json:"puuid"`
-	SelectedSkinId     int32  `json:"selectedSkinId"`
-	Spell1Id           uint64 `json:"spell1Id"`
-	Spell2Id           uint64 `json:"spell2Id"`
-	SummonerId         uint64 `json:"summonerId"`
-	Team               int32  `json:"team"`
-}
-
-// LolChampSelectLegacyChampSelectSession defines model for LolChampSelectLegacyChampSelectSession.
-type LolChampSelectLegacyChampSelectSession struct {
-	Actions              []map[string]interface{}                         `json:"actions"`
-	AllowBattleBoost     bool                                             `json:"allowBattleBoost"`
-	AllowRerolling       bool                                             `json:"allowRerolling"`
-	AllowSkinSelection   bool                                             `json:"allowSkinSelection"`
-	Bans                 LolChampSelectLegacyChampSelectBannedChampions   `json:"bans"`
-	ChatDetails          LolChampSelectLegacyChampSelectChatRoomDetails   `json:"chatDetails"`
-	HasSimultaneousBans  bool                                             `json:"hasSimultaneousBans"`
-	HasSimultaneousPicks bool                                             `json:"hasSimultaneousPicks"`
-	IsCustomGame         bool                                             `json:"isCustomGame"`
-	IsLegacyChampSelect  bool                                             `json:"isLegacyChampSelect"`
-	IsSpectating         bool                                             `json:"isSpectating"`
-	LocalPlayerCellId    int64                                            `json:"localPlayerCellId"`
-	MyTeam               []LolChampSelectLegacyChampSelectPlayerSelection `json:"myTeam"`
-	RerollsRemaining     uint64                                           `json:"rerollsRemaining"`
-	ShowQuitButton       bool                                             `json:"showQuitButton"`
-	TheirTeam            []LolChampSelectLegacyChampSelectPlayerSelection `json:"theirTeam"`
-	Timer                LolChampSelectLegacyChampSelectTimer             `json:"timer"`
-	Trades               []LolChampSelectLegacyChampSelectSwapContract    `json:"trades"`
-}
-
-// LolChampSelectLegacyChampSelectSwapContract defines model for LolChampSelectLegacyChampSelectSwapContract.
-type LolChampSelectLegacyChampSelectSwapContract struct {
-	CellId int64                                    `json:"cellId"`
-	Id     int64                                    `json:"id"`
-	State  LolChampSelectLegacyChampSelectSwapState `json:"state"`
-}
-
-// LolChampSelectLegacyChampSelectSwapState defines model for LolChampSelectLegacyChampSelectSwapState.
-type LolChampSelectLegacyChampSelectSwapState string
-
-// LolChampSelectLegacyChampSelectTimer defines model for LolChampSelectLegacyChampSelectTimer.
-type LolChampSelectLegacyChampSelectTimer struct {
-	AdjustedTimeLeftInPhase int64  `json:"adjustedTimeLeftInPhase"`
-	InternalNowInEpochMs    uint64 `json:"internalNowInEpochMs"`
-	IsInfinite              bool   `json:"isInfinite"`
-	Phase                   string `json:"phase"`
-	TotalTimeInPhase        int64  `json:"totalTimeInPhase"`
-}
-
-// LolChampSelectLegacyMucJwtDto defines model for LolChampSelectLegacyMucJwtDto.
-type LolChampSelectLegacyMucJwtDto struct {
-	ChannelClaim string `json:"channelClaim"`
-	Domain       string `json:"domain"`
-	Jwt          string `json:"jwt"`
-	TargetRegion string `json:"targetRegion"`
-}
-
-// LolChampSelectLegacyTeamBoost defines model for LolChampSelectLegacyTeamBoost.
-type LolChampSelectLegacyTeamBoost struct {
-	AvailableSkins       []int64 `json:"availableSkins"`
-	IpReward             int64   `json:"ipReward"`
-	IpRewardForPurchaser int64   `json:"ipRewardForPurchaser"`
-	Price                int64   `json:"price"`
-	Puuid                string  `json:"puuid"`
-	SkinUnlockMode       string  `json:"skinUnlockMode"`
-	SummonerId           int64   `json:"summonerId"`
-	Unlocked             bool    `json:"unlocked"`
 }
 
 // LolChampionMasteryChampionMastery defines model for LolChampionMasteryChampionMastery.
@@ -8510,11 +8420,6 @@ type LolGameflowSpectateGameInfoResource struct {
 	SpectatorKey         string `json:"spectatorKey"`
 }
 
-// LolHeartbeatLcdsConnection defines model for LolHeartbeatLcdsConnection.
-type LolHeartbeatLcdsConnection struct {
-	StableConnection bool `json:"stableConnection"`
-}
-
 // LolHighlightsHighlight defines model for LolHighlightsHighlight.
 type LolHighlightsHighlight struct {
 	FileSizeBytes uint64 `json:"fileSizeBytes"`
@@ -9091,12 +8996,6 @@ type LolLobbyLobbyCustomGameLobby struct {
 	Spectators                         []LolLobbyLobbyMember                `json:"spectators"`
 	TeamOne                            []LolLobbyLobbyMember                `json:"teamOne"`
 	TeamTwo                            []LolLobbyLobbyMember                `json:"teamTwo"`
-}
-
-// LolLobbyLobbyCustomJoinParameters defines model for LolLobbyLobbyCustomJoinParameters.
-type LolLobbyLobbyCustomJoinParameters struct {
-	AsSpectator *bool   `json:"asSpectator,omitempty"`
-	Password    *string `json:"password,omitempty"`
 }
 
 // LolLobbyLobbyDto defines model for LolLobbyLobbyDto.
@@ -10903,6 +10802,12 @@ type LolPatchNotificationId string
 type LolPatchPatchSieveDownload struct {
 	ScdRequired bool   `json:"scd_required"`
 	Url         string `json:"url"`
+}
+
+// LolPatchProductDependency defines model for LolPatchProductDependency.
+type LolPatchProductDependency struct {
+	PatchlineId string `json:"patchline_id"`
+	ProductId   string `json:"product_id"`
 }
 
 // LolPatchProductState defines model for LolPatchProductState.
@@ -13334,8 +13239,7 @@ type LolSummonerProfilesChampionMasteryView struct {
 
 // LolSummonerProfilesHonorView defines model for LolSummonerProfilesHonorView.
 type LolSummonerProfilesHonorView struct {
-	HonorLevel  int32                           `json:"honorLevel"`
-	Redemptions []LolSummonerProfilesRedemption `json:"redemptions"`
+	HonorLevel int32 `json:"honorLevel"`
 }
 
 // LolSummonerProfilesJadeVotingSelection defines model for LolSummonerProfilesJadeVotingSelection.
@@ -13369,13 +13273,6 @@ type LolSummonerProfilesPrivacyView struct {
 type LolSummonerProfilesRank struct {
 	Division string `json:"division"`
 	Tier     string `json:"tier"`
-}
-
-// LolSummonerProfilesRedemption defines model for LolSummonerProfilesRedemption.
-type LolSummonerProfilesRedemption struct {
-	EventType string `json:"eventType"`
-	Remaining int32  `json:"remaining"`
-	Required  int32  `json:"required"`
 }
 
 // LolSummonerProfilesRestriction defines model for LolSummonerProfilesRestriction.
@@ -16355,12 +16252,6 @@ type PostLolCapMissionsV1MarkasviewedJSONRequestBody = PostLolCapMissionsV1Marka
 // PostLolChallengesV1UpdatePlayerPreferencesJSONRequestBody defines body for PostLolChallengesV1UpdatePlayerPreferences for application/json ContentType.
 type PostLolChallengesV1UpdatePlayerPreferencesJSONRequestBody = LolChallengesChallengesPlayerPreferences
 
-// PatchLolChampSelectLegacyV1SessionActionsByIdJSONRequestBody defines body for PatchLolChampSelectLegacyV1SessionActionsById for application/json ContentType.
-type PatchLolChampSelectLegacyV1SessionActionsByIdJSONRequestBody = LolChampSelectLegacyChampSelectAction
-
-// PatchLolChampSelectLegacyV1SessionMySelectionJSONRequestBody defines body for PatchLolChampSelectLegacyV1SessionMySelection for application/json ContentType.
-type PatchLolChampSelectLegacyV1SessionMySelectionJSONRequestBody = LolChampSelectLegacyChampSelectMySelection
-
 // PatchLolChampSelectV1SessionActionsByIdJSONRequestBody defines body for PatchLolChampSelectV1SessionActionsById for application/json ContentType.
 type PatchLolChampSelectV1SessionActionsByIdJSONRequestBody = TeamBuilderDirectChampSelectAction
 
@@ -16603,9 +16494,6 @@ type PatchLolLobbyTeamBuilderChampSelectV1SessionMySelectionJSONRequestBody = Te
 
 // PostLolLobbyV1ClashJSONRequestBody defines body for PostLolLobbyV1Clash for application/json ContentType.
 type PostLolLobbyV1ClashJSONRequestBody = PostLolLobbyV1ClashJSONBody
-
-// PostLolLobbyV1CustomGamesByIdJoinJSONRequestBody defines body for PostLolLobbyV1CustomGamesByIdJoin for application/json ContentType.
-type PostLolLobbyV1CustomGamesByIdJoinJSONRequestBody = LolLobbyLobbyCustomJoinParameters
 
 // PostLolLobbyV1LobbyCustomBotsJSONRequestBody defines body for PostLolLobbyV1LobbyCustomBots for application/json ContentType.
 type PostLolLobbyV1LobbyCustomBotsJSONRequestBody = LolLobbyLobbyBotParams
@@ -17666,79 +17554,6 @@ type ClientInterface interface {
 	// GetLolChallengesV2TitlesLocalPlayer performs a GET /lol-challenges/v2/titles/local-player (the `GetLolChallengesV2TitlesLocalPlayer` operationId) request.
 	GetLolChallengesV2TitlesLocalPlayer(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetLolChampSelectLegacyV1BannableChampionIds performs a GET /lol-champ-select-legacy/v1/bannable-champion-ids (the `GetLolChampSelectLegacyV1BannableChampionIds` operationId) request.
-	GetLolChampSelectLegacyV1BannableChampionIds(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PostLolChampSelectLegacyV1BattleTrainingLaunch performs a POST /lol-champ-select-legacy/v1/battle-training/launch (the `PostLolChampSelectLegacyV1BattleTrainingLaunch` operationId) request.
-	PostLolChampSelectLegacyV1BattleTrainingLaunch(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetLolChampSelectLegacyV1CurrentChampion performs a GET /lol-champ-select-legacy/v1/current-champion (the `GetLolChampSelectLegacyV1CurrentChampion` operationId) request.
-	GetLolChampSelectLegacyV1CurrentChampion(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetLolChampSelectLegacyV1DisabledChampionIds performs a GET /lol-champ-select-legacy/v1/disabled-champion-ids (the `GetLolChampSelectLegacyV1DisabledChampionIds` operationId) request.
-	GetLolChampSelectLegacyV1DisabledChampionIds(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetLolChampSelectLegacyV1ImplementationActive performs a GET /lol-champ-select-legacy/v1/implementation-active (the `GetLolChampSelectLegacyV1ImplementationActive` operationId) request.
-	GetLolChampSelectLegacyV1ImplementationActive(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetLolChampSelectLegacyV1PickableChampionIds performs a GET /lol-champ-select-legacy/v1/pickable-champion-ids (the `GetLolChampSelectLegacyV1PickableChampionIds` operationId) request.
-	GetLolChampSelectLegacyV1PickableChampionIds(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetLolChampSelectLegacyV1PickableSkinIds performs a GET /lol-champ-select-legacy/v1/pickable-skin-ids (the `GetLolChampSelectLegacyV1PickableSkinIds` operationId) request.
-	GetLolChampSelectLegacyV1PickableSkinIds(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetLolChampSelectLegacyV1Session performs a GET /lol-champ-select-legacy/v1/session (the `GetLolChampSelectLegacyV1Session` operationId) request.
-	GetLolChampSelectLegacyV1Session(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PatchLolChampSelectLegacyV1SessionActionsByIdWithBody performs a PATCH /lol-champ-select-legacy/v1/session/actions/{id} (the `PatchLolChampSelectLegacyV1SessionActionsById` operationId) request,
-	// with any type of body and a specified content type.
-	PatchLolChampSelectLegacyV1SessionActionsByIdWithBody(ctx context.Context, id uint64, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PatchLolChampSelectLegacyV1SessionActionsById performs a PATCH /lol-champ-select-legacy/v1/session/actions/{id} (the `PatchLolChampSelectLegacyV1SessionActionsById` operationId) request.
-	// Takes a body of the `application/json` content type.
-	PatchLolChampSelectLegacyV1SessionActionsById(ctx context.Context, id uint64, body PatchLolChampSelectLegacyV1SessionActionsByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PostLolChampSelectLegacyV1SessionActionsByIdComplete performs a POST /lol-champ-select-legacy/v1/session/actions/{id}/complete (the `PostLolChampSelectLegacyV1SessionActionsByIdComplete` operationId) request.
-	PostLolChampSelectLegacyV1SessionActionsByIdComplete(ctx context.Context, id int64, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetLolChampSelectLegacyV1SessionChampionSwaps performs a GET /lol-champ-select-legacy/v1/session/champion-swaps (the `GetLolChampSelectLegacyV1SessionChampionSwaps` operationId) request.
-	GetLolChampSelectLegacyV1SessionChampionSwaps(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetLolChampSelectLegacyV1SessionChampionSwapsById performs a GET /lol-champ-select-legacy/v1/session/champion-swaps/{id} (the `GetLolChampSelectLegacyV1SessionChampionSwapsById` operationId) request.
-	GetLolChampSelectLegacyV1SessionChampionSwapsById(ctx context.Context, id int64, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PostLolChampSelectLegacyV1SessionChampionSwapsByIdAccept performs a POST /lol-champ-select-legacy/v1/session/champion-swaps/{id}/accept (the `PostLolChampSelectLegacyV1SessionChampionSwapsByIdAccept` operationId) request.
-	PostLolChampSelectLegacyV1SessionChampionSwapsByIdAccept(ctx context.Context, id int64, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PostLolChampSelectLegacyV1SessionChampionSwapsByIdCancel performs a POST /lol-champ-select-legacy/v1/session/champion-swaps/{id}/cancel (the `PostLolChampSelectLegacyV1SessionChampionSwapsByIdCancel` operationId) request.
-	PostLolChampSelectLegacyV1SessionChampionSwapsByIdCancel(ctx context.Context, id int64, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PostLolChampSelectLegacyV1SessionChampionSwapsByIdDecline performs a POST /lol-champ-select-legacy/v1/session/champion-swaps/{id}/decline (the `PostLolChampSelectLegacyV1SessionChampionSwapsByIdDecline` operationId) request.
-	PostLolChampSelectLegacyV1SessionChampionSwapsByIdDecline(ctx context.Context, id int64, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PostLolChampSelectLegacyV1SessionChampionSwapsByIdRequest performs a POST /lol-champ-select-legacy/v1/session/champion-swaps/{id}/request (the `PostLolChampSelectLegacyV1SessionChampionSwapsByIdRequest` operationId) request.
-	PostLolChampSelectLegacyV1SessionChampionSwapsByIdRequest(ctx context.Context, id int64, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetLolChampSelectLegacyV1SessionMySelection performs a GET /lol-champ-select-legacy/v1/session/my-selection (the `GetLolChampSelectLegacyV1SessionMySelection` operationId) request.
-	GetLolChampSelectLegacyV1SessionMySelection(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PatchLolChampSelectLegacyV1SessionMySelectionWithBody performs a PATCH /lol-champ-select-legacy/v1/session/my-selection (the `PatchLolChampSelectLegacyV1SessionMySelection` operationId) request,
-	// with any type of body and a specified content type.
-	PatchLolChampSelectLegacyV1SessionMySelectionWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PatchLolChampSelectLegacyV1SessionMySelection performs a PATCH /lol-champ-select-legacy/v1/session/my-selection (the `PatchLolChampSelectLegacyV1SessionMySelection` operationId) request.
-	// Takes a body of the `application/json` content type.
-	PatchLolChampSelectLegacyV1SessionMySelection(ctx context.Context, body PatchLolChampSelectLegacyV1SessionMySelectionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PostLolChampSelectLegacyV1SessionMySelectionReroll performs a POST /lol-champ-select-legacy/v1/session/my-selection/reroll (the `PostLolChampSelectLegacyV1SessionMySelectionReroll` operationId) request.
-	PostLolChampSelectLegacyV1SessionMySelectionReroll(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetLolChampSelectLegacyV1SessionTimer performs a GET /lol-champ-select-legacy/v1/session/timer (the `GetLolChampSelectLegacyV1SessionTimer` operationId) request.
-	GetLolChampSelectLegacyV1SessionTimer(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetLolChampSelectLegacyV1TeamBoost performs a GET /lol-champ-select-legacy/v1/team-boost (the `GetLolChampSelectLegacyV1TeamBoost` operationId) request.
-	GetLolChampSelectLegacyV1TeamBoost(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
-
 	// GetLolChampSelectV1AllGridChampions performs a GET /lol-champ-select/v1/all-grid-champions (the `GetLolChampSelectV1AllGridChampions` operationId) request.
 	GetLolChampSelectV1AllGridChampions(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -17747,9 +17562,6 @@ type ClientInterface interface {
 
 	// GetLolChampSelectV1BannableChampionIds performs a GET /lol-champ-select/v1/bannable-champion-ids (the `GetLolChampSelectV1BannableChampionIds` operationId) request.
 	GetLolChampSelectV1BannableChampionIds(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PostLolChampSelectV1BattleTrainingLaunch performs a POST /lol-champ-select/v1/battle-training/launch (the `PostLolChampSelectV1BattleTrainingLaunch` operationId) request.
-	PostLolChampSelectV1BattleTrainingLaunch(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetLolChampSelectV1CurrentChampion performs a GET /lol-champ-select/v1/current-champion (the `GetLolChampSelectV1CurrentChampion` operationId) request.
 	GetLolChampSelectV1CurrentChampion(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -18110,7 +17922,7 @@ type ClientInterface interface {
 	GetLolChatV1Errors(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteLolChatV1ErrorsById performs a DELETE /lol-chat/v1/errors/{id} (the `DeleteLolChatV1ErrorsById` operationId) request.
-	DeleteLolChatV1ErrorsById(ctx context.Context, id uint64, reqEditors ...RequestEditorFn) (*http.Response, error)
+	DeleteLolChatV1ErrorsById(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetLolChatV1FriendCounts performs a GET /lol-chat/v1/friend-counts (the `GetLolChatV1FriendCounts` operationId) request.
 	GetLolChatV1FriendCounts(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -19025,17 +18837,8 @@ type ClientInterface interface {
 	// GetLolGameflowV1BasicTutorial performs a GET /lol-gameflow/v1/basic-tutorial (the `GetLolGameflowV1BasicTutorial` operationId) request.
 	GetLolGameflowV1BasicTutorial(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PostLolGameflowV1BasicTutorialStart performs a POST /lol-gameflow/v1/basic-tutorial/start (the `PostLolGameflowV1BasicTutorialStart` operationId) request.
-	PostLolGameflowV1BasicTutorialStart(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
-
 	// GetLolGameflowV1BattleTraining performs a GET /lol-gameflow/v1/battle-training (the `GetLolGameflowV1BattleTraining` operationId) request.
 	GetLolGameflowV1BattleTraining(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PostLolGameflowV1BattleTrainingStart performs a POST /lol-gameflow/v1/battle-training/start (the `PostLolGameflowV1BattleTrainingStart` operationId) request.
-	PostLolGameflowV1BattleTrainingStart(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PostLolGameflowV1BattleTrainingStop performs a POST /lol-gameflow/v1/battle-training/stop (the `PostLolGameflowV1BattleTrainingStop` operationId) request.
-	PostLolGameflowV1BattleTrainingStop(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// PostLolGameflowV1EarlyExit performs a POST /lol-gameflow/v1/early-exit (the `PostLolGameflowV1EarlyExit` operationId) request.
 	PostLolGameflowV1EarlyExit(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -19230,9 +19033,6 @@ type ClientInterface interface {
 	// PostLolGameflowV2SpectateLaunch performs a POST /lol-gameflow/v2/spectate/launch (the `PostLolGameflowV2SpectateLaunch` operationId) request.
 	// Takes a body of the `application/json` content type.
 	PostLolGameflowV2SpectateLaunch(ctx context.Context, body PostLolGameflowV2SpectateLaunchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PostLolHeartbeatV1ConnectionStatus performs a POST /lol-heartbeat/v1/connection-status (the `PostLolHeartbeatV1ConnectionStatus` operationId) request.
-	PostLolHeartbeatV1ConnectionStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetLolHighlightsV1Config performs a GET /lol-highlights/v1/config (the `GetLolHighlightsV1Config` operationId) request.
 	GetLolHighlightsV1Config(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -19748,14 +19548,6 @@ type ClientInterface interface {
 
 	// GetLolLobbyV1CustomGamesById performs a GET /lol-lobby/v1/custom-games/{id} (the `GetLolLobbyV1CustomGamesById` operationId) request.
 	GetLolLobbyV1CustomGamesById(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PostLolLobbyV1CustomGamesByIdJoinWithBody performs a POST /lol-lobby/v1/custom-games/{id}/join (the `PostLolLobbyV1CustomGamesByIdJoin` operationId) request,
-	// with any type of body and a specified content type.
-	PostLolLobbyV1CustomGamesByIdJoinWithBody(ctx context.Context, id uint64, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PostLolLobbyV1CustomGamesByIdJoin performs a POST /lol-lobby/v1/custom-games/{id}/join (the `PostLolLobbyV1CustomGamesByIdJoin` operationId) request.
-	// Takes a body of the `application/json` content type.
-	PostLolLobbyV1CustomGamesByIdJoin(ctx context.Context, id uint64, body PostLolLobbyV1CustomGamesByIdJoinJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetLolLobbyV1LobbyAvailability performs a GET /lol-lobby/v1/lobby/availability (the `GetLolLobbyV1LobbyAvailability` operationId) request.
 	GetLolLobbyV1LobbyAvailability(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -20586,6 +20378,9 @@ type ClientInterface interface {
 
 	// DeleteLolPatchV1NotificationsById performs a DELETE /lol-patch/v1/notifications/{id} (the `DeleteLolPatchV1NotificationsById` operationId) request.
 	DeleteLolPatchV1NotificationsById(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetLolPatchV1ProductDependency performs a GET /lol-patch/v1/product-dependency (the `GetLolPatchV1ProductDependency` operationId) request.
+	GetLolPatchV1ProductDependency(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetLolPatchV1ProductIntegrationAppUpdateAvailable performs a GET /lol-patch/v1/product-integration/app-update/available (the `GetLolPatchV1ProductIntegrationAppUpdateAvailable` operationId) request.
 	GetLolPatchV1ProductIntegrationAppUpdateAvailable(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -24836,309 +24631,6 @@ func (c *Client) GetLolChallengesV2TitlesLocalPlayer(ctx context.Context, reqEdi
 	return c.Client.Do(req)
 }
 
-// GetLolChampSelectLegacyV1BannableChampionIds performs a GET /lol-champ-select-legacy/v1/bannable-champion-ids (the `GetLolChampSelectLegacyV1BannableChampionIds` operationId) request.
-func (c *Client) GetLolChampSelectLegacyV1BannableChampionIds(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetLolChampSelectLegacyV1BannableChampionIdsRequest(c.Server)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PostLolChampSelectLegacyV1BattleTrainingLaunch performs a POST /lol-champ-select-legacy/v1/battle-training/launch (the `PostLolChampSelectLegacyV1BattleTrainingLaunch` operationId) request.
-func (c *Client) PostLolChampSelectLegacyV1BattleTrainingLaunch(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostLolChampSelectLegacyV1BattleTrainingLaunchRequest(c.Server)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// GetLolChampSelectLegacyV1CurrentChampion performs a GET /lol-champ-select-legacy/v1/current-champion (the `GetLolChampSelectLegacyV1CurrentChampion` operationId) request.
-func (c *Client) GetLolChampSelectLegacyV1CurrentChampion(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetLolChampSelectLegacyV1CurrentChampionRequest(c.Server)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// GetLolChampSelectLegacyV1DisabledChampionIds performs a GET /lol-champ-select-legacy/v1/disabled-champion-ids (the `GetLolChampSelectLegacyV1DisabledChampionIds` operationId) request.
-func (c *Client) GetLolChampSelectLegacyV1DisabledChampionIds(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetLolChampSelectLegacyV1DisabledChampionIdsRequest(c.Server)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// GetLolChampSelectLegacyV1ImplementationActive performs a GET /lol-champ-select-legacy/v1/implementation-active (the `GetLolChampSelectLegacyV1ImplementationActive` operationId) request.
-func (c *Client) GetLolChampSelectLegacyV1ImplementationActive(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetLolChampSelectLegacyV1ImplementationActiveRequest(c.Server)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// GetLolChampSelectLegacyV1PickableChampionIds performs a GET /lol-champ-select-legacy/v1/pickable-champion-ids (the `GetLolChampSelectLegacyV1PickableChampionIds` operationId) request.
-func (c *Client) GetLolChampSelectLegacyV1PickableChampionIds(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetLolChampSelectLegacyV1PickableChampionIdsRequest(c.Server)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// GetLolChampSelectLegacyV1PickableSkinIds performs a GET /lol-champ-select-legacy/v1/pickable-skin-ids (the `GetLolChampSelectLegacyV1PickableSkinIds` operationId) request.
-func (c *Client) GetLolChampSelectLegacyV1PickableSkinIds(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetLolChampSelectLegacyV1PickableSkinIdsRequest(c.Server)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// GetLolChampSelectLegacyV1Session performs a GET /lol-champ-select-legacy/v1/session (the `GetLolChampSelectLegacyV1Session` operationId) request.
-func (c *Client) GetLolChampSelectLegacyV1Session(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetLolChampSelectLegacyV1SessionRequest(c.Server)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PatchLolChampSelectLegacyV1SessionActionsByIdWithBody performs a PATCH /lol-champ-select-legacy/v1/session/actions/{id} (the `PatchLolChampSelectLegacyV1SessionActionsById` operationId) request,
-// with any type of body and a specified content type.
-func (c *Client) PatchLolChampSelectLegacyV1SessionActionsByIdWithBody(ctx context.Context, id uint64, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPatchLolChampSelectLegacyV1SessionActionsByIdRequestWithBody(c.Server, id, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PatchLolChampSelectLegacyV1SessionActionsById performs a PATCH /lol-champ-select-legacy/v1/session/actions/{id} (the `PatchLolChampSelectLegacyV1SessionActionsById` operationId) request.
-// Takes a body of the `application/json` content type.
-func (c *Client) PatchLolChampSelectLegacyV1SessionActionsById(ctx context.Context, id uint64, body PatchLolChampSelectLegacyV1SessionActionsByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPatchLolChampSelectLegacyV1SessionActionsByIdRequest(c.Server, id, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PostLolChampSelectLegacyV1SessionActionsByIdComplete performs a POST /lol-champ-select-legacy/v1/session/actions/{id}/complete (the `PostLolChampSelectLegacyV1SessionActionsByIdComplete` operationId) request.
-func (c *Client) PostLolChampSelectLegacyV1SessionActionsByIdComplete(ctx context.Context, id int64, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostLolChampSelectLegacyV1SessionActionsByIdCompleteRequest(c.Server, id)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// GetLolChampSelectLegacyV1SessionChampionSwaps performs a GET /lol-champ-select-legacy/v1/session/champion-swaps (the `GetLolChampSelectLegacyV1SessionChampionSwaps` operationId) request.
-func (c *Client) GetLolChampSelectLegacyV1SessionChampionSwaps(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetLolChampSelectLegacyV1SessionChampionSwapsRequest(c.Server)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// GetLolChampSelectLegacyV1SessionChampionSwapsById performs a GET /lol-champ-select-legacy/v1/session/champion-swaps/{id} (the `GetLolChampSelectLegacyV1SessionChampionSwapsById` operationId) request.
-func (c *Client) GetLolChampSelectLegacyV1SessionChampionSwapsById(ctx context.Context, id int64, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetLolChampSelectLegacyV1SessionChampionSwapsByIdRequest(c.Server, id)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PostLolChampSelectLegacyV1SessionChampionSwapsByIdAccept performs a POST /lol-champ-select-legacy/v1/session/champion-swaps/{id}/accept (the `PostLolChampSelectLegacyV1SessionChampionSwapsByIdAccept` operationId) request.
-func (c *Client) PostLolChampSelectLegacyV1SessionChampionSwapsByIdAccept(ctx context.Context, id int64, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostLolChampSelectLegacyV1SessionChampionSwapsByIdAcceptRequest(c.Server, id)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PostLolChampSelectLegacyV1SessionChampionSwapsByIdCancel performs a POST /lol-champ-select-legacy/v1/session/champion-swaps/{id}/cancel (the `PostLolChampSelectLegacyV1SessionChampionSwapsByIdCancel` operationId) request.
-func (c *Client) PostLolChampSelectLegacyV1SessionChampionSwapsByIdCancel(ctx context.Context, id int64, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostLolChampSelectLegacyV1SessionChampionSwapsByIdCancelRequest(c.Server, id)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PostLolChampSelectLegacyV1SessionChampionSwapsByIdDecline performs a POST /lol-champ-select-legacy/v1/session/champion-swaps/{id}/decline (the `PostLolChampSelectLegacyV1SessionChampionSwapsByIdDecline` operationId) request.
-func (c *Client) PostLolChampSelectLegacyV1SessionChampionSwapsByIdDecline(ctx context.Context, id int64, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostLolChampSelectLegacyV1SessionChampionSwapsByIdDeclineRequest(c.Server, id)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PostLolChampSelectLegacyV1SessionChampionSwapsByIdRequest performs a POST /lol-champ-select-legacy/v1/session/champion-swaps/{id}/request (the `PostLolChampSelectLegacyV1SessionChampionSwapsByIdRequest` operationId) request.
-func (c *Client) PostLolChampSelectLegacyV1SessionChampionSwapsByIdRequest(ctx context.Context, id int64, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostLolChampSelectLegacyV1SessionChampionSwapsByIdRequestRequest(c.Server, id)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// GetLolChampSelectLegacyV1SessionMySelection performs a GET /lol-champ-select-legacy/v1/session/my-selection (the `GetLolChampSelectLegacyV1SessionMySelection` operationId) request.
-func (c *Client) GetLolChampSelectLegacyV1SessionMySelection(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetLolChampSelectLegacyV1SessionMySelectionRequest(c.Server)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PatchLolChampSelectLegacyV1SessionMySelectionWithBody performs a PATCH /lol-champ-select-legacy/v1/session/my-selection (the `PatchLolChampSelectLegacyV1SessionMySelection` operationId) request,
-// with any type of body and a specified content type.
-func (c *Client) PatchLolChampSelectLegacyV1SessionMySelectionWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPatchLolChampSelectLegacyV1SessionMySelectionRequestWithBody(c.Server, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PatchLolChampSelectLegacyV1SessionMySelection performs a PATCH /lol-champ-select-legacy/v1/session/my-selection (the `PatchLolChampSelectLegacyV1SessionMySelection` operationId) request.
-// Takes a body of the `application/json` content type.
-func (c *Client) PatchLolChampSelectLegacyV1SessionMySelection(ctx context.Context, body PatchLolChampSelectLegacyV1SessionMySelectionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPatchLolChampSelectLegacyV1SessionMySelectionRequest(c.Server, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PostLolChampSelectLegacyV1SessionMySelectionReroll performs a POST /lol-champ-select-legacy/v1/session/my-selection/reroll (the `PostLolChampSelectLegacyV1SessionMySelectionReroll` operationId) request.
-func (c *Client) PostLolChampSelectLegacyV1SessionMySelectionReroll(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostLolChampSelectLegacyV1SessionMySelectionRerollRequest(c.Server)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// GetLolChampSelectLegacyV1SessionTimer performs a GET /lol-champ-select-legacy/v1/session/timer (the `GetLolChampSelectLegacyV1SessionTimer` operationId) request.
-func (c *Client) GetLolChampSelectLegacyV1SessionTimer(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetLolChampSelectLegacyV1SessionTimerRequest(c.Server)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// GetLolChampSelectLegacyV1TeamBoost performs a GET /lol-champ-select-legacy/v1/team-boost (the `GetLolChampSelectLegacyV1TeamBoost` operationId) request.
-func (c *Client) GetLolChampSelectLegacyV1TeamBoost(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetLolChampSelectLegacyV1TeamBoostRequest(c.Server)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
 // GetLolChampSelectV1AllGridChampions performs a GET /lol-champ-select/v1/all-grid-champions (the `GetLolChampSelectV1AllGridChampions` operationId) request.
 func (c *Client) GetLolChampSelectV1AllGridChampions(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetLolChampSelectV1AllGridChampionsRequest(c.Server)
@@ -25168,19 +24660,6 @@ func (c *Client) GetLolChampSelectV1AwSet(ctx context.Context, reqEditors ...Req
 // GetLolChampSelectV1BannableChampionIds performs a GET /lol-champ-select/v1/bannable-champion-ids (the `GetLolChampSelectV1BannableChampionIds` operationId) request.
 func (c *Client) GetLolChampSelectV1BannableChampionIds(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetLolChampSelectV1BannableChampionIdsRequest(c.Server)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PostLolChampSelectV1BattleTrainingLaunch performs a POST /lol-champ-select/v1/battle-training/launch (the `PostLolChampSelectV1BattleTrainingLaunch` operationId) request.
-func (c *Client) PostLolChampSelectV1BattleTrainingLaunch(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostLolChampSelectV1BattleTrainingLaunchRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -26650,7 +26129,7 @@ func (c *Client) GetLolChatV1Errors(ctx context.Context, reqEditors ...RequestEd
 }
 
 // DeleteLolChatV1ErrorsById performs a DELETE /lol-chat/v1/errors/{id} (the `DeleteLolChatV1ErrorsById` operationId) request.
-func (c *Client) DeleteLolChatV1ErrorsById(ctx context.Context, id uint64, reqEditors ...RequestEditorFn) (*http.Response, error) {
+func (c *Client) DeleteLolChatV1ErrorsById(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewDeleteLolChatV1ErrorsByIdRequest(c.Server, id)
 	if err != nil {
 		return nil, err
@@ -30345,48 +29824,9 @@ func (c *Client) GetLolGameflowV1BasicTutorial(ctx context.Context, reqEditors .
 	return c.Client.Do(req)
 }
 
-// PostLolGameflowV1BasicTutorialStart performs a POST /lol-gameflow/v1/basic-tutorial/start (the `PostLolGameflowV1BasicTutorialStart` operationId) request.
-func (c *Client) PostLolGameflowV1BasicTutorialStart(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostLolGameflowV1BasicTutorialStartRequest(c.Server)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
 // GetLolGameflowV1BattleTraining performs a GET /lol-gameflow/v1/battle-training (the `GetLolGameflowV1BattleTraining` operationId) request.
 func (c *Client) GetLolGameflowV1BattleTraining(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetLolGameflowV1BattleTrainingRequest(c.Server)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PostLolGameflowV1BattleTrainingStart performs a POST /lol-gameflow/v1/battle-training/start (the `PostLolGameflowV1BattleTrainingStart` operationId) request.
-func (c *Client) PostLolGameflowV1BattleTrainingStart(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostLolGameflowV1BattleTrainingStartRequest(c.Server)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PostLolGameflowV1BattleTrainingStop performs a POST /lol-gameflow/v1/battle-training/stop (the `PostLolGameflowV1BattleTrainingStop` operationId) request.
-func (c *Client) PostLolGameflowV1BattleTrainingStop(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostLolGameflowV1BattleTrainingStopRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -31141,19 +30581,6 @@ func (c *Client) PostLolGameflowV2SpectateLaunchWithBody(ctx context.Context, co
 // Takes a body of the `application/json` content type.
 func (c *Client) PostLolGameflowV2SpectateLaunch(ctx context.Context, body PostLolGameflowV2SpectateLaunchJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewPostLolGameflowV2SpectateLaunchRequest(c.Server, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PostLolHeartbeatV1ConnectionStatus performs a POST /lol-heartbeat/v1/connection-status (the `PostLolHeartbeatV1ConnectionStatus` operationId) request.
-func (c *Client) PostLolHeartbeatV1ConnectionStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostLolHeartbeatV1ConnectionStatusRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -33299,34 +32726,6 @@ func (c *Client) PostLolLobbyV1CustomGamesRefresh(ctx context.Context, reqEditor
 // GetLolLobbyV1CustomGamesById performs a GET /lol-lobby/v1/custom-games/{id} (the `GetLolLobbyV1CustomGamesById` operationId) request.
 func (c *Client) GetLolLobbyV1CustomGamesById(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetLolLobbyV1CustomGamesByIdRequest(c.Server, id)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PostLolLobbyV1CustomGamesByIdJoinWithBody performs a POST /lol-lobby/v1/custom-games/{id}/join (the `PostLolLobbyV1CustomGamesByIdJoin` operationId) request,
-// with any type of body and a specified content type.
-func (c *Client) PostLolLobbyV1CustomGamesByIdJoinWithBody(ctx context.Context, id uint64, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostLolLobbyV1CustomGamesByIdJoinRequestWithBody(c.Server, id, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PostLolLobbyV1CustomGamesByIdJoin performs a POST /lol-lobby/v1/custom-games/{id}/join (the `PostLolLobbyV1CustomGamesByIdJoin` operationId) request.
-// Takes a body of the `application/json` content type.
-func (c *Client) PostLolLobbyV1CustomGamesByIdJoin(ctx context.Context, id uint64, body PostLolLobbyV1CustomGamesByIdJoinJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostLolLobbyV1CustomGamesByIdJoinRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -36637,6 +36036,19 @@ func (c *Client) GetLolPatchV1Notifications(ctx context.Context, reqEditors ...R
 // DeleteLolPatchV1NotificationsById performs a DELETE /lol-patch/v1/notifications/{id} (the `DeleteLolPatchV1NotificationsById` operationId) request.
 func (c *Client) DeleteLolPatchV1NotificationsById(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewDeleteLolPatchV1NotificationsByIdRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetLolPatchV1ProductDependency performs a GET /lol-patch/v1/product-dependency (the `GetLolPatchV1ProductDependency` operationId) request.
+func (c *Client) GetLolPatchV1ProductDependency(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetLolPatchV1ProductDependencyRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -49972,648 +49384,6 @@ func NewGetLolChallengesV2TitlesLocalPlayerRequest(server string) (*http.Request
 	return req, nil
 }
 
-// NewGetLolChampSelectLegacyV1BannableChampionIdsRequest constructs an http.Request for the GetLolChampSelectLegacyV1BannableChampionIds method
-func NewGetLolChampSelectLegacyV1BannableChampionIdsRequest(server string) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/lol-champ-select-legacy/v1/bannable-champion-ids")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewPostLolChampSelectLegacyV1BattleTrainingLaunchRequest constructs an http.Request for the PostLolChampSelectLegacyV1BattleTrainingLaunch method
-func NewPostLolChampSelectLegacyV1BattleTrainingLaunchRequest(server string) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/lol-champ-select-legacy/v1/battle-training/launch")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewGetLolChampSelectLegacyV1CurrentChampionRequest constructs an http.Request for the GetLolChampSelectLegacyV1CurrentChampion method
-func NewGetLolChampSelectLegacyV1CurrentChampionRequest(server string) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/lol-champ-select-legacy/v1/current-champion")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewGetLolChampSelectLegacyV1DisabledChampionIdsRequest constructs an http.Request for the GetLolChampSelectLegacyV1DisabledChampionIds method
-func NewGetLolChampSelectLegacyV1DisabledChampionIdsRequest(server string) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/lol-champ-select-legacy/v1/disabled-champion-ids")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewGetLolChampSelectLegacyV1ImplementationActiveRequest constructs an http.Request for the GetLolChampSelectLegacyV1ImplementationActive method
-func NewGetLolChampSelectLegacyV1ImplementationActiveRequest(server string) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/lol-champ-select-legacy/v1/implementation-active")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewGetLolChampSelectLegacyV1PickableChampionIdsRequest constructs an http.Request for the GetLolChampSelectLegacyV1PickableChampionIds method
-func NewGetLolChampSelectLegacyV1PickableChampionIdsRequest(server string) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/lol-champ-select-legacy/v1/pickable-champion-ids")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewGetLolChampSelectLegacyV1PickableSkinIdsRequest constructs an http.Request for the GetLolChampSelectLegacyV1PickableSkinIds method
-func NewGetLolChampSelectLegacyV1PickableSkinIdsRequest(server string) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/lol-champ-select-legacy/v1/pickable-skin-ids")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewGetLolChampSelectLegacyV1SessionRequest constructs an http.Request for the GetLolChampSelectLegacyV1Session method
-func NewGetLolChampSelectLegacyV1SessionRequest(server string) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/lol-champ-select-legacy/v1/session")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewPatchLolChampSelectLegacyV1SessionActionsByIdRequest calls the generic PatchLolChampSelectLegacyV1SessionActionsById builder with application/json body
-func NewPatchLolChampSelectLegacyV1SessionActionsByIdRequest(server string, id uint64, body PatchLolChampSelectLegacyV1SessionActionsByIdJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewPatchLolChampSelectLegacyV1SessionActionsByIdRequestWithBody(server, id, "application/json", bodyReader)
-}
-
-// NewPatchLolChampSelectLegacyV1SessionActionsByIdRequestWithBody constructs an http.Request for the PatchLolChampSelectLegacyV1SessionActionsById method, with any body, and a specified content type
-func NewPatchLolChampSelectLegacyV1SessionActionsByIdRequestWithBody(server string, id uint64, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "uint64"})
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/lol-champ-select-legacy/v1/session/actions/%s", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewPostLolChampSelectLegacyV1SessionActionsByIdCompleteRequest constructs an http.Request for the PostLolChampSelectLegacyV1SessionActionsByIdComplete method
-func NewPostLolChampSelectLegacyV1SessionActionsByIdCompleteRequest(server string, id int64) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/lol-champ-select-legacy/v1/session/actions/%s/complete", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewGetLolChampSelectLegacyV1SessionChampionSwapsRequest constructs an http.Request for the GetLolChampSelectLegacyV1SessionChampionSwaps method
-func NewGetLolChampSelectLegacyV1SessionChampionSwapsRequest(server string) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/lol-champ-select-legacy/v1/session/champion-swaps")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewGetLolChampSelectLegacyV1SessionChampionSwapsByIdRequest constructs an http.Request for the GetLolChampSelectLegacyV1SessionChampionSwapsById method
-func NewGetLolChampSelectLegacyV1SessionChampionSwapsByIdRequest(server string, id int64) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/lol-champ-select-legacy/v1/session/champion-swaps/%s", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewPostLolChampSelectLegacyV1SessionChampionSwapsByIdAcceptRequest constructs an http.Request for the PostLolChampSelectLegacyV1SessionChampionSwapsByIdAccept method
-func NewPostLolChampSelectLegacyV1SessionChampionSwapsByIdAcceptRequest(server string, id int64) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/lol-champ-select-legacy/v1/session/champion-swaps/%s/accept", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewPostLolChampSelectLegacyV1SessionChampionSwapsByIdCancelRequest constructs an http.Request for the PostLolChampSelectLegacyV1SessionChampionSwapsByIdCancel method
-func NewPostLolChampSelectLegacyV1SessionChampionSwapsByIdCancelRequest(server string, id int64) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/lol-champ-select-legacy/v1/session/champion-swaps/%s/cancel", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewPostLolChampSelectLegacyV1SessionChampionSwapsByIdDeclineRequest constructs an http.Request for the PostLolChampSelectLegacyV1SessionChampionSwapsByIdDecline method
-func NewPostLolChampSelectLegacyV1SessionChampionSwapsByIdDeclineRequest(server string, id int64) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/lol-champ-select-legacy/v1/session/champion-swaps/%s/decline", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewPostLolChampSelectLegacyV1SessionChampionSwapsByIdRequestRequest constructs an http.Request for the PostLolChampSelectLegacyV1SessionChampionSwapsByIdRequest method
-func NewPostLolChampSelectLegacyV1SessionChampionSwapsByIdRequestRequest(server string, id int64) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "int64"})
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/lol-champ-select-legacy/v1/session/champion-swaps/%s/request", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewGetLolChampSelectLegacyV1SessionMySelectionRequest constructs an http.Request for the GetLolChampSelectLegacyV1SessionMySelection method
-func NewGetLolChampSelectLegacyV1SessionMySelectionRequest(server string) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/lol-champ-select-legacy/v1/session/my-selection")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewPatchLolChampSelectLegacyV1SessionMySelectionRequest calls the generic PatchLolChampSelectLegacyV1SessionMySelection builder with application/json body
-func NewPatchLolChampSelectLegacyV1SessionMySelectionRequest(server string, body PatchLolChampSelectLegacyV1SessionMySelectionJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewPatchLolChampSelectLegacyV1SessionMySelectionRequestWithBody(server, "application/json", bodyReader)
-}
-
-// NewPatchLolChampSelectLegacyV1SessionMySelectionRequestWithBody constructs an http.Request for the PatchLolChampSelectLegacyV1SessionMySelection method, with any body, and a specified content type
-func NewPatchLolChampSelectLegacyV1SessionMySelectionRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/lol-champ-select-legacy/v1/session/my-selection")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewPostLolChampSelectLegacyV1SessionMySelectionRerollRequest constructs an http.Request for the PostLolChampSelectLegacyV1SessionMySelectionReroll method
-func NewPostLolChampSelectLegacyV1SessionMySelectionRerollRequest(server string) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/lol-champ-select-legacy/v1/session/my-selection/reroll")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewGetLolChampSelectLegacyV1SessionTimerRequest constructs an http.Request for the GetLolChampSelectLegacyV1SessionTimer method
-func NewGetLolChampSelectLegacyV1SessionTimerRequest(server string) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/lol-champ-select-legacy/v1/session/timer")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewGetLolChampSelectLegacyV1TeamBoostRequest constructs an http.Request for the GetLolChampSelectLegacyV1TeamBoost method
-func NewGetLolChampSelectLegacyV1TeamBoostRequest(server string) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/lol-champ-select-legacy/v1/team-boost")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
 // NewGetLolChampSelectV1AllGridChampionsRequest constructs an http.Request for the GetLolChampSelectV1AllGridChampions method
 func NewGetLolChampSelectV1AllGridChampionsRequest(server string) (*http.Request, error) {
 	var err error
@@ -50688,33 +49458,6 @@ func NewGetLolChampSelectV1BannableChampionIdsRequest(server string) (*http.Requ
 	}
 
 	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewPostLolChampSelectV1BattleTrainingLaunchRequest constructs an http.Request for the PostLolChampSelectV1BattleTrainingLaunch method
-func NewPostLolChampSelectV1BattleTrainingLaunchRequest(server string) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/lol-champ-select/v1/battle-training/launch")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -53924,12 +52667,12 @@ func NewGetLolChatV1ErrorsRequest(server string) (*http.Request, error) {
 }
 
 // NewDeleteLolChatV1ErrorsByIdRequest constructs an http.Request for the DeleteLolChatV1ErrorsById method
-func NewDeleteLolChatV1ErrorsByIdRequest(server string, id uint64) (*http.Request, error) {
+func NewDeleteLolChatV1ErrorsByIdRequest(server string, id string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "uint64"})
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
 	if err != nil {
 		return nil, err
 	}
@@ -61841,33 +60584,6 @@ func NewGetLolGameflowV1BasicTutorialRequest(server string) (*http.Request, erro
 	return req, nil
 }
 
-// NewPostLolGameflowV1BasicTutorialStartRequest constructs an http.Request for the PostLolGameflowV1BasicTutorialStart method
-func NewPostLolGameflowV1BasicTutorialStartRequest(server string) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/lol-gameflow/v1/basic-tutorial/start")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
 // NewGetLolGameflowV1BattleTrainingRequest constructs an http.Request for the GetLolGameflowV1BattleTraining method
 func NewGetLolGameflowV1BattleTrainingRequest(server string) (*http.Request, error) {
 	var err error
@@ -61888,60 +60604,6 @@ func NewGetLolGameflowV1BattleTrainingRequest(server string) (*http.Request, err
 	}
 
 	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewPostLolGameflowV1BattleTrainingStartRequest constructs an http.Request for the PostLolGameflowV1BattleTrainingStart method
-func NewPostLolGameflowV1BattleTrainingStartRequest(server string) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/lol-gameflow/v1/battle-training/start")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewPostLolGameflowV1BattleTrainingStopRequest constructs an http.Request for the PostLolGameflowV1BattleTrainingStop method
-func NewPostLolGameflowV1BattleTrainingStopRequest(server string) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/lol-gameflow/v1/battle-training/stop")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -63289,33 +61951,6 @@ func NewPostLolGameflowV2SpectateLaunchRequestWithBody(server string, contentTyp
 	}
 
 	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewPostLolHeartbeatV1ConnectionStatusRequest constructs an http.Request for the PostLolHeartbeatV1ConnectionStatus method
-func NewPostLolHeartbeatV1ConnectionStatusRequest(server string) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/lol-heartbeat/v1/connection-status")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
 
 	return req, nil
 }
@@ -68263,53 +66898,6 @@ func NewGetLolLobbyV1CustomGamesByIdRequest(server string, id int32) (*http.Requ
 	if err != nil {
 		return nil, err
 	}
-
-	return req, nil
-}
-
-// NewPostLolLobbyV1CustomGamesByIdJoinRequest calls the generic PostLolLobbyV1CustomGamesByIdJoin builder with application/json body
-func NewPostLolLobbyV1CustomGamesByIdJoinRequest(server string, id uint64, body PostLolLobbyV1CustomGamesByIdJoinJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewPostLolLobbyV1CustomGamesByIdJoinRequestWithBody(server, id, "application/json", bodyReader)
-}
-
-// NewPostLolLobbyV1CustomGamesByIdJoinRequestWithBody constructs an http.Request for the PostLolLobbyV1CustomGamesByIdJoin method, with any body, and a specified content type
-func NewPostLolLobbyV1CustomGamesByIdJoinRequestWithBody(server string, id uint64, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "id", id, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "uint64"})
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/lol-lobby/v1/custom-games/%s/join", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -75324,6 +73912,33 @@ func NewDeleteLolPatchV1NotificationsByIdRequest(server string, id string) (*htt
 	}
 
 	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetLolPatchV1ProductDependencyRequest constructs an http.Request for the GetLolPatchV1ProductDependency method
+func NewGetLolPatchV1ProductDependencyRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/lol-patch/v1/product-dependency")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -96836,121 +95451,6 @@ type ClientWithResponsesInterface interface {
 	// Returns a wrapper object for the known response body format(s).
 	GetLolChallengesV2TitlesLocalPlayerWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolChallengesV2TitlesLocalPlayerResponse, error)
 
-	// GetLolChampSelectLegacyV1BannableChampionIdsWithResponse performs a GET /lol-champ-select-legacy/v1/bannable-champion-ids (the `GetLolChampSelectLegacyV1BannableChampionIds` operationId) request.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	GetLolChampSelectLegacyV1BannableChampionIdsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolChampSelectLegacyV1BannableChampionIdsResponse, error)
-
-	// PostLolChampSelectLegacyV1BattleTrainingLaunchWithResponse performs a POST /lol-champ-select-legacy/v1/battle-training/launch (the `PostLolChampSelectLegacyV1BattleTrainingLaunch` operationId) request.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	PostLolChampSelectLegacyV1BattleTrainingLaunchWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostLolChampSelectLegacyV1BattleTrainingLaunchResponse, error)
-
-	// GetLolChampSelectLegacyV1CurrentChampionWithResponse performs a GET /lol-champ-select-legacy/v1/current-champion (the `GetLolChampSelectLegacyV1CurrentChampion` operationId) request.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	GetLolChampSelectLegacyV1CurrentChampionWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolChampSelectLegacyV1CurrentChampionResponse, error)
-
-	// GetLolChampSelectLegacyV1DisabledChampionIdsWithResponse performs a GET /lol-champ-select-legacy/v1/disabled-champion-ids (the `GetLolChampSelectLegacyV1DisabledChampionIds` operationId) request.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	GetLolChampSelectLegacyV1DisabledChampionIdsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolChampSelectLegacyV1DisabledChampionIdsResponse, error)
-
-	// GetLolChampSelectLegacyV1ImplementationActiveWithResponse performs a GET /lol-champ-select-legacy/v1/implementation-active (the `GetLolChampSelectLegacyV1ImplementationActive` operationId) request.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	GetLolChampSelectLegacyV1ImplementationActiveWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolChampSelectLegacyV1ImplementationActiveResponse, error)
-
-	// GetLolChampSelectLegacyV1PickableChampionIdsWithResponse performs a GET /lol-champ-select-legacy/v1/pickable-champion-ids (the `GetLolChampSelectLegacyV1PickableChampionIds` operationId) request.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	GetLolChampSelectLegacyV1PickableChampionIdsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolChampSelectLegacyV1PickableChampionIdsResponse, error)
-
-	// GetLolChampSelectLegacyV1PickableSkinIdsWithResponse performs a GET /lol-champ-select-legacy/v1/pickable-skin-ids (the `GetLolChampSelectLegacyV1PickableSkinIds` operationId) request.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	GetLolChampSelectLegacyV1PickableSkinIdsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolChampSelectLegacyV1PickableSkinIdsResponse, error)
-
-	// GetLolChampSelectLegacyV1SessionWithResponse performs a GET /lol-champ-select-legacy/v1/session (the `GetLolChampSelectLegacyV1Session` operationId) request.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	GetLolChampSelectLegacyV1SessionWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolChampSelectLegacyV1SessionResponse, error)
-
-	// PatchLolChampSelectLegacyV1SessionActionsByIdWithBodyWithResponse performs a PATCH /lol-champ-select-legacy/v1/session/actions/{id} (the `PatchLolChampSelectLegacyV1SessionActionsById` operationId) request,
-	// with any type of body and a specified content type.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	PatchLolChampSelectLegacyV1SessionActionsByIdWithBodyWithResponse(ctx context.Context, id uint64, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchLolChampSelectLegacyV1SessionActionsByIdResponse, error)
-
-	// PatchLolChampSelectLegacyV1SessionActionsByIdWithResponse performs a PATCH /lol-champ-select-legacy/v1/session/actions/{id} (the `PatchLolChampSelectLegacyV1SessionActionsById` operationId) request.
-	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-	PatchLolChampSelectLegacyV1SessionActionsByIdWithResponse(ctx context.Context, id uint64, body PatchLolChampSelectLegacyV1SessionActionsByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchLolChampSelectLegacyV1SessionActionsByIdResponse, error)
-
-	// PostLolChampSelectLegacyV1SessionActionsByIdCompleteWithResponse performs a POST /lol-champ-select-legacy/v1/session/actions/{id}/complete (the `PostLolChampSelectLegacyV1SessionActionsByIdComplete` operationId) request.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	PostLolChampSelectLegacyV1SessionActionsByIdCompleteWithResponse(ctx context.Context, id int64, reqEditors ...RequestEditorFn) (*PostLolChampSelectLegacyV1SessionActionsByIdCompleteResponse, error)
-
-	// GetLolChampSelectLegacyV1SessionChampionSwapsWithResponse performs a GET /lol-champ-select-legacy/v1/session/champion-swaps (the `GetLolChampSelectLegacyV1SessionChampionSwaps` operationId) request.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	GetLolChampSelectLegacyV1SessionChampionSwapsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolChampSelectLegacyV1SessionChampionSwapsResponse, error)
-
-	// GetLolChampSelectLegacyV1SessionChampionSwapsByIdWithResponse performs a GET /lol-champ-select-legacy/v1/session/champion-swaps/{id} (the `GetLolChampSelectLegacyV1SessionChampionSwapsById` operationId) request.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	GetLolChampSelectLegacyV1SessionChampionSwapsByIdWithResponse(ctx context.Context, id int64, reqEditors ...RequestEditorFn) (*GetLolChampSelectLegacyV1SessionChampionSwapsByIdResponse, error)
-
-	// PostLolChampSelectLegacyV1SessionChampionSwapsByIdAcceptWithResponse performs a POST /lol-champ-select-legacy/v1/session/champion-swaps/{id}/accept (the `PostLolChampSelectLegacyV1SessionChampionSwapsByIdAccept` operationId) request.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	PostLolChampSelectLegacyV1SessionChampionSwapsByIdAcceptWithResponse(ctx context.Context, id int64, reqEditors ...RequestEditorFn) (*PostLolChampSelectLegacyV1SessionChampionSwapsByIdAcceptResponse, error)
-
-	// PostLolChampSelectLegacyV1SessionChampionSwapsByIdCancelWithResponse performs a POST /lol-champ-select-legacy/v1/session/champion-swaps/{id}/cancel (the `PostLolChampSelectLegacyV1SessionChampionSwapsByIdCancel` operationId) request.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	PostLolChampSelectLegacyV1SessionChampionSwapsByIdCancelWithResponse(ctx context.Context, id int64, reqEditors ...RequestEditorFn) (*PostLolChampSelectLegacyV1SessionChampionSwapsByIdCancelResponse, error)
-
-	// PostLolChampSelectLegacyV1SessionChampionSwapsByIdDeclineWithResponse performs a POST /lol-champ-select-legacy/v1/session/champion-swaps/{id}/decline (the `PostLolChampSelectLegacyV1SessionChampionSwapsByIdDecline` operationId) request.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	PostLolChampSelectLegacyV1SessionChampionSwapsByIdDeclineWithResponse(ctx context.Context, id int64, reqEditors ...RequestEditorFn) (*PostLolChampSelectLegacyV1SessionChampionSwapsByIdDeclineResponse, error)
-
-	// PostLolChampSelectLegacyV1SessionChampionSwapsByIdRequestWithResponse performs a POST /lol-champ-select-legacy/v1/session/champion-swaps/{id}/request (the `PostLolChampSelectLegacyV1SessionChampionSwapsByIdRequest` operationId) request.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	PostLolChampSelectLegacyV1SessionChampionSwapsByIdRequestWithResponse(ctx context.Context, id int64, reqEditors ...RequestEditorFn) (*PostLolChampSelectLegacyV1SessionChampionSwapsByIdRequestResponse, error)
-
-	// GetLolChampSelectLegacyV1SessionMySelectionWithResponse performs a GET /lol-champ-select-legacy/v1/session/my-selection (the `GetLolChampSelectLegacyV1SessionMySelection` operationId) request.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	GetLolChampSelectLegacyV1SessionMySelectionWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolChampSelectLegacyV1SessionMySelectionResponse, error)
-
-	// PatchLolChampSelectLegacyV1SessionMySelectionWithBodyWithResponse performs a PATCH /lol-champ-select-legacy/v1/session/my-selection (the `PatchLolChampSelectLegacyV1SessionMySelection` operationId) request,
-	// with any type of body and a specified content type.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	PatchLolChampSelectLegacyV1SessionMySelectionWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchLolChampSelectLegacyV1SessionMySelectionResponse, error)
-
-	// PatchLolChampSelectLegacyV1SessionMySelectionWithResponse performs a PATCH /lol-champ-select-legacy/v1/session/my-selection (the `PatchLolChampSelectLegacyV1SessionMySelection` operationId) request.
-	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-	PatchLolChampSelectLegacyV1SessionMySelectionWithResponse(ctx context.Context, body PatchLolChampSelectLegacyV1SessionMySelectionJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchLolChampSelectLegacyV1SessionMySelectionResponse, error)
-
-	// PostLolChampSelectLegacyV1SessionMySelectionRerollWithResponse performs a POST /lol-champ-select-legacy/v1/session/my-selection/reroll (the `PostLolChampSelectLegacyV1SessionMySelectionReroll` operationId) request.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	PostLolChampSelectLegacyV1SessionMySelectionRerollWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostLolChampSelectLegacyV1SessionMySelectionRerollResponse, error)
-
-	// GetLolChampSelectLegacyV1SessionTimerWithResponse performs a GET /lol-champ-select-legacy/v1/session/timer (the `GetLolChampSelectLegacyV1SessionTimer` operationId) request.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	GetLolChampSelectLegacyV1SessionTimerWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolChampSelectLegacyV1SessionTimerResponse, error)
-
-	// GetLolChampSelectLegacyV1TeamBoostWithResponse performs a GET /lol-champ-select-legacy/v1/team-boost (the `GetLolChampSelectLegacyV1TeamBoost` operationId) request.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	GetLolChampSelectLegacyV1TeamBoostWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolChampSelectLegacyV1TeamBoostResponse, error)
-
 	// GetLolChampSelectV1AllGridChampionsWithResponse performs a GET /lol-champ-select/v1/all-grid-champions (the `GetLolChampSelectV1AllGridChampions` operationId) request.
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -96965,11 +95465,6 @@ type ClientWithResponsesInterface interface {
 	//
 	// Returns a wrapper object for the known response body format(s).
 	GetLolChampSelectV1BannableChampionIdsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolChampSelectV1BannableChampionIdsResponse, error)
-
-	// PostLolChampSelectV1BattleTrainingLaunchWithResponse performs a POST /lol-champ-select/v1/battle-training/launch (the `PostLolChampSelectV1BattleTrainingLaunch` operationId) request.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	PostLolChampSelectV1BattleTrainingLaunchWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostLolChampSelectV1BattleTrainingLaunchResponse, error)
 
 	// GetLolChampSelectV1CurrentChampionWithResponse performs a GET /lol-champ-select/v1/current-champion (the `GetLolChampSelectV1CurrentChampion` operationId) request.
 	//
@@ -97524,7 +96019,7 @@ type ClientWithResponsesInterface interface {
 	// DeleteLolChatV1ErrorsByIdWithResponse performs a DELETE /lol-chat/v1/errors/{id} (the `DeleteLolChatV1ErrorsById` operationId) request.
 	//
 	// Returns a wrapper object for the known response body format(s).
-	DeleteLolChatV1ErrorsByIdWithResponse(ctx context.Context, id uint64, reqEditors ...RequestEditorFn) (*DeleteLolChatV1ErrorsByIdResponse, error)
+	DeleteLolChatV1ErrorsByIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteLolChatV1ErrorsByIdResponse, error)
 
 	// GetLolChatV1FriendCountsWithResponse performs a GET /lol-chat/v1/friend-counts (the `GetLolChatV1FriendCounts` operationId) request.
 	//
@@ -98911,25 +97406,10 @@ type ClientWithResponsesInterface interface {
 	// Returns a wrapper object for the known response body format(s).
 	GetLolGameflowV1BasicTutorialWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolGameflowV1BasicTutorialResponse, error)
 
-	// PostLolGameflowV1BasicTutorialStartWithResponse performs a POST /lol-gameflow/v1/basic-tutorial/start (the `PostLolGameflowV1BasicTutorialStart` operationId) request.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	PostLolGameflowV1BasicTutorialStartWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostLolGameflowV1BasicTutorialStartResponse, error)
-
 	// GetLolGameflowV1BattleTrainingWithResponse performs a GET /lol-gameflow/v1/battle-training (the `GetLolGameflowV1BattleTraining` operationId) request.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	GetLolGameflowV1BattleTrainingWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolGameflowV1BattleTrainingResponse, error)
-
-	// PostLolGameflowV1BattleTrainingStartWithResponse performs a POST /lol-gameflow/v1/battle-training/start (the `PostLolGameflowV1BattleTrainingStart` operationId) request.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	PostLolGameflowV1BattleTrainingStartWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostLolGameflowV1BattleTrainingStartResponse, error)
-
-	// PostLolGameflowV1BattleTrainingStopWithResponse performs a POST /lol-gameflow/v1/battle-training/stop (the `PostLolGameflowV1BattleTrainingStop` operationId) request.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	PostLolGameflowV1BattleTrainingStopWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostLolGameflowV1BattleTrainingStopResponse, error)
 
 	// PostLolGameflowV1EarlyExitWithResponse performs a POST /lol-gameflow/v1/early-exit (the `PostLolGameflowV1EarlyExit` operationId) request.
 	//
@@ -99210,11 +97690,6 @@ type ClientWithResponsesInterface interface {
 	// PostLolGameflowV2SpectateLaunchWithResponse performs a POST /lol-gameflow/v2/spectate/launch (the `PostLolGameflowV2SpectateLaunch` operationId) request.
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	PostLolGameflowV2SpectateLaunchWithResponse(ctx context.Context, body PostLolGameflowV2SpectateLaunchJSONRequestBody, reqEditors ...RequestEditorFn) (*PostLolGameflowV2SpectateLaunchResponse, error)
-
-	// PostLolHeartbeatV1ConnectionStatusWithResponse performs a POST /lol-heartbeat/v1/connection-status (the `PostLolHeartbeatV1ConnectionStatus` operationId) request.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	PostLolHeartbeatV1ConnectionStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostLolHeartbeatV1ConnectionStatusResponse, error)
 
 	// GetLolHighlightsV1ConfigWithResponse performs a GET /lol-highlights/v1/config (the `GetLolHighlightsV1Config` operationId) request.
 	//
@@ -100030,16 +98505,6 @@ type ClientWithResponsesInterface interface {
 	//
 	// Returns a wrapper object for the known response body format(s).
 	GetLolLobbyV1CustomGamesByIdWithResponse(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*GetLolLobbyV1CustomGamesByIdResponse, error)
-
-	// PostLolLobbyV1CustomGamesByIdJoinWithBodyWithResponse performs a POST /lol-lobby/v1/custom-games/{id}/join (the `PostLolLobbyV1CustomGamesByIdJoin` operationId) request,
-	// with any type of body and a specified content type.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	PostLolLobbyV1CustomGamesByIdJoinWithBodyWithResponse(ctx context.Context, id uint64, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostLolLobbyV1CustomGamesByIdJoinResponse, error)
-
-	// PostLolLobbyV1CustomGamesByIdJoinWithResponse performs a POST /lol-lobby/v1/custom-games/{id}/join (the `PostLolLobbyV1CustomGamesByIdJoin` operationId) request.
-	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-	PostLolLobbyV1CustomGamesByIdJoinWithResponse(ctx context.Context, id uint64, body PostLolLobbyV1CustomGamesByIdJoinJSONRequestBody, reqEditors ...RequestEditorFn) (*PostLolLobbyV1CustomGamesByIdJoinResponse, error)
 
 	// GetLolLobbyV1LobbyAvailabilityWithResponse performs a GET /lol-lobby/v1/lobby/availability (the `GetLolLobbyV1LobbyAvailability` operationId) request.
 	//
@@ -101280,6 +99745,11 @@ type ClientWithResponsesInterface interface {
 	//
 	// Returns a wrapper object for the known response body format(s).
 	DeleteLolPatchV1NotificationsByIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteLolPatchV1NotificationsByIdResponse, error)
+
+	// GetLolPatchV1ProductDependencyWithResponse performs a GET /lol-patch/v1/product-dependency (the `GetLolPatchV1ProductDependency` operationId) request.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	GetLolPatchV1ProductDependencyWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolPatchV1ProductDependencyResponse, error)
 
 	// GetLolPatchV1ProductIntegrationAppUpdateAvailableWithResponse performs a GET /lol-patch/v1/product-integration/app-update/available (the `GetLolPatchV1ProductIntegrationAppUpdateAvailable` operationId) request.
 	//
@@ -108774,867 +107244,6 @@ func (r GetLolChallengesV2TitlesLocalPlayerResponse) ContentType() string {
 	return ""
 }
 
-type GetLolChampSelectLegacyV1BannableChampionIdsResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON2XX the response for an HTTP 2XX `application/json` response
-	JSON2XX *[]int32
-}
-
-// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
-func (r GetLolChampSelectLegacyV1BannableChampionIdsResponse) GetJSON2XX() *[]int32 {
-	return r.JSON2XX
-}
-
-// GetBody returns the raw response body bytes
-func (r GetLolChampSelectLegacyV1BannableChampionIdsResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r GetLolChampSelectLegacyV1BannableChampionIdsResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetLolChampSelectLegacyV1BannableChampionIdsResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r GetLolChampSelectLegacyV1BannableChampionIdsResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type PostLolChampSelectLegacyV1BattleTrainingLaunchResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON2XX the response for an HTTP 2XX `application/json` response
-	JSON2XX *map[string]interface{}
-}
-
-// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
-func (r PostLolChampSelectLegacyV1BattleTrainingLaunchResponse) GetJSON2XX() *map[string]interface{} {
-	return r.JSON2XX
-}
-
-// GetBody returns the raw response body bytes
-func (r PostLolChampSelectLegacyV1BattleTrainingLaunchResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r PostLolChampSelectLegacyV1BattleTrainingLaunchResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r PostLolChampSelectLegacyV1BattleTrainingLaunchResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r PostLolChampSelectLegacyV1BattleTrainingLaunchResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type GetLolChampSelectLegacyV1CurrentChampionResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON2XX the response for an HTTP 2XX `application/json` response
-	JSON2XX *int32
-}
-
-// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
-func (r GetLolChampSelectLegacyV1CurrentChampionResponse) GetJSON2XX() *int32 {
-	return r.JSON2XX
-}
-
-// GetBody returns the raw response body bytes
-func (r GetLolChampSelectLegacyV1CurrentChampionResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r GetLolChampSelectLegacyV1CurrentChampionResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetLolChampSelectLegacyV1CurrentChampionResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r GetLolChampSelectLegacyV1CurrentChampionResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type GetLolChampSelectLegacyV1DisabledChampionIdsResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON2XX the response for an HTTP 2XX `application/json` response
-	JSON2XX *[]int32
-}
-
-// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
-func (r GetLolChampSelectLegacyV1DisabledChampionIdsResponse) GetJSON2XX() *[]int32 {
-	return r.JSON2XX
-}
-
-// GetBody returns the raw response body bytes
-func (r GetLolChampSelectLegacyV1DisabledChampionIdsResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r GetLolChampSelectLegacyV1DisabledChampionIdsResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetLolChampSelectLegacyV1DisabledChampionIdsResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r GetLolChampSelectLegacyV1DisabledChampionIdsResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type GetLolChampSelectLegacyV1ImplementationActiveResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON2XX the response for an HTTP 2XX `application/json` response
-	JSON2XX *bool
-}
-
-// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
-func (r GetLolChampSelectLegacyV1ImplementationActiveResponse) GetJSON2XX() *bool {
-	return r.JSON2XX
-}
-
-// GetBody returns the raw response body bytes
-func (r GetLolChampSelectLegacyV1ImplementationActiveResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r GetLolChampSelectLegacyV1ImplementationActiveResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetLolChampSelectLegacyV1ImplementationActiveResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r GetLolChampSelectLegacyV1ImplementationActiveResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type GetLolChampSelectLegacyV1PickableChampionIdsResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON2XX the response for an HTTP 2XX `application/json` response
-	JSON2XX *[]int32
-}
-
-// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
-func (r GetLolChampSelectLegacyV1PickableChampionIdsResponse) GetJSON2XX() *[]int32 {
-	return r.JSON2XX
-}
-
-// GetBody returns the raw response body bytes
-func (r GetLolChampSelectLegacyV1PickableChampionIdsResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r GetLolChampSelectLegacyV1PickableChampionIdsResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetLolChampSelectLegacyV1PickableChampionIdsResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r GetLolChampSelectLegacyV1PickableChampionIdsResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type GetLolChampSelectLegacyV1PickableSkinIdsResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON2XX the response for an HTTP 2XX `application/json` response
-	JSON2XX *[]int32
-}
-
-// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
-func (r GetLolChampSelectLegacyV1PickableSkinIdsResponse) GetJSON2XX() *[]int32 {
-	return r.JSON2XX
-}
-
-// GetBody returns the raw response body bytes
-func (r GetLolChampSelectLegacyV1PickableSkinIdsResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r GetLolChampSelectLegacyV1PickableSkinIdsResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetLolChampSelectLegacyV1PickableSkinIdsResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r GetLolChampSelectLegacyV1PickableSkinIdsResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type GetLolChampSelectLegacyV1SessionResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON2XX the response for an HTTP 2XX `application/json` response
-	JSON2XX *LolChampSelectLegacyChampSelectSession
-}
-
-// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
-func (r GetLolChampSelectLegacyV1SessionResponse) GetJSON2XX() *LolChampSelectLegacyChampSelectSession {
-	return r.JSON2XX
-}
-
-// GetBody returns the raw response body bytes
-func (r GetLolChampSelectLegacyV1SessionResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r GetLolChampSelectLegacyV1SessionResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetLolChampSelectLegacyV1SessionResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r GetLolChampSelectLegacyV1SessionResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type PatchLolChampSelectLegacyV1SessionActionsByIdResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON2XX the response for an HTTP 2XX `application/json` response
-	JSON2XX *map[string]interface{}
-}
-
-// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
-func (r PatchLolChampSelectLegacyV1SessionActionsByIdResponse) GetJSON2XX() *map[string]interface{} {
-	return r.JSON2XX
-}
-
-// GetBody returns the raw response body bytes
-func (r PatchLolChampSelectLegacyV1SessionActionsByIdResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r PatchLolChampSelectLegacyV1SessionActionsByIdResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r PatchLolChampSelectLegacyV1SessionActionsByIdResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r PatchLolChampSelectLegacyV1SessionActionsByIdResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type PostLolChampSelectLegacyV1SessionActionsByIdCompleteResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON2XX the response for an HTTP 2XX `application/json` response
-	JSON2XX *map[string]interface{}
-}
-
-// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
-func (r PostLolChampSelectLegacyV1SessionActionsByIdCompleteResponse) GetJSON2XX() *map[string]interface{} {
-	return r.JSON2XX
-}
-
-// GetBody returns the raw response body bytes
-func (r PostLolChampSelectLegacyV1SessionActionsByIdCompleteResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r PostLolChampSelectLegacyV1SessionActionsByIdCompleteResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r PostLolChampSelectLegacyV1SessionActionsByIdCompleteResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r PostLolChampSelectLegacyV1SessionActionsByIdCompleteResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type GetLolChampSelectLegacyV1SessionChampionSwapsResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON2XX the response for an HTTP 2XX `application/json` response
-	JSON2XX *[]LolChampSelectLegacyChampSelectSwapContract
-}
-
-// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
-func (r GetLolChampSelectLegacyV1SessionChampionSwapsResponse) GetJSON2XX() *[]LolChampSelectLegacyChampSelectSwapContract {
-	return r.JSON2XX
-}
-
-// GetBody returns the raw response body bytes
-func (r GetLolChampSelectLegacyV1SessionChampionSwapsResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r GetLolChampSelectLegacyV1SessionChampionSwapsResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetLolChampSelectLegacyV1SessionChampionSwapsResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r GetLolChampSelectLegacyV1SessionChampionSwapsResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type GetLolChampSelectLegacyV1SessionChampionSwapsByIdResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON2XX the response for an HTTP 2XX `application/json` response
-	JSON2XX *LolChampSelectLegacyChampSelectSwapContract
-}
-
-// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
-func (r GetLolChampSelectLegacyV1SessionChampionSwapsByIdResponse) GetJSON2XX() *LolChampSelectLegacyChampSelectSwapContract {
-	return r.JSON2XX
-}
-
-// GetBody returns the raw response body bytes
-func (r GetLolChampSelectLegacyV1SessionChampionSwapsByIdResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r GetLolChampSelectLegacyV1SessionChampionSwapsByIdResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetLolChampSelectLegacyV1SessionChampionSwapsByIdResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r GetLolChampSelectLegacyV1SessionChampionSwapsByIdResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type PostLolChampSelectLegacyV1SessionChampionSwapsByIdAcceptResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON2XX the response for an HTTP 2XX `application/json` response
-	JSON2XX *map[string]interface{}
-}
-
-// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
-func (r PostLolChampSelectLegacyV1SessionChampionSwapsByIdAcceptResponse) GetJSON2XX() *map[string]interface{} {
-	return r.JSON2XX
-}
-
-// GetBody returns the raw response body bytes
-func (r PostLolChampSelectLegacyV1SessionChampionSwapsByIdAcceptResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r PostLolChampSelectLegacyV1SessionChampionSwapsByIdAcceptResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r PostLolChampSelectLegacyV1SessionChampionSwapsByIdAcceptResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r PostLolChampSelectLegacyV1SessionChampionSwapsByIdAcceptResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type PostLolChampSelectLegacyV1SessionChampionSwapsByIdCancelResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON2XX the response for an HTTP 2XX `application/json` response
-	JSON2XX *map[string]interface{}
-}
-
-// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
-func (r PostLolChampSelectLegacyV1SessionChampionSwapsByIdCancelResponse) GetJSON2XX() *map[string]interface{} {
-	return r.JSON2XX
-}
-
-// GetBody returns the raw response body bytes
-func (r PostLolChampSelectLegacyV1SessionChampionSwapsByIdCancelResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r PostLolChampSelectLegacyV1SessionChampionSwapsByIdCancelResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r PostLolChampSelectLegacyV1SessionChampionSwapsByIdCancelResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r PostLolChampSelectLegacyV1SessionChampionSwapsByIdCancelResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type PostLolChampSelectLegacyV1SessionChampionSwapsByIdDeclineResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON2XX the response for an HTTP 2XX `application/json` response
-	JSON2XX *map[string]interface{}
-}
-
-// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
-func (r PostLolChampSelectLegacyV1SessionChampionSwapsByIdDeclineResponse) GetJSON2XX() *map[string]interface{} {
-	return r.JSON2XX
-}
-
-// GetBody returns the raw response body bytes
-func (r PostLolChampSelectLegacyV1SessionChampionSwapsByIdDeclineResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r PostLolChampSelectLegacyV1SessionChampionSwapsByIdDeclineResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r PostLolChampSelectLegacyV1SessionChampionSwapsByIdDeclineResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r PostLolChampSelectLegacyV1SessionChampionSwapsByIdDeclineResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type PostLolChampSelectLegacyV1SessionChampionSwapsByIdRequestResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON2XX the response for an HTTP 2XX `application/json` response
-	JSON2XX *LolChampSelectLegacyChampSelectSwapContract
-}
-
-// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
-func (r PostLolChampSelectLegacyV1SessionChampionSwapsByIdRequestResponse) GetJSON2XX() *LolChampSelectLegacyChampSelectSwapContract {
-	return r.JSON2XX
-}
-
-// GetBody returns the raw response body bytes
-func (r PostLolChampSelectLegacyV1SessionChampionSwapsByIdRequestResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r PostLolChampSelectLegacyV1SessionChampionSwapsByIdRequestResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r PostLolChampSelectLegacyV1SessionChampionSwapsByIdRequestResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r PostLolChampSelectLegacyV1SessionChampionSwapsByIdRequestResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type GetLolChampSelectLegacyV1SessionMySelectionResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON2XX the response for an HTTP 2XX `application/json` response
-	JSON2XX *LolChampSelectLegacyChampSelectPlayerSelection
-}
-
-// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
-func (r GetLolChampSelectLegacyV1SessionMySelectionResponse) GetJSON2XX() *LolChampSelectLegacyChampSelectPlayerSelection {
-	return r.JSON2XX
-}
-
-// GetBody returns the raw response body bytes
-func (r GetLolChampSelectLegacyV1SessionMySelectionResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r GetLolChampSelectLegacyV1SessionMySelectionResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetLolChampSelectLegacyV1SessionMySelectionResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r GetLolChampSelectLegacyV1SessionMySelectionResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type PatchLolChampSelectLegacyV1SessionMySelectionResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON2XX the response for an HTTP 2XX `application/json` response
-	JSON2XX *map[string]interface{}
-}
-
-// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
-func (r PatchLolChampSelectLegacyV1SessionMySelectionResponse) GetJSON2XX() *map[string]interface{} {
-	return r.JSON2XX
-}
-
-// GetBody returns the raw response body bytes
-func (r PatchLolChampSelectLegacyV1SessionMySelectionResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r PatchLolChampSelectLegacyV1SessionMySelectionResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r PatchLolChampSelectLegacyV1SessionMySelectionResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r PatchLolChampSelectLegacyV1SessionMySelectionResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type PostLolChampSelectLegacyV1SessionMySelectionRerollResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON2XX the response for an HTTP 2XX `application/json` response
-	JSON2XX *map[string]interface{}
-}
-
-// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
-func (r PostLolChampSelectLegacyV1SessionMySelectionRerollResponse) GetJSON2XX() *map[string]interface{} {
-	return r.JSON2XX
-}
-
-// GetBody returns the raw response body bytes
-func (r PostLolChampSelectLegacyV1SessionMySelectionRerollResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r PostLolChampSelectLegacyV1SessionMySelectionRerollResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r PostLolChampSelectLegacyV1SessionMySelectionRerollResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r PostLolChampSelectLegacyV1SessionMySelectionRerollResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type GetLolChampSelectLegacyV1SessionTimerResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON2XX the response for an HTTP 2XX `application/json` response
-	JSON2XX *LolChampSelectLegacyChampSelectTimer
-}
-
-// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
-func (r GetLolChampSelectLegacyV1SessionTimerResponse) GetJSON2XX() *LolChampSelectLegacyChampSelectTimer {
-	return r.JSON2XX
-}
-
-// GetBody returns the raw response body bytes
-func (r GetLolChampSelectLegacyV1SessionTimerResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r GetLolChampSelectLegacyV1SessionTimerResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetLolChampSelectLegacyV1SessionTimerResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r GetLolChampSelectLegacyV1SessionTimerResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type GetLolChampSelectLegacyV1TeamBoostResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON2XX the response for an HTTP 2XX `application/json` response
-	JSON2XX *LolChampSelectLegacyTeamBoost
-}
-
-// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
-func (r GetLolChampSelectLegacyV1TeamBoostResponse) GetJSON2XX() *LolChampSelectLegacyTeamBoost {
-	return r.JSON2XX
-}
-
-// GetBody returns the raw response body bytes
-func (r GetLolChampSelectLegacyV1TeamBoostResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r GetLolChampSelectLegacyV1TeamBoostResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetLolChampSelectLegacyV1TeamBoostResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r GetLolChampSelectLegacyV1TeamBoostResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
 type GetLolChampSelectV1AllGridChampionsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -109752,47 +107361,6 @@ func (r GetLolChampSelectV1BannableChampionIdsResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r GetLolChampSelectV1BannableChampionIdsResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type PostLolChampSelectV1BattleTrainingLaunchResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON2XX the response for an HTTP 2XX `application/json` response
-	JSON2XX *map[string]interface{}
-}
-
-// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
-func (r PostLolChampSelectV1BattleTrainingLaunchResponse) GetJSON2XX() *map[string]interface{} {
-	return r.JSON2XX
-}
-
-// GetBody returns the raw response body bytes
-func (r PostLolChampSelectV1BattleTrainingLaunchResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r PostLolChampSelectV1BattleTrainingLaunchResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r PostLolChampSelectV1BattleTrainingLaunchResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r PostLolChampSelectV1BattleTrainingLaunchResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -123396,47 +120964,6 @@ func (r GetLolGameflowV1BasicTutorialResponse) ContentType() string {
 	return ""
 }
 
-type PostLolGameflowV1BasicTutorialStartResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON2XX the response for an HTTP 2XX `application/json` response
-	JSON2XX *map[string]interface{}
-}
-
-// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
-func (r PostLolGameflowV1BasicTutorialStartResponse) GetJSON2XX() *map[string]interface{} {
-	return r.JSON2XX
-}
-
-// GetBody returns the raw response body bytes
-func (r PostLolGameflowV1BasicTutorialStartResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r PostLolGameflowV1BasicTutorialStartResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r PostLolGameflowV1BasicTutorialStartResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r PostLolGameflowV1BasicTutorialStartResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
 type GetLolGameflowV1BattleTrainingResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -123472,88 +120999,6 @@ func (r GetLolGameflowV1BattleTrainingResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r GetLolGameflowV1BattleTrainingResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type PostLolGameflowV1BattleTrainingStartResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON2XX the response for an HTTP 2XX `application/json` response
-	JSON2XX *map[string]interface{}
-}
-
-// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
-func (r PostLolGameflowV1BattleTrainingStartResponse) GetJSON2XX() *map[string]interface{} {
-	return r.JSON2XX
-}
-
-// GetBody returns the raw response body bytes
-func (r PostLolGameflowV1BattleTrainingStartResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r PostLolGameflowV1BattleTrainingStartResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r PostLolGameflowV1BattleTrainingStartResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r PostLolGameflowV1BattleTrainingStartResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type PostLolGameflowV1BattleTrainingStopResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON2XX the response for an HTTP 2XX `application/json` response
-	JSON2XX *map[string]interface{}
-}
-
-// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
-func (r PostLolGameflowV1BattleTrainingStopResponse) GetJSON2XX() *map[string]interface{} {
-	return r.JSON2XX
-}
-
-// GetBody returns the raw response body bytes
-func (r PostLolGameflowV1BattleTrainingStopResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r PostLolGameflowV1BattleTrainingStopResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r PostLolGameflowV1BattleTrainingStopResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r PostLolGameflowV1BattleTrainingStopResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -125212,47 +122657,6 @@ func (r PostLolGameflowV2SpectateLaunchResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r PostLolGameflowV2SpectateLaunchResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type PostLolHeartbeatV1ConnectionStatusResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON2XX the response for an HTTP 2XX `application/json` response
-	JSON2XX *LolHeartbeatLcdsConnection
-}
-
-// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
-func (r PostLolHeartbeatV1ConnectionStatusResponse) GetJSON2XX() *LolHeartbeatLcdsConnection {
-	return r.JSON2XX
-}
-
-// GetBody returns the raw response body bytes
-func (r PostLolHeartbeatV1ConnectionStatusResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r PostLolHeartbeatV1ConnectionStatusResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r PostLolHeartbeatV1ConnectionStatusResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r PostLolHeartbeatV1ConnectionStatusResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -131298,47 +128702,6 @@ func (r GetLolLobbyV1CustomGamesByIdResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r GetLolLobbyV1CustomGamesByIdResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type PostLolLobbyV1CustomGamesByIdJoinResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON2XX the response for an HTTP 2XX `application/json` response
-	JSON2XX *map[string]interface{}
-}
-
-// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
-func (r PostLolLobbyV1CustomGamesByIdJoinResponse) GetJSON2XX() *map[string]interface{} {
-	return r.JSON2XX
-}
-
-// GetBody returns the raw response body bytes
-func (r PostLolLobbyV1CustomGamesByIdJoinResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r PostLolLobbyV1CustomGamesByIdJoinResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r PostLolLobbyV1CustomGamesByIdJoinResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r PostLolLobbyV1CustomGamesByIdJoinResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -139478,6 +136841,47 @@ func (r DeleteLolPatchV1NotificationsByIdResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r DeleteLolPatchV1NotificationsByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetLolPatchV1ProductDependencyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON2XX the response for an HTTP 2XX `application/json` response
+	JSON2XX *LolPatchProductDependency
+}
+
+// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
+func (r GetLolPatchV1ProductDependencyResponse) GetJSON2XX() *LolPatchProductDependency {
+	return r.JSON2XX
+}
+
+// GetBody returns the raw response body bytes
+func (r GetLolPatchV1ProductDependencyResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetLolPatchV1ProductDependencyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetLolPatchV1ProductDependencyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetLolPatchV1ProductDependencyResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -164584,259 +161988,6 @@ func (c *ClientWithResponses) GetLolChallengesV2TitlesLocalPlayerWithResponse(ct
 	return ParseGetLolChallengesV2TitlesLocalPlayerResponse(rsp)
 }
 
-// GetLolChampSelectLegacyV1BannableChampionIdsWithResponse performs a GET /lol-champ-select-legacy/v1/bannable-champion-ids (the `GetLolChampSelectLegacyV1BannableChampionIds` operationId) request.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) GetLolChampSelectLegacyV1BannableChampionIdsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolChampSelectLegacyV1BannableChampionIdsResponse, error) {
-	rsp, err := c.GetLolChampSelectLegacyV1BannableChampionIds(ctx, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetLolChampSelectLegacyV1BannableChampionIdsResponse(rsp)
-}
-
-// PostLolChampSelectLegacyV1BattleTrainingLaunchWithResponse performs a POST /lol-champ-select-legacy/v1/battle-training/launch (the `PostLolChampSelectLegacyV1BattleTrainingLaunch` operationId) request.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) PostLolChampSelectLegacyV1BattleTrainingLaunchWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostLolChampSelectLegacyV1BattleTrainingLaunchResponse, error) {
-	rsp, err := c.PostLolChampSelectLegacyV1BattleTrainingLaunch(ctx, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePostLolChampSelectLegacyV1BattleTrainingLaunchResponse(rsp)
-}
-
-// GetLolChampSelectLegacyV1CurrentChampionWithResponse performs a GET /lol-champ-select-legacy/v1/current-champion (the `GetLolChampSelectLegacyV1CurrentChampion` operationId) request.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) GetLolChampSelectLegacyV1CurrentChampionWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolChampSelectLegacyV1CurrentChampionResponse, error) {
-	rsp, err := c.GetLolChampSelectLegacyV1CurrentChampion(ctx, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetLolChampSelectLegacyV1CurrentChampionResponse(rsp)
-}
-
-// GetLolChampSelectLegacyV1DisabledChampionIdsWithResponse performs a GET /lol-champ-select-legacy/v1/disabled-champion-ids (the `GetLolChampSelectLegacyV1DisabledChampionIds` operationId) request.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) GetLolChampSelectLegacyV1DisabledChampionIdsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolChampSelectLegacyV1DisabledChampionIdsResponse, error) {
-	rsp, err := c.GetLolChampSelectLegacyV1DisabledChampionIds(ctx, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetLolChampSelectLegacyV1DisabledChampionIdsResponse(rsp)
-}
-
-// GetLolChampSelectLegacyV1ImplementationActiveWithResponse performs a GET /lol-champ-select-legacy/v1/implementation-active (the `GetLolChampSelectLegacyV1ImplementationActive` operationId) request.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) GetLolChampSelectLegacyV1ImplementationActiveWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolChampSelectLegacyV1ImplementationActiveResponse, error) {
-	rsp, err := c.GetLolChampSelectLegacyV1ImplementationActive(ctx, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetLolChampSelectLegacyV1ImplementationActiveResponse(rsp)
-}
-
-// GetLolChampSelectLegacyV1PickableChampionIdsWithResponse performs a GET /lol-champ-select-legacy/v1/pickable-champion-ids (the `GetLolChampSelectLegacyV1PickableChampionIds` operationId) request.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) GetLolChampSelectLegacyV1PickableChampionIdsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolChampSelectLegacyV1PickableChampionIdsResponse, error) {
-	rsp, err := c.GetLolChampSelectLegacyV1PickableChampionIds(ctx, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetLolChampSelectLegacyV1PickableChampionIdsResponse(rsp)
-}
-
-// GetLolChampSelectLegacyV1PickableSkinIdsWithResponse performs a GET /lol-champ-select-legacy/v1/pickable-skin-ids (the `GetLolChampSelectLegacyV1PickableSkinIds` operationId) request.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) GetLolChampSelectLegacyV1PickableSkinIdsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolChampSelectLegacyV1PickableSkinIdsResponse, error) {
-	rsp, err := c.GetLolChampSelectLegacyV1PickableSkinIds(ctx, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetLolChampSelectLegacyV1PickableSkinIdsResponse(rsp)
-}
-
-// GetLolChampSelectLegacyV1SessionWithResponse performs a GET /lol-champ-select-legacy/v1/session (the `GetLolChampSelectLegacyV1Session` operationId) request.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) GetLolChampSelectLegacyV1SessionWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolChampSelectLegacyV1SessionResponse, error) {
-	rsp, err := c.GetLolChampSelectLegacyV1Session(ctx, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetLolChampSelectLegacyV1SessionResponse(rsp)
-}
-
-// PatchLolChampSelectLegacyV1SessionActionsByIdWithBodyWithResponse performs a PATCH /lol-champ-select-legacy/v1/session/actions/{id} (the `PatchLolChampSelectLegacyV1SessionActionsById` operationId) request,
-// with any type of body and a specified content type.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) PatchLolChampSelectLegacyV1SessionActionsByIdWithBodyWithResponse(ctx context.Context, id uint64, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchLolChampSelectLegacyV1SessionActionsByIdResponse, error) {
-	rsp, err := c.PatchLolChampSelectLegacyV1SessionActionsByIdWithBody(ctx, id, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePatchLolChampSelectLegacyV1SessionActionsByIdResponse(rsp)
-}
-
-// PatchLolChampSelectLegacyV1SessionActionsByIdWithResponse performs a PATCH /lol-champ-select-legacy/v1/session/actions/{id} (the `PatchLolChampSelectLegacyV1SessionActionsById` operationId) request.
-// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) PatchLolChampSelectLegacyV1SessionActionsByIdWithResponse(ctx context.Context, id uint64, body PatchLolChampSelectLegacyV1SessionActionsByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchLolChampSelectLegacyV1SessionActionsByIdResponse, error) {
-	rsp, err := c.PatchLolChampSelectLegacyV1SessionActionsById(ctx, id, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePatchLolChampSelectLegacyV1SessionActionsByIdResponse(rsp)
-}
-
-// PostLolChampSelectLegacyV1SessionActionsByIdCompleteWithResponse performs a POST /lol-champ-select-legacy/v1/session/actions/{id}/complete (the `PostLolChampSelectLegacyV1SessionActionsByIdComplete` operationId) request.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) PostLolChampSelectLegacyV1SessionActionsByIdCompleteWithResponse(ctx context.Context, id int64, reqEditors ...RequestEditorFn) (*PostLolChampSelectLegacyV1SessionActionsByIdCompleteResponse, error) {
-	rsp, err := c.PostLolChampSelectLegacyV1SessionActionsByIdComplete(ctx, id, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePostLolChampSelectLegacyV1SessionActionsByIdCompleteResponse(rsp)
-}
-
-// GetLolChampSelectLegacyV1SessionChampionSwapsWithResponse performs a GET /lol-champ-select-legacy/v1/session/champion-swaps (the `GetLolChampSelectLegacyV1SessionChampionSwaps` operationId) request.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) GetLolChampSelectLegacyV1SessionChampionSwapsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolChampSelectLegacyV1SessionChampionSwapsResponse, error) {
-	rsp, err := c.GetLolChampSelectLegacyV1SessionChampionSwaps(ctx, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetLolChampSelectLegacyV1SessionChampionSwapsResponse(rsp)
-}
-
-// GetLolChampSelectLegacyV1SessionChampionSwapsByIdWithResponse performs a GET /lol-champ-select-legacy/v1/session/champion-swaps/{id} (the `GetLolChampSelectLegacyV1SessionChampionSwapsById` operationId) request.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) GetLolChampSelectLegacyV1SessionChampionSwapsByIdWithResponse(ctx context.Context, id int64, reqEditors ...RequestEditorFn) (*GetLolChampSelectLegacyV1SessionChampionSwapsByIdResponse, error) {
-	rsp, err := c.GetLolChampSelectLegacyV1SessionChampionSwapsById(ctx, id, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetLolChampSelectLegacyV1SessionChampionSwapsByIdResponse(rsp)
-}
-
-// PostLolChampSelectLegacyV1SessionChampionSwapsByIdAcceptWithResponse performs a POST /lol-champ-select-legacy/v1/session/champion-swaps/{id}/accept (the `PostLolChampSelectLegacyV1SessionChampionSwapsByIdAccept` operationId) request.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) PostLolChampSelectLegacyV1SessionChampionSwapsByIdAcceptWithResponse(ctx context.Context, id int64, reqEditors ...RequestEditorFn) (*PostLolChampSelectLegacyV1SessionChampionSwapsByIdAcceptResponse, error) {
-	rsp, err := c.PostLolChampSelectLegacyV1SessionChampionSwapsByIdAccept(ctx, id, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePostLolChampSelectLegacyV1SessionChampionSwapsByIdAcceptResponse(rsp)
-}
-
-// PostLolChampSelectLegacyV1SessionChampionSwapsByIdCancelWithResponse performs a POST /lol-champ-select-legacy/v1/session/champion-swaps/{id}/cancel (the `PostLolChampSelectLegacyV1SessionChampionSwapsByIdCancel` operationId) request.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) PostLolChampSelectLegacyV1SessionChampionSwapsByIdCancelWithResponse(ctx context.Context, id int64, reqEditors ...RequestEditorFn) (*PostLolChampSelectLegacyV1SessionChampionSwapsByIdCancelResponse, error) {
-	rsp, err := c.PostLolChampSelectLegacyV1SessionChampionSwapsByIdCancel(ctx, id, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePostLolChampSelectLegacyV1SessionChampionSwapsByIdCancelResponse(rsp)
-}
-
-// PostLolChampSelectLegacyV1SessionChampionSwapsByIdDeclineWithResponse performs a POST /lol-champ-select-legacy/v1/session/champion-swaps/{id}/decline (the `PostLolChampSelectLegacyV1SessionChampionSwapsByIdDecline` operationId) request.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) PostLolChampSelectLegacyV1SessionChampionSwapsByIdDeclineWithResponse(ctx context.Context, id int64, reqEditors ...RequestEditorFn) (*PostLolChampSelectLegacyV1SessionChampionSwapsByIdDeclineResponse, error) {
-	rsp, err := c.PostLolChampSelectLegacyV1SessionChampionSwapsByIdDecline(ctx, id, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePostLolChampSelectLegacyV1SessionChampionSwapsByIdDeclineResponse(rsp)
-}
-
-// PostLolChampSelectLegacyV1SessionChampionSwapsByIdRequestWithResponse performs a POST /lol-champ-select-legacy/v1/session/champion-swaps/{id}/request (the `PostLolChampSelectLegacyV1SessionChampionSwapsByIdRequest` operationId) request.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) PostLolChampSelectLegacyV1SessionChampionSwapsByIdRequestWithResponse(ctx context.Context, id int64, reqEditors ...RequestEditorFn) (*PostLolChampSelectLegacyV1SessionChampionSwapsByIdRequestResponse, error) {
-	rsp, err := c.PostLolChampSelectLegacyV1SessionChampionSwapsByIdRequest(ctx, id, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePostLolChampSelectLegacyV1SessionChampionSwapsByIdRequestResponse(rsp)
-}
-
-// GetLolChampSelectLegacyV1SessionMySelectionWithResponse performs a GET /lol-champ-select-legacy/v1/session/my-selection (the `GetLolChampSelectLegacyV1SessionMySelection` operationId) request.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) GetLolChampSelectLegacyV1SessionMySelectionWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolChampSelectLegacyV1SessionMySelectionResponse, error) {
-	rsp, err := c.GetLolChampSelectLegacyV1SessionMySelection(ctx, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetLolChampSelectLegacyV1SessionMySelectionResponse(rsp)
-}
-
-// PatchLolChampSelectLegacyV1SessionMySelectionWithBodyWithResponse performs a PATCH /lol-champ-select-legacy/v1/session/my-selection (the `PatchLolChampSelectLegacyV1SessionMySelection` operationId) request,
-// with any type of body and a specified content type.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) PatchLolChampSelectLegacyV1SessionMySelectionWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchLolChampSelectLegacyV1SessionMySelectionResponse, error) {
-	rsp, err := c.PatchLolChampSelectLegacyV1SessionMySelectionWithBody(ctx, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePatchLolChampSelectLegacyV1SessionMySelectionResponse(rsp)
-}
-
-// PatchLolChampSelectLegacyV1SessionMySelectionWithResponse performs a PATCH /lol-champ-select-legacy/v1/session/my-selection (the `PatchLolChampSelectLegacyV1SessionMySelection` operationId) request.
-// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) PatchLolChampSelectLegacyV1SessionMySelectionWithResponse(ctx context.Context, body PatchLolChampSelectLegacyV1SessionMySelectionJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchLolChampSelectLegacyV1SessionMySelectionResponse, error) {
-	rsp, err := c.PatchLolChampSelectLegacyV1SessionMySelection(ctx, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePatchLolChampSelectLegacyV1SessionMySelectionResponse(rsp)
-}
-
-// PostLolChampSelectLegacyV1SessionMySelectionRerollWithResponse performs a POST /lol-champ-select-legacy/v1/session/my-selection/reroll (the `PostLolChampSelectLegacyV1SessionMySelectionReroll` operationId) request.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) PostLolChampSelectLegacyV1SessionMySelectionRerollWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostLolChampSelectLegacyV1SessionMySelectionRerollResponse, error) {
-	rsp, err := c.PostLolChampSelectLegacyV1SessionMySelectionReroll(ctx, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePostLolChampSelectLegacyV1SessionMySelectionRerollResponse(rsp)
-}
-
-// GetLolChampSelectLegacyV1SessionTimerWithResponse performs a GET /lol-champ-select-legacy/v1/session/timer (the `GetLolChampSelectLegacyV1SessionTimer` operationId) request.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) GetLolChampSelectLegacyV1SessionTimerWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolChampSelectLegacyV1SessionTimerResponse, error) {
-	rsp, err := c.GetLolChampSelectLegacyV1SessionTimer(ctx, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetLolChampSelectLegacyV1SessionTimerResponse(rsp)
-}
-
-// GetLolChampSelectLegacyV1TeamBoostWithResponse performs a GET /lol-champ-select-legacy/v1/team-boost (the `GetLolChampSelectLegacyV1TeamBoost` operationId) request.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) GetLolChampSelectLegacyV1TeamBoostWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolChampSelectLegacyV1TeamBoostResponse, error) {
-	rsp, err := c.GetLolChampSelectLegacyV1TeamBoost(ctx, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetLolChampSelectLegacyV1TeamBoostResponse(rsp)
-}
-
 // GetLolChampSelectV1AllGridChampionsWithResponse performs a GET /lol-champ-select/v1/all-grid-champions (the `GetLolChampSelectV1AllGridChampions` operationId) request.
 //
 // Returns a wrapper object for the known response body format(s).
@@ -164868,17 +162019,6 @@ func (c *ClientWithResponses) GetLolChampSelectV1BannableChampionIdsWithResponse
 		return nil, err
 	}
 	return ParseGetLolChampSelectV1BannableChampionIdsResponse(rsp)
-}
-
-// PostLolChampSelectV1BattleTrainingLaunchWithResponse performs a POST /lol-champ-select/v1/battle-training/launch (the `PostLolChampSelectV1BattleTrainingLaunch` operationId) request.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) PostLolChampSelectV1BattleTrainingLaunchWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostLolChampSelectV1BattleTrainingLaunchResponse, error) {
-	rsp, err := c.PostLolChampSelectV1BattleTrainingLaunch(ctx, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePostLolChampSelectV1BattleTrainingLaunchResponse(rsp)
 }
 
 // GetLolChampSelectV1CurrentChampionWithResponse performs a GET /lol-champ-select/v1/current-champion (the `GetLolChampSelectV1CurrentChampion` operationId) request.
@@ -166094,7 +163234,7 @@ func (c *ClientWithResponses) GetLolChatV1ErrorsWithResponse(ctx context.Context
 // DeleteLolChatV1ErrorsByIdWithResponse performs a DELETE /lol-chat/v1/errors/{id} (the `DeleteLolChatV1ErrorsById` operationId) request.
 //
 // Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) DeleteLolChatV1ErrorsByIdWithResponse(ctx context.Context, id uint64, reqEditors ...RequestEditorFn) (*DeleteLolChatV1ErrorsByIdResponse, error) {
+func (c *ClientWithResponses) DeleteLolChatV1ErrorsByIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteLolChatV1ErrorsByIdResponse, error) {
 	rsp, err := c.DeleteLolChatV1ErrorsById(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
@@ -169149,17 +166289,6 @@ func (c *ClientWithResponses) GetLolGameflowV1BasicTutorialWithResponse(ctx cont
 	return ParseGetLolGameflowV1BasicTutorialResponse(rsp)
 }
 
-// PostLolGameflowV1BasicTutorialStartWithResponse performs a POST /lol-gameflow/v1/basic-tutorial/start (the `PostLolGameflowV1BasicTutorialStart` operationId) request.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) PostLolGameflowV1BasicTutorialStartWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostLolGameflowV1BasicTutorialStartResponse, error) {
-	rsp, err := c.PostLolGameflowV1BasicTutorialStart(ctx, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePostLolGameflowV1BasicTutorialStartResponse(rsp)
-}
-
 // GetLolGameflowV1BattleTrainingWithResponse performs a GET /lol-gameflow/v1/battle-training (the `GetLolGameflowV1BattleTraining` operationId) request.
 //
 // Returns a wrapper object for the known response body format(s).
@@ -169169,28 +166298,6 @@ func (c *ClientWithResponses) GetLolGameflowV1BattleTrainingWithResponse(ctx con
 		return nil, err
 	}
 	return ParseGetLolGameflowV1BattleTrainingResponse(rsp)
-}
-
-// PostLolGameflowV1BattleTrainingStartWithResponse performs a POST /lol-gameflow/v1/battle-training/start (the `PostLolGameflowV1BattleTrainingStart` operationId) request.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) PostLolGameflowV1BattleTrainingStartWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostLolGameflowV1BattleTrainingStartResponse, error) {
-	rsp, err := c.PostLolGameflowV1BattleTrainingStart(ctx, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePostLolGameflowV1BattleTrainingStartResponse(rsp)
-}
-
-// PostLolGameflowV1BattleTrainingStopWithResponse performs a POST /lol-gameflow/v1/battle-training/stop (the `PostLolGameflowV1BattleTrainingStop` operationId) request.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) PostLolGameflowV1BattleTrainingStopWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostLolGameflowV1BattleTrainingStopResponse, error) {
-	rsp, err := c.PostLolGameflowV1BattleTrainingStop(ctx, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePostLolGameflowV1BattleTrainingStopResponse(rsp)
 }
 
 // PostLolGameflowV1EarlyExitWithResponse performs a POST /lol-gameflow/v1/early-exit (the `PostLolGameflowV1EarlyExit` operationId) request.
@@ -169807,17 +166914,6 @@ func (c *ClientWithResponses) PostLolGameflowV2SpectateLaunchWithResponse(ctx co
 		return nil, err
 	}
 	return ParsePostLolGameflowV2SpectateLaunchResponse(rsp)
-}
-
-// PostLolHeartbeatV1ConnectionStatusWithResponse performs a POST /lol-heartbeat/v1/connection-status (the `PostLolHeartbeatV1ConnectionStatus` operationId) request.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) PostLolHeartbeatV1ConnectionStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostLolHeartbeatV1ConnectionStatusResponse, error) {
-	rsp, err := c.PostLolHeartbeatV1ConnectionStatus(ctx, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePostLolHeartbeatV1ConnectionStatusResponse(rsp)
 }
 
 // GetLolHighlightsV1ConfigWithResponse performs a GET /lol-highlights/v1/config (the `GetLolHighlightsV1Config` operationId) request.
@@ -171611,28 +168707,6 @@ func (c *ClientWithResponses) GetLolLobbyV1CustomGamesByIdWithResponse(ctx conte
 		return nil, err
 	}
 	return ParseGetLolLobbyV1CustomGamesByIdResponse(rsp)
-}
-
-// PostLolLobbyV1CustomGamesByIdJoinWithBodyWithResponse performs a POST /lol-lobby/v1/custom-games/{id}/join (the `PostLolLobbyV1CustomGamesByIdJoin` operationId) request,
-// with any type of body and a specified content type.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) PostLolLobbyV1CustomGamesByIdJoinWithBodyWithResponse(ctx context.Context, id uint64, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostLolLobbyV1CustomGamesByIdJoinResponse, error) {
-	rsp, err := c.PostLolLobbyV1CustomGamesByIdJoinWithBody(ctx, id, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePostLolLobbyV1CustomGamesByIdJoinResponse(rsp)
-}
-
-// PostLolLobbyV1CustomGamesByIdJoinWithResponse performs a POST /lol-lobby/v1/custom-games/{id}/join (the `PostLolLobbyV1CustomGamesByIdJoin` operationId) request.
-// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) PostLolLobbyV1CustomGamesByIdJoinWithResponse(ctx context.Context, id uint64, body PostLolLobbyV1CustomGamesByIdJoinJSONRequestBody, reqEditors ...RequestEditorFn) (*PostLolLobbyV1CustomGamesByIdJoinResponse, error) {
-	rsp, err := c.PostLolLobbyV1CustomGamesByIdJoin(ctx, id, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePostLolLobbyV1CustomGamesByIdJoinResponse(rsp)
 }
 
 // GetLolLobbyV1LobbyAvailabilityWithResponse performs a GET /lol-lobby/v1/lobby/availability (the `GetLolLobbyV1LobbyAvailability` operationId) request.
@@ -174361,6 +171435,17 @@ func (c *ClientWithResponses) DeleteLolPatchV1NotificationsByIdWithResponse(ctx 
 		return nil, err
 	}
 	return ParseDeleteLolPatchV1NotificationsByIdResponse(rsp)
+}
+
+// GetLolPatchV1ProductDependencyWithResponse performs a GET /lol-patch/v1/product-dependency (the `GetLolPatchV1ProductDependency` operationId) request.
+//
+// Returns a wrapper object for the known response body format(s).
+func (c *ClientWithResponses) GetLolPatchV1ProductDependencyWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolPatchV1ProductDependencyResponse, error) {
+	rsp, err := c.GetLolPatchV1ProductDependency(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetLolPatchV1ProductDependencyResponse(rsp)
 }
 
 // GetLolPatchV1ProductIntegrationAppUpdateAvailableWithResponse performs a GET /lol-patch/v1/product-integration/app-update/available (the `GetLolPatchV1ProductIntegrationAppUpdateAvailable` operationId) request.
@@ -184996,552 +182081,6 @@ func ParseGetLolChallengesV2TitlesLocalPlayerResponse(rsp *http.Response) (*GetL
 	return response, nil
 }
 
-// ParseGetLolChampSelectLegacyV1BannableChampionIdsResponse parses an HTTP response from a GetLolChampSelectLegacyV1BannableChampionIdsWithResponse call
-func ParseGetLolChampSelectLegacyV1BannableChampionIdsResponse(rsp *http.Response) (*GetLolChampSelectLegacyV1BannableChampionIdsResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetLolChampSelectLegacyV1BannableChampionIdsResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
-		var dest []int32
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON2XX = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParsePostLolChampSelectLegacyV1BattleTrainingLaunchResponse parses an HTTP response from a PostLolChampSelectLegacyV1BattleTrainingLaunchWithResponse call
-func ParsePostLolChampSelectLegacyV1BattleTrainingLaunchResponse(rsp *http.Response) (*PostLolChampSelectLegacyV1BattleTrainingLaunchResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PostLolChampSelectLegacyV1BattleTrainingLaunchResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
-		var dest map[string]interface{}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON2XX = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetLolChampSelectLegacyV1CurrentChampionResponse parses an HTTP response from a GetLolChampSelectLegacyV1CurrentChampionWithResponse call
-func ParseGetLolChampSelectLegacyV1CurrentChampionResponse(rsp *http.Response) (*GetLolChampSelectLegacyV1CurrentChampionResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetLolChampSelectLegacyV1CurrentChampionResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
-		var dest int32
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON2XX = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetLolChampSelectLegacyV1DisabledChampionIdsResponse parses an HTTP response from a GetLolChampSelectLegacyV1DisabledChampionIdsWithResponse call
-func ParseGetLolChampSelectLegacyV1DisabledChampionIdsResponse(rsp *http.Response) (*GetLolChampSelectLegacyV1DisabledChampionIdsResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetLolChampSelectLegacyV1DisabledChampionIdsResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
-		var dest []int32
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON2XX = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetLolChampSelectLegacyV1ImplementationActiveResponse parses an HTTP response from a GetLolChampSelectLegacyV1ImplementationActiveWithResponse call
-func ParseGetLolChampSelectLegacyV1ImplementationActiveResponse(rsp *http.Response) (*GetLolChampSelectLegacyV1ImplementationActiveResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetLolChampSelectLegacyV1ImplementationActiveResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
-		var dest bool
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON2XX = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetLolChampSelectLegacyV1PickableChampionIdsResponse parses an HTTP response from a GetLolChampSelectLegacyV1PickableChampionIdsWithResponse call
-func ParseGetLolChampSelectLegacyV1PickableChampionIdsResponse(rsp *http.Response) (*GetLolChampSelectLegacyV1PickableChampionIdsResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetLolChampSelectLegacyV1PickableChampionIdsResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
-		var dest []int32
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON2XX = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetLolChampSelectLegacyV1PickableSkinIdsResponse parses an HTTP response from a GetLolChampSelectLegacyV1PickableSkinIdsWithResponse call
-func ParseGetLolChampSelectLegacyV1PickableSkinIdsResponse(rsp *http.Response) (*GetLolChampSelectLegacyV1PickableSkinIdsResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetLolChampSelectLegacyV1PickableSkinIdsResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
-		var dest []int32
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON2XX = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetLolChampSelectLegacyV1SessionResponse parses an HTTP response from a GetLolChampSelectLegacyV1SessionWithResponse call
-func ParseGetLolChampSelectLegacyV1SessionResponse(rsp *http.Response) (*GetLolChampSelectLegacyV1SessionResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetLolChampSelectLegacyV1SessionResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
-		var dest LolChampSelectLegacyChampSelectSession
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON2XX = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParsePatchLolChampSelectLegacyV1SessionActionsByIdResponse parses an HTTP response from a PatchLolChampSelectLegacyV1SessionActionsByIdWithResponse call
-func ParsePatchLolChampSelectLegacyV1SessionActionsByIdResponse(rsp *http.Response) (*PatchLolChampSelectLegacyV1SessionActionsByIdResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PatchLolChampSelectLegacyV1SessionActionsByIdResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
-		var dest map[string]interface{}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON2XX = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParsePostLolChampSelectLegacyV1SessionActionsByIdCompleteResponse parses an HTTP response from a PostLolChampSelectLegacyV1SessionActionsByIdCompleteWithResponse call
-func ParsePostLolChampSelectLegacyV1SessionActionsByIdCompleteResponse(rsp *http.Response) (*PostLolChampSelectLegacyV1SessionActionsByIdCompleteResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PostLolChampSelectLegacyV1SessionActionsByIdCompleteResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
-		var dest map[string]interface{}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON2XX = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetLolChampSelectLegacyV1SessionChampionSwapsResponse parses an HTTP response from a GetLolChampSelectLegacyV1SessionChampionSwapsWithResponse call
-func ParseGetLolChampSelectLegacyV1SessionChampionSwapsResponse(rsp *http.Response) (*GetLolChampSelectLegacyV1SessionChampionSwapsResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetLolChampSelectLegacyV1SessionChampionSwapsResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
-		var dest []LolChampSelectLegacyChampSelectSwapContract
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON2XX = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetLolChampSelectLegacyV1SessionChampionSwapsByIdResponse parses an HTTP response from a GetLolChampSelectLegacyV1SessionChampionSwapsByIdWithResponse call
-func ParseGetLolChampSelectLegacyV1SessionChampionSwapsByIdResponse(rsp *http.Response) (*GetLolChampSelectLegacyV1SessionChampionSwapsByIdResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetLolChampSelectLegacyV1SessionChampionSwapsByIdResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
-		var dest LolChampSelectLegacyChampSelectSwapContract
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON2XX = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParsePostLolChampSelectLegacyV1SessionChampionSwapsByIdAcceptResponse parses an HTTP response from a PostLolChampSelectLegacyV1SessionChampionSwapsByIdAcceptWithResponse call
-func ParsePostLolChampSelectLegacyV1SessionChampionSwapsByIdAcceptResponse(rsp *http.Response) (*PostLolChampSelectLegacyV1SessionChampionSwapsByIdAcceptResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PostLolChampSelectLegacyV1SessionChampionSwapsByIdAcceptResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
-		var dest map[string]interface{}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON2XX = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParsePostLolChampSelectLegacyV1SessionChampionSwapsByIdCancelResponse parses an HTTP response from a PostLolChampSelectLegacyV1SessionChampionSwapsByIdCancelWithResponse call
-func ParsePostLolChampSelectLegacyV1SessionChampionSwapsByIdCancelResponse(rsp *http.Response) (*PostLolChampSelectLegacyV1SessionChampionSwapsByIdCancelResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PostLolChampSelectLegacyV1SessionChampionSwapsByIdCancelResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
-		var dest map[string]interface{}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON2XX = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParsePostLolChampSelectLegacyV1SessionChampionSwapsByIdDeclineResponse parses an HTTP response from a PostLolChampSelectLegacyV1SessionChampionSwapsByIdDeclineWithResponse call
-func ParsePostLolChampSelectLegacyV1SessionChampionSwapsByIdDeclineResponse(rsp *http.Response) (*PostLolChampSelectLegacyV1SessionChampionSwapsByIdDeclineResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PostLolChampSelectLegacyV1SessionChampionSwapsByIdDeclineResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
-		var dest map[string]interface{}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON2XX = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParsePostLolChampSelectLegacyV1SessionChampionSwapsByIdRequestResponse parses an HTTP response from a PostLolChampSelectLegacyV1SessionChampionSwapsByIdRequestWithResponse call
-func ParsePostLolChampSelectLegacyV1SessionChampionSwapsByIdRequestResponse(rsp *http.Response) (*PostLolChampSelectLegacyV1SessionChampionSwapsByIdRequestResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PostLolChampSelectLegacyV1SessionChampionSwapsByIdRequestResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
-		var dest LolChampSelectLegacyChampSelectSwapContract
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON2XX = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetLolChampSelectLegacyV1SessionMySelectionResponse parses an HTTP response from a GetLolChampSelectLegacyV1SessionMySelectionWithResponse call
-func ParseGetLolChampSelectLegacyV1SessionMySelectionResponse(rsp *http.Response) (*GetLolChampSelectLegacyV1SessionMySelectionResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetLolChampSelectLegacyV1SessionMySelectionResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
-		var dest LolChampSelectLegacyChampSelectPlayerSelection
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON2XX = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParsePatchLolChampSelectLegacyV1SessionMySelectionResponse parses an HTTP response from a PatchLolChampSelectLegacyV1SessionMySelectionWithResponse call
-func ParsePatchLolChampSelectLegacyV1SessionMySelectionResponse(rsp *http.Response) (*PatchLolChampSelectLegacyV1SessionMySelectionResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PatchLolChampSelectLegacyV1SessionMySelectionResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
-		var dest map[string]interface{}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON2XX = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParsePostLolChampSelectLegacyV1SessionMySelectionRerollResponse parses an HTTP response from a PostLolChampSelectLegacyV1SessionMySelectionRerollWithResponse call
-func ParsePostLolChampSelectLegacyV1SessionMySelectionRerollResponse(rsp *http.Response) (*PostLolChampSelectLegacyV1SessionMySelectionRerollResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PostLolChampSelectLegacyV1SessionMySelectionRerollResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
-		var dest map[string]interface{}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON2XX = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetLolChampSelectLegacyV1SessionTimerResponse parses an HTTP response from a GetLolChampSelectLegacyV1SessionTimerWithResponse call
-func ParseGetLolChampSelectLegacyV1SessionTimerResponse(rsp *http.Response) (*GetLolChampSelectLegacyV1SessionTimerResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetLolChampSelectLegacyV1SessionTimerResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
-		var dest LolChampSelectLegacyChampSelectTimer
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON2XX = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetLolChampSelectLegacyV1TeamBoostResponse parses an HTTP response from a GetLolChampSelectLegacyV1TeamBoostWithResponse call
-func ParseGetLolChampSelectLegacyV1TeamBoostResponse(rsp *http.Response) (*GetLolChampSelectLegacyV1TeamBoostResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetLolChampSelectLegacyV1TeamBoostResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
-		var dest LolChampSelectLegacyTeamBoost
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON2XX = &dest
-
-	}
-
-	return response, nil
-}
-
 // ParseGetLolChampSelectV1AllGridChampionsResponse parses an HTTP response from a GetLolChampSelectV1AllGridChampionsWithResponse call
 func ParseGetLolChampSelectV1AllGridChampionsResponse(rsp *http.Response) (*GetLolChampSelectV1AllGridChampionsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -185610,32 +182149,6 @@ func ParseGetLolChampSelectV1BannableChampionIdsResponse(rsp *http.Response) (*G
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
 		var dest []int32
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON2XX = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParsePostLolChampSelectV1BattleTrainingLaunchResponse parses an HTTP response from a PostLolChampSelectV1BattleTrainingLaunchWithResponse call
-func ParsePostLolChampSelectV1BattleTrainingLaunchResponse(rsp *http.Response) (*PostLolChampSelectV1BattleTrainingLaunchResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PostLolChampSelectV1BattleTrainingLaunchResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
-		var dest map[string]interface{}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -194224,32 +190737,6 @@ func ParseGetLolGameflowV1BasicTutorialResponse(rsp *http.Response) (*GetLolGame
 	return response, nil
 }
 
-// ParsePostLolGameflowV1BasicTutorialStartResponse parses an HTTP response from a PostLolGameflowV1BasicTutorialStartWithResponse call
-func ParsePostLolGameflowV1BasicTutorialStartResponse(rsp *http.Response) (*PostLolGameflowV1BasicTutorialStartResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PostLolGameflowV1BasicTutorialStartResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
-		var dest map[string]interface{}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON2XX = &dest
-
-	}
-
-	return response, nil
-}
-
 // ParseGetLolGameflowV1BattleTrainingResponse parses an HTTP response from a GetLolGameflowV1BattleTrainingWithResponse call
 func ParseGetLolGameflowV1BattleTrainingResponse(rsp *http.Response) (*GetLolGameflowV1BattleTrainingResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -194266,58 +190753,6 @@ func ParseGetLolGameflowV1BattleTrainingResponse(rsp *http.Response) (*GetLolGam
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
 		var dest bool
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON2XX = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParsePostLolGameflowV1BattleTrainingStartResponse parses an HTTP response from a PostLolGameflowV1BattleTrainingStartWithResponse call
-func ParsePostLolGameflowV1BattleTrainingStartResponse(rsp *http.Response) (*PostLolGameflowV1BattleTrainingStartResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PostLolGameflowV1BattleTrainingStartResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
-		var dest map[string]interface{}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON2XX = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParsePostLolGameflowV1BattleTrainingStopResponse parses an HTTP response from a PostLolGameflowV1BattleTrainingStopWithResponse call
-func ParsePostLolGameflowV1BattleTrainingStopResponse(rsp *http.Response) (*PostLolGameflowV1BattleTrainingStopResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PostLolGameflowV1BattleTrainingStopResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
-		var dest map[string]interface{}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -195286,32 +191721,6 @@ func ParsePostLolGameflowV2SpectateLaunchResponse(rsp *http.Response) (*PostLolG
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
 		var dest map[string]interface{}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON2XX = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParsePostLolHeartbeatV1ConnectionStatusResponse parses an HTTP response from a PostLolHeartbeatV1ConnectionStatusWithResponse call
-func ParsePostLolHeartbeatV1ConnectionStatusResponse(rsp *http.Response) (*PostLolHeartbeatV1ConnectionStatusResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PostLolHeartbeatV1ConnectionStatusResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
-		var dest LolHeartbeatLcdsConnection
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -199062,32 +195471,6 @@ func ParseGetLolLobbyV1CustomGamesByIdResponse(rsp *http.Response) (*GetLolLobby
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
 		var dest LolLobbyLobbyCustomGame
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON2XX = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParsePostLolLobbyV1CustomGamesByIdJoinResponse parses an HTTP response from a PostLolLobbyV1CustomGamesByIdJoinWithResponse call
-func ParsePostLolLobbyV1CustomGamesByIdJoinResponse(rsp *http.Response) (*PostLolLobbyV1CustomGamesByIdJoinResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PostLolLobbyV1CustomGamesByIdJoinResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
-		var dest map[string]interface{}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -204043,6 +200426,32 @@ func ParseDeleteLolPatchV1NotificationsByIdResponse(rsp *http.Response) (*Delete
 	response := &DeleteLolPatchV1NotificationsByIdResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseGetLolPatchV1ProductDependencyResponse parses an HTTP response from a GetLolPatchV1ProductDependencyWithResponse call
+func ParseGetLolPatchV1ProductDependencyResponse(rsp *http.Response) (*GetLolPatchV1ProductDependencyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetLolPatchV1ProductDependencyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
+		var dest LolPatchProductDependency
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON2XX = &dest
+
 	}
 
 	return response, nil
