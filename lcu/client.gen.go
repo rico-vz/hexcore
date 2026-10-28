@@ -3724,6 +3724,24 @@ func (e LolSummonerProfilePrivacySetting) Valid() bool {
 	}
 }
 
+// Defines values for LolTeamVoiceSessionStatus.
+const (
+	LolTeamVoiceSessionStatusActive LolTeamVoiceSessionStatus = "active"
+	LolTeamVoiceSessionStatusOnHold LolTeamVoiceSessionStatus = "OnHold"
+)
+
+// Valid indicates whether the value is a known member of the LolTeamVoiceSessionStatus enum.
+func (e LolTeamVoiceSessionStatus) Valid() bool {
+	switch e {
+	case LolTeamVoiceSessionStatusActive:
+		return true
+	case LolTeamVoiceSessionStatusOnHold:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for LolTftEventPveEventPVELevelState.
 const (
 	LolTftEventPveEventPVELevelStateKCleared        LolTftEventPveEventPVELevelState = "kCleared"
@@ -8329,6 +8347,13 @@ type LolGameflowPlayerStatus struct {
 	LastQueuedLobbyStatus *LolGameflowLobbyStatus `json:"lastQueuedLobbyStatus,omitempty"`
 }
 
+// LolGameflowPostGameRmsMessage defines model for LolGameflowPostGameRmsMessage.
+type LolGameflowPostGameRmsMessage struct {
+	GameId             int64  `json:"gameId"`
+	MessageType        string `json:"messageType"`
+	TimestampUtcMillis uint64 `json:"timestampUtcMillis"`
+}
+
 // LolGameflowQueue defines model for LolGameflowQueue.
 type LolGameflowQueue struct {
 	AllowablePremadeSizes       []int32                        `json:"allowablePremadeSizes"`
@@ -9431,12 +9456,6 @@ type LolLoginAccountStateResource struct {
 
 // LolLoginAccountStateType defines model for LolLoginAccountStateType.
 type LolLoginAccountStateType string
-
-// LolLoginLcdsResponse defines model for LolLoginLcdsResponse.
-type LolLoginLcdsResponse struct {
-	Body     map[string]interface{} `json:"body"`
-	TypeName string                 `json:"typeName"`
-}
 
 // LolLoginLeagueSessionStatus defines model for LolLoginLeagueSessionStatus.
 type LolLoginLeagueSessionStatus string
@@ -13388,6 +13407,46 @@ type LolTastesDataModelResponse struct {
 	ResponseCode int64                  `json:"responseCode"`
 }
 
+// LolTeamVoiceSessionStatus defines model for LolTeamVoiceSessionStatus.
+type LolTeamVoiceSessionStatus string
+
+// LolTeamVoiceTeamVoiceAvailabilityDto defines model for LolTeamVoiceTeamVoiceAvailabilityDto.
+type LolTeamVoiceTeamVoiceAvailabilityDto struct {
+	Available bool   `json:"available"`
+	Reason    string `json:"reason"`
+}
+
+// LolTeamVoiceVoiceFontResource defines model for LolTeamVoiceVoiceFontResource.
+type LolTeamVoiceVoiceFontResource struct {
+	FetchStatus         string `json:"fetchStatus"`
+	Id                  string `json:"id"`
+	Name                string `json:"name"`
+	NameLocalizationKey string `json:"nameLocalizationKey"`
+}
+
+// LolTeamVoiceVoiceParticipant defines model for LolTeamVoiceVoiceParticipant.
+type LolTeamVoiceVoiceParticipant struct {
+	Energy     uint32 `json:"energy"`
+	Id         string `json:"id"`
+	IsMuted    bool   `json:"isMuted"`
+	IsSpeaking bool   `json:"isSpeaking"`
+	Puuid      string `json:"puuid"`
+	Volume     uint32 `json:"volume"`
+}
+
+// LolTeamVoiceVoiceSession defines model for LolTeamVoiceVoiceSession.
+type LolTeamVoiceVoiceSession struct {
+	Handle             string                         `json:"handle"`
+	Id                 string                         `json:"id"`
+	IsMuted            bool                           `json:"isMuted"`
+	IsRestricted       bool                           `json:"isRestricted"`
+	IsTransmitEnabled  bool                           `json:"isTransmitEnabled"`
+	IsVoiceFontEnabled bool                           `json:"isVoiceFontEnabled"`
+	Participants       []LolTeamVoiceVoiceParticipant `json:"participants"`
+	Status             LolTeamVoiceSessionStatus      `json:"status"`
+	Volume             uint32                         `json:"volume"`
+}
+
 // LolTftEventPveEventPVELevelState defines model for LolTftEventPveEventPVELevelState.
 type LolTftEventPveEventPVELevelState string
 
@@ -14276,17 +14335,6 @@ type MissionProgressDTO struct {
 	TotalCount         int32 `json:"totalCount"`
 }
 
-// NotifyFailureRequest defines model for NotifyFailureRequest.
-type NotifyFailureRequest struct {
-	AvailabilityItemName string `json:"availabilityItemName"`
-	FailureInfo          string `json:"failureInfo"`
-}
-
-// NotifySuccessRequest defines model for NotifySuccessRequest.
-type NotifySuccessRequest struct {
-	AvailabilityItemName string `json:"availabilityItemName"`
-}
-
 // NpeReward defines model for NpeReward.
 type NpeReward struct {
 	Data     map[string]interface{} `json:"data"`
@@ -14691,51 +14739,6 @@ type RosterWithdraw struct {
 	LockoutTimeMs          int64   `json:"lockoutTimeMs"`
 	VoteTimeoutMs          int64   `json:"voteTimeoutMs"`
 	VoteWithdrawMembers    []int64 `json:"voteWithdrawMembers"`
-}
-
-// SLIBoolDiagnostic defines model for SLIBoolDiagnostic.
-type SLIBoolDiagnostic struct {
-	Key   string `json:"key"`
-	Value bool   `json:"value"`
-}
-
-// SLICount defines model for SLICount.
-type SLICount struct {
-	BoolDiagnostics   map[string]bool    `json:"boolDiagnostics"`
-	DoubleDiagnostics map[string]float64 `json:"doubleDiagnostics"`
-	EndTimeEpochMs    int64              `json:"endTimeEpochMs"`
-	Failures          float64            `json:"failures"`
-	IdempotencyKey    string             `json:"idempotencyKey"`
-	IntDiagnostics    map[string]int64   `json:"intDiagnostics"`
-	Labels            map[string]string  `json:"labels"`
-	SliName           string             `json:"sliName"`
-	StartTimeEpochMs  int64              `json:"startTimeEpochMs"`
-	StringDiagnostics map[string]string  `json:"stringDiagnostics"`
-	Successes         float64            `json:"successes"`
-}
-
-// SLIDoubleDiagnostic defines model for SLIDoubleDiagnostic.
-type SLIDoubleDiagnostic struct {
-	Key   string  `json:"key"`
-	Value float64 `json:"value"`
-}
-
-// SLIIntDiagnostic defines model for SLIIntDiagnostic.
-type SLIIntDiagnostic struct {
-	Key   string `json:"key"`
-	Value int64  `json:"value"`
-}
-
-// SLILabel defines model for SLILabel.
-type SLILabel struct {
-	Key   string `json:"key"`
-	Value string `json:"value"`
-}
-
-// SLIStringDiagnostic defines model for SLIStringDiagnostic.
-type SLIStringDiagnostic struct {
-	Key   string `json:"key"`
-	Value string `json:"value"`
 }
 
 // SanitizerContainsSanitizedRequest defines model for SanitizerContainsSanitizedRequest.
@@ -15616,8 +15619,12 @@ type PostLolGameflowV1PreEndGameTransitionJSONBody = bool
 // PostLolGameflowV1SessionChampSelectPhaseTimeRemainingJSONBody defines parameters for PostLolGameflowV1SessionChampSelectPhaseTimeRemaining.
 type PostLolGameflowV1SessionChampSelectPhaseTimeRemainingJSONBody = uint64
 
-// PostLolGameflowV1SessionEventJSONBody defines parameters for PostLolGameflowV1SessionEvent.
-type PostLolGameflowV1SessionEventJSONBody = string
+// PostLolGameflowV1SessionEventParams defines parameters for PostLolGameflowV1SessionEvent.
+type PostLolGameflowV1SessionEventParams struct {
+	Session                   string  `form:"session" json:"session"`
+	GameId                    *int64  `form:"gameId,omitempty" json:"gameId,omitempty"`
+	GameEndUtcTimestampMillis *uint64 `form:"gameEndUtcTimestampMillis,omitempty" json:"gameEndUtcTimestampMillis,omitempty"`
+}
 
 // PostLolGameflowV1SessionRequestEnterGameflowJSONBody defines parameters for PostLolGameflowV1SessionRequestEnterGameflow.
 type PostLolGameflowV1SessionRequestEnterGameflowJSONBody = string
@@ -15740,22 +15747,6 @@ type DeleteLolLoginV1ServiceProxyAsyncRequestsByServiceNameByMethodNameParams st
 
 // PostLolLoginV1ServiceProxyAsyncRequestsByServiceNameByMethodNameJSONBody defines parameters for PostLolLoginV1ServiceProxyAsyncRequestsByServiceNameByMethodName.
 type PostLolLoginV1ServiceProxyAsyncRequestsByServiceNameByMethodNameJSONBody = uint32
-
-// PostLolLoginV1ServiceProxyUuidRequestsParams defines parameters for PostLolLoginV1ServiceProxyUuidRequests.
-type PostLolLoginV1ServiceProxyUuidRequestsParams struct {
-	ServiceName   string `form:"serviceName" json:"serviceName"`
-	MethodName    string `form:"methodName" json:"methodName"`
-	PluginId      uint32 `form:"pluginId" json:"pluginId"`
-	TimeoutMillis uint64 `form:"timeoutMillis" json:"timeoutMillis"`
-	Payload       string `form:"payload" json:"payload"`
-}
-
-// PostLolLoginV1SessionInvokeParams defines parameters for PostLolLoginV1SessionInvoke.
-type PostLolLoginV1SessionInvokeParams struct {
-	Destination string                   `form:"destination" json:"destination"`
-	Method      string                   `form:"method" json:"method"`
-	Args        []map[string]interface{} `form:"args" json:"args"`
-}
 
 // PostLolLoginV1SummonerSessionFailedJSONBody defines parameters for PostLolLoginV1SummonerSessionFailed.
 type PostLolLoginV1SummonerSessionFailedJSONBody = int32
@@ -16060,6 +16051,12 @@ type PostLolSummonerV2SummonersNamesJSONBody = []string
 
 // PostLolSummonerV2SummonersPuuidJSONBody defines parameters for PostLolSummonerV2SummonersPuuid.
 type PostLolSummonerV2SummonersPuuidJSONBody = []string
+
+// PostLolTeamVoiceV1InternalPreparePartyVoiceSessionJSONBody defines parameters for PostLolTeamVoiceV1InternalPreparePartyVoiceSession.
+type PostLolTeamVoiceV1InternalPreparePartyVoiceSessionJSONBody = string
+
+// PutLolTeamVoiceV1SessionJSONBody defines parameters for PutLolTeamVoiceV1Session.
+type PutLolTeamVoiceV1SessionJSONBody = bool
 
 // PatchLolTftTeamPlannerV1FtueHasViewedJSONBody defines parameters for PatchLolTftTeamPlannerV1FtueHasViewed.
 type PatchLolTftTeamPlannerV1FtueHasViewedJSONBody = bool
@@ -16429,6 +16426,9 @@ type PostLolGameflowV1GameflowMetadataRegistrationStatusJSONRequestBody = LolGam
 // PostLolGameflowV1GameflowMonitorJSONRequestBody defines body for PostLolGameflowV1GameflowMonitor for application/json ContentType.
 type PostLolGameflowV1GameflowMonitorJSONRequestBody PostLolGameflowV1GameflowMonitorJSONBody
 
+// PostLolGameflowV1PostgameRmsMessageJSONRequestBody defines body for PostLolGameflowV1PostgameRmsMessage for application/json ContentType.
+type PostLolGameflowV1PostgameRmsMessageJSONRequestBody = LolGameflowPostGameRmsMessage
+
 // PostLolGameflowV1PreEndGameTransitionJSONRequestBody defines body for PostLolGameflowV1PreEndGameTransition for application/json ContentType.
 type PostLolGameflowV1PreEndGameTransitionJSONRequestBody = PostLolGameflowV1PreEndGameTransitionJSONBody
 
@@ -16437,9 +16437,6 @@ type PostLolGameflowV1SessionChampSelectPhaseTimeRemainingJSONRequestBody = Post
 
 // PostLolGameflowV1SessionDodgeJSONRequestBody defines body for PostLolGameflowV1SessionDodge for application/json ContentType.
 type PostLolGameflowV1SessionDodgeJSONRequestBody = LolGameflowGameflowGameDodge
-
-// PostLolGameflowV1SessionEventJSONRequestBody defines body for PostLolGameflowV1SessionEvent for application/json ContentType.
-type PostLolGameflowV1SessionEventJSONRequestBody = PostLolGameflowV1SessionEventJSONBody
 
 // PostLolGameflowV1SessionGameConfigurationJSONRequestBody defines body for PostLolGameflowV1SessionGameConfiguration for application/json ContentType.
 type PostLolGameflowV1SessionGameConfigurationJSONRequestBody = LolGameflowQueue
@@ -16882,6 +16879,12 @@ type PostLolSummonerV2SummonersNamesJSONRequestBody = PostLolSummonerV2Summoners
 // PostLolSummonerV2SummonersPuuidJSONRequestBody defines body for PostLolSummonerV2SummonersPuuid for application/json ContentType.
 type PostLolSummonerV2SummonersPuuidJSONRequestBody = PostLolSummonerV2SummonersPuuidJSONBody
 
+// PostLolTeamVoiceV1InternalPreparePartyVoiceSessionJSONRequestBody defines body for PostLolTeamVoiceV1InternalPreparePartyVoiceSession for application/json ContentType.
+type PostLolTeamVoiceV1InternalPreparePartyVoiceSessionJSONRequestBody = PostLolTeamVoiceV1InternalPreparePartyVoiceSessionJSONBody
+
+// PutLolTeamVoiceV1SessionJSONRequestBody defines body for PutLolTeamVoiceV1Session for application/json ContentType.
+type PutLolTeamVoiceV1SessionJSONRequestBody = PutLolTeamVoiceV1SessionJSONBody
+
 // PatchLolTftTeamPlannerV1FtueHasViewedJSONRequestBody defines body for PatchLolTftTeamPlannerV1FtueHasViewed for application/json ContentType.
 type PatchLolTftTeamPlannerV1FtueHasViewedJSONRequestBody = PatchLolTftTeamPlannerV1FtueHasViewedJSONBody
 
@@ -17010,30 +17013,6 @@ type PostTelemetryV1EventsWithPerfInfoByEventTypeJSONRequestBody PostTelemetryV1
 
 // PostTelemetryV1EventsByEventTypeJSONRequestBody defines body for PostTelemetryV1EventsByEventType for application/json ContentType.
 type PostTelemetryV1EventsByEventTypeJSONRequestBody PostTelemetryV1EventsByEventTypeJSONBody
-
-// PatchTelemetryV3SlisAddBoolDiagnosticJSONRequestBody defines body for PatchTelemetryV3SlisAddBoolDiagnostic for application/json ContentType.
-type PatchTelemetryV3SlisAddBoolDiagnosticJSONRequestBody = SLIBoolDiagnostic
-
-// PatchTelemetryV3SlisAddDoubleDiagnosticJSONRequestBody defines body for PatchTelemetryV3SlisAddDoubleDiagnostic for application/json ContentType.
-type PatchTelemetryV3SlisAddDoubleDiagnosticJSONRequestBody = SLIDoubleDiagnostic
-
-// PatchTelemetryV3SlisAddIntDiagnosticJSONRequestBody defines body for PatchTelemetryV3SlisAddIntDiagnostic for application/json ContentType.
-type PatchTelemetryV3SlisAddIntDiagnosticJSONRequestBody = SLIIntDiagnostic
-
-// PatchTelemetryV3SlisAddLabelJSONRequestBody defines body for PatchTelemetryV3SlisAddLabel for application/json ContentType.
-type PatchTelemetryV3SlisAddLabelJSONRequestBody = SLILabel
-
-// PatchTelemetryV3SlisAddStringDiagnosticJSONRequestBody defines body for PatchTelemetryV3SlisAddStringDiagnostic for application/json ContentType.
-type PatchTelemetryV3SlisAddStringDiagnosticJSONRequestBody = SLIStringDiagnostic
-
-// PostTelemetryV3SlisCountsJSONRequestBody defines body for PostTelemetryV3SlisCounts for application/json ContentType.
-type PostTelemetryV3SlisCountsJSONRequestBody = SLICount
-
-// PostTelemetryV3UptimeTrackingNotifyFailureJSONRequestBody defines body for PostTelemetryV3UptimeTrackingNotifyFailure for application/json ContentType.
-type PostTelemetryV3UptimeTrackingNotifyFailureJSONRequestBody = NotifyFailureRequest
-
-// PostTelemetryV3UptimeTrackingNotifySuccessJSONRequestBody defines body for PostTelemetryV3UptimeTrackingNotifySuccess for application/json ContentType.
-type PostTelemetryV3UptimeTrackingNotifySuccessJSONRequestBody = NotifySuccessRequest
 
 // PostTracingV1TraceCriticalFlowJSONRequestBody defines body for PostTracingV1TraceCriticalFlow for application/json ContentType.
 type PostTracingV1TraceCriticalFlowJSONRequestBody = TracingCriticalFlowEventV1
@@ -18920,6 +18899,14 @@ type ClientInterface interface {
 	// GetLolGameflowV1PlayerKickedVanguard performs a GET /lol-gameflow/v1/player-kicked-vanguard (the `GetLolGameflowV1PlayerKickedVanguard` operationId) request.
 	GetLolGameflowV1PlayerKickedVanguard(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// PostLolGameflowV1PostgameRmsMessageWithBody performs a POST /lol-gameflow/v1/postgame/rms-message (the `PostLolGameflowV1PostgameRmsMessage` operationId) request,
+	// with any type of body and a specified content type.
+	PostLolGameflowV1PostgameRmsMessageWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostLolGameflowV1PostgameRmsMessage performs a POST /lol-gameflow/v1/postgame/rms-message (the `PostLolGameflowV1PostgameRmsMessage` operationId) request.
+	// Takes a body of the `application/json` content type.
+	PostLolGameflowV1PostgameRmsMessage(ctx context.Context, body PostLolGameflowV1PostgameRmsMessageJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// PostLolGameflowV1PreEndGameTransitionWithBody performs a POST /lol-gameflow/v1/pre-end-game-transition (the `PostLolGameflowV1PreEndGameTransition` operationId) request,
 	// with any type of body and a specified content type.
 	PostLolGameflowV1PreEndGameTransitionWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -18950,13 +18937,8 @@ type ClientInterface interface {
 	// Takes a body of the `application/json` content type.
 	PostLolGameflowV1SessionDodge(ctx context.Context, body PostLolGameflowV1SessionDodgeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PostLolGameflowV1SessionEventWithBody performs a POST /lol-gameflow/v1/session/event (the `PostLolGameflowV1SessionEvent` operationId) request,
-	// with any type of body and a specified content type.
-	PostLolGameflowV1SessionEventWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
 	// PostLolGameflowV1SessionEvent performs a POST /lol-gameflow/v1/session/event (the `PostLolGameflowV1SessionEvent` operationId) request.
-	// Takes a body of the `application/json` content type.
-	PostLolGameflowV1SessionEvent(ctx context.Context, body PostLolGameflowV1SessionEventJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	PostLolGameflowV1SessionEvent(ctx context.Context, params *PostLolGameflowV1SessionEventParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// PostLolGameflowV1SessionGameConfigurationWithBody performs a POST /lol-gameflow/v1/session/game-configuration (the `PostLolGameflowV1SessionGameConfiguration` operationId) request,
 	// with any type of body and a specified content type.
@@ -19954,17 +19936,11 @@ type ClientInterface interface {
 	// Takes a body of the `application/json` content type.
 	PostLolLoginV1ServiceProxyAsyncRequestsByServiceNameByMethodName(ctx context.Context, serviceName string, methodName string, body PostLolLoginV1ServiceProxyAsyncRequestsByServiceNameByMethodNameJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PostLolLoginV1ServiceProxyUuidRequests performs a POST /lol-login/v1/service-proxy-uuid-requests (the `PostLolLoginV1ServiceProxyUuidRequests` operationId) request.
-	PostLolLoginV1ServiceProxyUuidRequests(ctx context.Context, params *PostLolLoginV1ServiceProxyUuidRequestsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
-
 	// DeleteLolLoginV1Session performs a DELETE /lol-login/v1/session (the `DeleteLolLoginV1Session` operationId) request.
 	DeleteLolLoginV1Session(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetLolLoginV1Session performs a GET /lol-login/v1/session (the `GetLolLoginV1Session` operationId) request.
 	GetLolLoginV1Session(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PostLolLoginV1SessionInvoke performs a POST /lol-login/v1/session/invoke (the `PostLolLoginV1SessionInvoke` operationId) request.
-	PostLolLoginV1SessionInvoke(ctx context.Context, params *PostLolLoginV1SessionInvokeParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteLolLoginV1ShutdownLocksByLockName performs a DELETE /lol-login/v1/shutdown-locks/{lockName} (the `DeleteLolLoginV1ShutdownLocksByLockName` operationId) request.
 	DeleteLolLoginV1ShutdownLocksByLockName(ctx context.Context, lockName string, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -21916,6 +21892,52 @@ type ClientInterface interface {
 	// GetLolTastesV1TftOverviewModel performs a GET /lol-tastes/v1/tft-overview-model (the `GetLolTastesV1TftOverviewModel` operationId) request.
 	GetLolTastesV1TftOverviewModel(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// DeleteLolTeamVoiceV1InternalPreparePartyVoiceSession performs a DELETE /lol-team-voice/v1/internal/prepare-party-voice-session (the `DeleteLolTeamVoiceV1InternalPreparePartyVoiceSession` operationId) request.
+	DeleteLolTeamVoiceV1InternalPreparePartyVoiceSession(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostLolTeamVoiceV1InternalPreparePartyVoiceSessionWithBody performs a POST /lol-team-voice/v1/internal/prepare-party-voice-session (the `PostLolTeamVoiceV1InternalPreparePartyVoiceSession` operationId) request,
+	// with any type of body and a specified content type.
+	PostLolTeamVoiceV1InternalPreparePartyVoiceSessionWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostLolTeamVoiceV1InternalPreparePartyVoiceSession performs a POST /lol-team-voice/v1/internal/prepare-party-voice-session (the `PostLolTeamVoiceV1InternalPreparePartyVoiceSession` operationId) request.
+	// Takes a body of the `application/json` content type.
+	PostLolTeamVoiceV1InternalPreparePartyVoiceSession(ctx context.Context, body PostLolTeamVoiceV1InternalPreparePartyVoiceSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMuted performs a PUT /lol-team-voice/v1/participants/{participantId}/mute/{isMuted} (the `PutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMuted` operationId) request.
+	PutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMuted(ctx context.Context, participantId string, isMuted bool, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolume performs a PUT /lol-team-voice/v1/participants/{participantId}/volume/{volume} (the `PutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolume` operationId) request.
+	PutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolume(ctx context.Context, participantId string, volume uint32, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteLolTeamVoiceV1Session performs a DELETE /lol-team-voice/v1/session (the `DeleteLolTeamVoiceV1Session` operationId) request.
+	DeleteLolTeamVoiceV1Session(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetLolTeamVoiceV1Session performs a GET /lol-team-voice/v1/session (the `GetLolTeamVoiceV1Session` operationId) request.
+	GetLolTeamVoiceV1Session(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostLolTeamVoiceV1Session performs a POST /lol-team-voice/v1/session (the `PostLolTeamVoiceV1Session` operationId) request.
+	PostLolTeamVoiceV1Session(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutLolTeamVoiceV1SessionWithBody performs a PUT /lol-team-voice/v1/session (the `PutLolTeamVoiceV1Session` operationId) request,
+	// with any type of body and a specified content type.
+	PutLolTeamVoiceV1SessionWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutLolTeamVoiceV1Session performs a PUT /lol-team-voice/v1/session (the `PutLolTeamVoiceV1Session` operationId) request.
+	// Takes a body of the `application/json` content type.
+	PutLolTeamVoiceV1Session(ctx context.Context, body PutLolTeamVoiceV1SessionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetLolTeamVoiceV1VoiceFonts performs a GET /lol-team-voice/v1/voice-fonts (the `GetLolTeamVoiceV1VoiceFonts` operationId) request.
+	GetLolTeamVoiceV1VoiceFonts(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetLolTeamVoiceV1VoiceFontsHardwareSupported performs a GET /lol-team-voice/v1/voice-fonts/hardware-supported (the `GetLolTeamVoiceV1VoiceFontsHardwareSupported` operationId) request.
+	GetLolTeamVoiceV1VoiceFontsHardwareSupported(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetLolTeamVoiceV1VoiceFontsStatus performs a GET /lol-team-voice/v1/voice-fonts/status (the `GetLolTeamVoiceV1VoiceFontsStatus` operationId) request.
+	GetLolTeamVoiceV1VoiceFontsStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetLolTeamVoiceV2Availability performs a GET /lol-team-voice/v2/availability (the `GetLolTeamVoiceV2Availability` operationId) request.
+	GetLolTeamVoiceV2Availability(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetLolTftEventPveV1Buddies performs a GET /lol-tft-event-pve/v1/buddies (the `GetLolTftEventPveV1Buddies` operationId) request.
 	GetLolTftEventPveV1Buddies(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -22936,102 +22958,6 @@ type ClientInterface interface {
 	//
 	// Adds a new event to be sent to Dradis and/or other analytics/monitoring data sinks. All events will have their eventType prefixed with "riot__rclient__"
 	PostTelemetryV1EventsByEventType(ctx context.Context, eventType string, body PostTelemetryV1EventsByEventTypeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PatchTelemetryV3SlisAddBoolDiagnosticWithBody performs a PATCH /telemetry/v3/slis/add-bool-diagnostic (the `PatchTelemetryV3SlisAddBoolDiagnostic` operationId) request,
-	// with any type of body and a specified content type.
-	//
-	// Add bool diagnostic to be sent with SLIs.
-	PatchTelemetryV3SlisAddBoolDiagnosticWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PatchTelemetryV3SlisAddBoolDiagnostic performs a PATCH /telemetry/v3/slis/add-bool-diagnostic (the `PatchTelemetryV3SlisAddBoolDiagnostic` operationId) request.
-	// Takes a body of the `application/json` content type.
-	//
-	// Add bool diagnostic to be sent with SLIs.
-	PatchTelemetryV3SlisAddBoolDiagnostic(ctx context.Context, body PatchTelemetryV3SlisAddBoolDiagnosticJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PatchTelemetryV3SlisAddDoubleDiagnosticWithBody performs a PATCH /telemetry/v3/slis/add-double-diagnostic (the `PatchTelemetryV3SlisAddDoubleDiagnostic` operationId) request,
-	// with any type of body and a specified content type.
-	//
-	// Add double diagnostic to be sent with SLIs.
-	PatchTelemetryV3SlisAddDoubleDiagnosticWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PatchTelemetryV3SlisAddDoubleDiagnostic performs a PATCH /telemetry/v3/slis/add-double-diagnostic (the `PatchTelemetryV3SlisAddDoubleDiagnostic` operationId) request.
-	// Takes a body of the `application/json` content type.
-	//
-	// Add double diagnostic to be sent with SLIs.
-	PatchTelemetryV3SlisAddDoubleDiagnostic(ctx context.Context, body PatchTelemetryV3SlisAddDoubleDiagnosticJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PatchTelemetryV3SlisAddIntDiagnosticWithBody performs a PATCH /telemetry/v3/slis/add-int-diagnostic (the `PatchTelemetryV3SlisAddIntDiagnostic` operationId) request,
-	// with any type of body and a specified content type.
-	//
-	// Add int diagnostic to be sent with SLIs.
-	PatchTelemetryV3SlisAddIntDiagnosticWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PatchTelemetryV3SlisAddIntDiagnostic performs a PATCH /telemetry/v3/slis/add-int-diagnostic (the `PatchTelemetryV3SlisAddIntDiagnostic` operationId) request.
-	// Takes a body of the `application/json` content type.
-	//
-	// Add int diagnostic to be sent with SLIs.
-	PatchTelemetryV3SlisAddIntDiagnostic(ctx context.Context, body PatchTelemetryV3SlisAddIntDiagnosticJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PatchTelemetryV3SlisAddLabelWithBody performs a PATCH /telemetry/v3/slis/add-label (the `PatchTelemetryV3SlisAddLabel` operationId) request,
-	// with any type of body and a specified content type.
-	//
-	// Add label to be sent with SLIs.
-	PatchTelemetryV3SlisAddLabelWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PatchTelemetryV3SlisAddLabel performs a PATCH /telemetry/v3/slis/add-label (the `PatchTelemetryV3SlisAddLabel` operationId) request.
-	// Takes a body of the `application/json` content type.
-	//
-	// Add label to be sent with SLIs.
-	PatchTelemetryV3SlisAddLabel(ctx context.Context, body PatchTelemetryV3SlisAddLabelJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PatchTelemetryV3SlisAddStringDiagnosticWithBody performs a PATCH /telemetry/v3/slis/add-string-diagnostic (the `PatchTelemetryV3SlisAddStringDiagnostic` operationId) request,
-	// with any type of body and a specified content type.
-	//
-	// Add string diagnostic to be sent with SLIs.
-	PatchTelemetryV3SlisAddStringDiagnosticWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PatchTelemetryV3SlisAddStringDiagnostic performs a PATCH /telemetry/v3/slis/add-string-diagnostic (the `PatchTelemetryV3SlisAddStringDiagnostic` operationId) request.
-	// Takes a body of the `application/json` content type.
-	//
-	// Add string diagnostic to be sent with SLIs.
-	PatchTelemetryV3SlisAddStringDiagnostic(ctx context.Context, body PatchTelemetryV3SlisAddStringDiagnosticJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PostTelemetryV3SlisCountsWithBody performs a POST /telemetry/v3/slis/counts (the `PostTelemetryV3SlisCounts` operationId) request,
-	// with any type of body and a specified content type.
-	//
-	// Report an SLI to the collector.
-	PostTelemetryV3SlisCountsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PostTelemetryV3SlisCounts performs a POST /telemetry/v3/slis/counts (the `PostTelemetryV3SlisCounts` operationId) request.
-	// Takes a body of the `application/json` content type.
-	//
-	// Report an SLI to the collector.
-	PostTelemetryV3SlisCounts(ctx context.Context, body PostTelemetryV3SlisCountsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PostTelemetryV3UptimeTrackingNotifyFailureWithBody performs a POST /telemetry/v3/uptime-tracking/notify-failure (the `PostTelemetryV3UptimeTrackingNotifyFailure` operationId) request,
-	// with any type of body and a specified content type.
-	//
-	// Mark an availability item's operation as failure on uptime tracking mechanism.
-	PostTelemetryV3UptimeTrackingNotifyFailureWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PostTelemetryV3UptimeTrackingNotifyFailure performs a POST /telemetry/v3/uptime-tracking/notify-failure (the `PostTelemetryV3UptimeTrackingNotifyFailure` operationId) request.
-	// Takes a body of the `application/json` content type.
-	//
-	// Mark an availability item's operation as failure on uptime tracking mechanism.
-	PostTelemetryV3UptimeTrackingNotifyFailure(ctx context.Context, body PostTelemetryV3UptimeTrackingNotifyFailureJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PostTelemetryV3UptimeTrackingNotifySuccessWithBody performs a POST /telemetry/v3/uptime-tracking/notify-success (the `PostTelemetryV3UptimeTrackingNotifySuccess` operationId) request,
-	// with any type of body and a specified content type.
-	//
-	// Mark an availability item's operation as success on uptime tracking mechanism.
-	PostTelemetryV3UptimeTrackingNotifySuccessWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// PostTelemetryV3UptimeTrackingNotifySuccess performs a POST /telemetry/v3/uptime-tracking/notify-success (the `PostTelemetryV3UptimeTrackingNotifySuccess` operationId) request.
-	// Takes a body of the `application/json` content type.
-	//
-	// Mark an availability item's operation as success on uptime tracking mechanism.
-	PostTelemetryV3UptimeTrackingNotifySuccess(ctx context.Context, body PostTelemetryV3UptimeTrackingNotifySuccessJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteTracingV1PerformanceByName performs a DELETE /tracing/v1/performance/{name} (the `DeleteTracingV1PerformanceByName` operationId) request.
 	//
@@ -30157,6 +30083,34 @@ func (c *Client) GetLolGameflowV1PlayerKickedVanguard(ctx context.Context, reqEd
 	return c.Client.Do(req)
 }
 
+// PostLolGameflowV1PostgameRmsMessageWithBody performs a POST /lol-gameflow/v1/postgame/rms-message (the `PostLolGameflowV1PostgameRmsMessage` operationId) request,
+// with any type of body and a specified content type.
+func (c *Client) PostLolGameflowV1PostgameRmsMessageWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostLolGameflowV1PostgameRmsMessageRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostLolGameflowV1PostgameRmsMessage performs a POST /lol-gameflow/v1/postgame/rms-message (the `PostLolGameflowV1PostgameRmsMessage` operationId) request.
+// Takes a body of the `application/json` content type.
+func (c *Client) PostLolGameflowV1PostgameRmsMessage(ctx context.Context, body PostLolGameflowV1PostgameRmsMessageJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostLolGameflowV1PostgameRmsMessageRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // PostLolGameflowV1PreEndGameTransitionWithBody performs a POST /lol-gameflow/v1/pre-end-game-transition (the `PostLolGameflowV1PreEndGameTransition` operationId) request,
 // with any type of body and a specified content type.
 func (c *Client) PostLolGameflowV1PreEndGameTransitionWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -30267,24 +30221,9 @@ func (c *Client) PostLolGameflowV1SessionDodge(ctx context.Context, body PostLol
 	return c.Client.Do(req)
 }
 
-// PostLolGameflowV1SessionEventWithBody performs a POST /lol-gameflow/v1/session/event (the `PostLolGameflowV1SessionEvent` operationId) request,
-// with any type of body and a specified content type.
-func (c *Client) PostLolGameflowV1SessionEventWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostLolGameflowV1SessionEventRequestWithBody(c.Server, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
 // PostLolGameflowV1SessionEvent performs a POST /lol-gameflow/v1/session/event (the `PostLolGameflowV1SessionEvent` operationId) request.
-// Takes a body of the `application/json` content type.
-func (c *Client) PostLolGameflowV1SessionEvent(ctx context.Context, body PostLolGameflowV1SessionEventJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostLolGameflowV1SessionEventRequest(c.Server, body)
+func (c *Client) PostLolGameflowV1SessionEvent(ctx context.Context, params *PostLolGameflowV1SessionEventParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostLolGameflowV1SessionEventRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -34311,19 +34250,6 @@ func (c *Client) PostLolLoginV1ServiceProxyAsyncRequestsByServiceNameByMethodNam
 	return c.Client.Do(req)
 }
 
-// PostLolLoginV1ServiceProxyUuidRequests performs a POST /lol-login/v1/service-proxy-uuid-requests (the `PostLolLoginV1ServiceProxyUuidRequests` operationId) request.
-func (c *Client) PostLolLoginV1ServiceProxyUuidRequests(ctx context.Context, params *PostLolLoginV1ServiceProxyUuidRequestsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostLolLoginV1ServiceProxyUuidRequestsRequest(c.Server, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
 // DeleteLolLoginV1Session performs a DELETE /lol-login/v1/session (the `DeleteLolLoginV1Session` operationId) request.
 func (c *Client) DeleteLolLoginV1Session(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewDeleteLolLoginV1SessionRequest(c.Server)
@@ -34340,19 +34266,6 @@ func (c *Client) DeleteLolLoginV1Session(ctx context.Context, reqEditors ...Requ
 // GetLolLoginV1Session performs a GET /lol-login/v1/session (the `GetLolLoginV1Session` operationId) request.
 func (c *Client) GetLolLoginV1Session(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetLolLoginV1SessionRequest(c.Server)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PostLolLoginV1SessionInvoke performs a POST /lol-login/v1/session/invoke (the `PostLolLoginV1SessionInvoke` operationId) request.
-func (c *Client) PostLolLoginV1SessionInvoke(ctx context.Context, params *PostLolLoginV1SessionInvokeParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostLolLoginV1SessionInvokeRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -42133,6 +42046,192 @@ func (c *Client) GetLolTastesV1TftOverviewModel(ctx context.Context, reqEditors 
 	return c.Client.Do(req)
 }
 
+// DeleteLolTeamVoiceV1InternalPreparePartyVoiceSession performs a DELETE /lol-team-voice/v1/internal/prepare-party-voice-session (the `DeleteLolTeamVoiceV1InternalPreparePartyVoiceSession` operationId) request.
+func (c *Client) DeleteLolTeamVoiceV1InternalPreparePartyVoiceSession(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteLolTeamVoiceV1InternalPreparePartyVoiceSessionRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostLolTeamVoiceV1InternalPreparePartyVoiceSessionWithBody performs a POST /lol-team-voice/v1/internal/prepare-party-voice-session (the `PostLolTeamVoiceV1InternalPreparePartyVoiceSession` operationId) request,
+// with any type of body and a specified content type.
+func (c *Client) PostLolTeamVoiceV1InternalPreparePartyVoiceSessionWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostLolTeamVoiceV1InternalPreparePartyVoiceSessionRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostLolTeamVoiceV1InternalPreparePartyVoiceSession performs a POST /lol-team-voice/v1/internal/prepare-party-voice-session (the `PostLolTeamVoiceV1InternalPreparePartyVoiceSession` operationId) request.
+// Takes a body of the `application/json` content type.
+func (c *Client) PostLolTeamVoiceV1InternalPreparePartyVoiceSession(ctx context.Context, body PostLolTeamVoiceV1InternalPreparePartyVoiceSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostLolTeamVoiceV1InternalPreparePartyVoiceSessionRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMuted performs a PUT /lol-team-voice/v1/participants/{participantId}/mute/{isMuted} (the `PutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMuted` operationId) request.
+func (c *Client) PutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMuted(ctx context.Context, participantId string, isMuted bool, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMutedRequest(c.Server, participantId, isMuted)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolume performs a PUT /lol-team-voice/v1/participants/{participantId}/volume/{volume} (the `PutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolume` operationId) request.
+func (c *Client) PutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolume(ctx context.Context, participantId string, volume uint32, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolumeRequest(c.Server, participantId, volume)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// DeleteLolTeamVoiceV1Session performs a DELETE /lol-team-voice/v1/session (the `DeleteLolTeamVoiceV1Session` operationId) request.
+func (c *Client) DeleteLolTeamVoiceV1Session(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteLolTeamVoiceV1SessionRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetLolTeamVoiceV1Session performs a GET /lol-team-voice/v1/session (the `GetLolTeamVoiceV1Session` operationId) request.
+func (c *Client) GetLolTeamVoiceV1Session(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetLolTeamVoiceV1SessionRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostLolTeamVoiceV1Session performs a POST /lol-team-voice/v1/session (the `PostLolTeamVoiceV1Session` operationId) request.
+func (c *Client) PostLolTeamVoiceV1Session(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostLolTeamVoiceV1SessionRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PutLolTeamVoiceV1SessionWithBody performs a PUT /lol-team-voice/v1/session (the `PutLolTeamVoiceV1Session` operationId) request,
+// with any type of body and a specified content type.
+func (c *Client) PutLolTeamVoiceV1SessionWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutLolTeamVoiceV1SessionRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PutLolTeamVoiceV1Session performs a PUT /lol-team-voice/v1/session (the `PutLolTeamVoiceV1Session` operationId) request.
+// Takes a body of the `application/json` content type.
+func (c *Client) PutLolTeamVoiceV1Session(ctx context.Context, body PutLolTeamVoiceV1SessionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutLolTeamVoiceV1SessionRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetLolTeamVoiceV1VoiceFonts performs a GET /lol-team-voice/v1/voice-fonts (the `GetLolTeamVoiceV1VoiceFonts` operationId) request.
+func (c *Client) GetLolTeamVoiceV1VoiceFonts(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetLolTeamVoiceV1VoiceFontsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetLolTeamVoiceV1VoiceFontsHardwareSupported performs a GET /lol-team-voice/v1/voice-fonts/hardware-supported (the `GetLolTeamVoiceV1VoiceFontsHardwareSupported` operationId) request.
+func (c *Client) GetLolTeamVoiceV1VoiceFontsHardwareSupported(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetLolTeamVoiceV1VoiceFontsHardwareSupportedRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetLolTeamVoiceV1VoiceFontsStatus performs a GET /lol-team-voice/v1/voice-fonts/status (the `GetLolTeamVoiceV1VoiceFontsStatus` operationId) request.
+func (c *Client) GetLolTeamVoiceV1VoiceFontsStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetLolTeamVoiceV1VoiceFontsStatusRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// GetLolTeamVoiceV2Availability performs a GET /lol-team-voice/v2/availability (the `GetLolTeamVoiceV2Availability` operationId) request.
+func (c *Client) GetLolTeamVoiceV2Availability(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetLolTeamVoiceV2AvailabilityRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // GetLolTftEventPveV1Buddies performs a GET /lol-tft-event-pve/v1/buddies (the `GetLolTftEventPveV1Buddies` operationId) request.
 func (c *Client) GetLolTftEventPveV1Buddies(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetLolTftEventPveV1BuddiesRequest(c.Server)
@@ -45734,262 +45833,6 @@ func (c *Client) PostTelemetryV1EventsByEventTypeWithBody(ctx context.Context, e
 // Adds a new event to be sent to Dradis and/or other analytics/monitoring data sinks. All events will have their eventType prefixed with "riot__rclient__"
 func (c *Client) PostTelemetryV1EventsByEventType(ctx context.Context, eventType string, body PostTelemetryV1EventsByEventTypeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewPostTelemetryV1EventsByEventTypeRequest(c.Server, eventType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PatchTelemetryV3SlisAddBoolDiagnosticWithBody performs a PATCH /telemetry/v3/slis/add-bool-diagnostic (the `PatchTelemetryV3SlisAddBoolDiagnostic` operationId) request,
-// with any type of body and a specified content type.
-//
-// Add bool diagnostic to be sent with SLIs.
-func (c *Client) PatchTelemetryV3SlisAddBoolDiagnosticWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPatchTelemetryV3SlisAddBoolDiagnosticRequestWithBody(c.Server, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PatchTelemetryV3SlisAddBoolDiagnostic performs a PATCH /telemetry/v3/slis/add-bool-diagnostic (the `PatchTelemetryV3SlisAddBoolDiagnostic` operationId) request.
-// Takes a body of the `application/json` content type.
-//
-// Add bool diagnostic to be sent with SLIs.
-func (c *Client) PatchTelemetryV3SlisAddBoolDiagnostic(ctx context.Context, body PatchTelemetryV3SlisAddBoolDiagnosticJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPatchTelemetryV3SlisAddBoolDiagnosticRequest(c.Server, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PatchTelemetryV3SlisAddDoubleDiagnosticWithBody performs a PATCH /telemetry/v3/slis/add-double-diagnostic (the `PatchTelemetryV3SlisAddDoubleDiagnostic` operationId) request,
-// with any type of body and a specified content type.
-//
-// Add double diagnostic to be sent with SLIs.
-func (c *Client) PatchTelemetryV3SlisAddDoubleDiagnosticWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPatchTelemetryV3SlisAddDoubleDiagnosticRequestWithBody(c.Server, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PatchTelemetryV3SlisAddDoubleDiagnostic performs a PATCH /telemetry/v3/slis/add-double-diagnostic (the `PatchTelemetryV3SlisAddDoubleDiagnostic` operationId) request.
-// Takes a body of the `application/json` content type.
-//
-// Add double diagnostic to be sent with SLIs.
-func (c *Client) PatchTelemetryV3SlisAddDoubleDiagnostic(ctx context.Context, body PatchTelemetryV3SlisAddDoubleDiagnosticJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPatchTelemetryV3SlisAddDoubleDiagnosticRequest(c.Server, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PatchTelemetryV3SlisAddIntDiagnosticWithBody performs a PATCH /telemetry/v3/slis/add-int-diagnostic (the `PatchTelemetryV3SlisAddIntDiagnostic` operationId) request,
-// with any type of body and a specified content type.
-//
-// Add int diagnostic to be sent with SLIs.
-func (c *Client) PatchTelemetryV3SlisAddIntDiagnosticWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPatchTelemetryV3SlisAddIntDiagnosticRequestWithBody(c.Server, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PatchTelemetryV3SlisAddIntDiagnostic performs a PATCH /telemetry/v3/slis/add-int-diagnostic (the `PatchTelemetryV3SlisAddIntDiagnostic` operationId) request.
-// Takes a body of the `application/json` content type.
-//
-// Add int diagnostic to be sent with SLIs.
-func (c *Client) PatchTelemetryV3SlisAddIntDiagnostic(ctx context.Context, body PatchTelemetryV3SlisAddIntDiagnosticJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPatchTelemetryV3SlisAddIntDiagnosticRequest(c.Server, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PatchTelemetryV3SlisAddLabelWithBody performs a PATCH /telemetry/v3/slis/add-label (the `PatchTelemetryV3SlisAddLabel` operationId) request,
-// with any type of body and a specified content type.
-//
-// Add label to be sent with SLIs.
-func (c *Client) PatchTelemetryV3SlisAddLabelWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPatchTelemetryV3SlisAddLabelRequestWithBody(c.Server, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PatchTelemetryV3SlisAddLabel performs a PATCH /telemetry/v3/slis/add-label (the `PatchTelemetryV3SlisAddLabel` operationId) request.
-// Takes a body of the `application/json` content type.
-//
-// Add label to be sent with SLIs.
-func (c *Client) PatchTelemetryV3SlisAddLabel(ctx context.Context, body PatchTelemetryV3SlisAddLabelJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPatchTelemetryV3SlisAddLabelRequest(c.Server, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PatchTelemetryV3SlisAddStringDiagnosticWithBody performs a PATCH /telemetry/v3/slis/add-string-diagnostic (the `PatchTelemetryV3SlisAddStringDiagnostic` operationId) request,
-// with any type of body and a specified content type.
-//
-// Add string diagnostic to be sent with SLIs.
-func (c *Client) PatchTelemetryV3SlisAddStringDiagnosticWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPatchTelemetryV3SlisAddStringDiagnosticRequestWithBody(c.Server, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PatchTelemetryV3SlisAddStringDiagnostic performs a PATCH /telemetry/v3/slis/add-string-diagnostic (the `PatchTelemetryV3SlisAddStringDiagnostic` operationId) request.
-// Takes a body of the `application/json` content type.
-//
-// Add string diagnostic to be sent with SLIs.
-func (c *Client) PatchTelemetryV3SlisAddStringDiagnostic(ctx context.Context, body PatchTelemetryV3SlisAddStringDiagnosticJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPatchTelemetryV3SlisAddStringDiagnosticRequest(c.Server, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PostTelemetryV3SlisCountsWithBody performs a POST /telemetry/v3/slis/counts (the `PostTelemetryV3SlisCounts` operationId) request,
-// with any type of body and a specified content type.
-//
-// Report an SLI to the collector.
-func (c *Client) PostTelemetryV3SlisCountsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostTelemetryV3SlisCountsRequestWithBody(c.Server, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PostTelemetryV3SlisCounts performs a POST /telemetry/v3/slis/counts (the `PostTelemetryV3SlisCounts` operationId) request.
-// Takes a body of the `application/json` content type.
-//
-// Report an SLI to the collector.
-func (c *Client) PostTelemetryV3SlisCounts(ctx context.Context, body PostTelemetryV3SlisCountsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostTelemetryV3SlisCountsRequest(c.Server, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PostTelemetryV3UptimeTrackingNotifyFailureWithBody performs a POST /telemetry/v3/uptime-tracking/notify-failure (the `PostTelemetryV3UptimeTrackingNotifyFailure` operationId) request,
-// with any type of body and a specified content type.
-//
-// Mark an availability item's operation as failure on uptime tracking mechanism.
-func (c *Client) PostTelemetryV3UptimeTrackingNotifyFailureWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostTelemetryV3UptimeTrackingNotifyFailureRequestWithBody(c.Server, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PostTelemetryV3UptimeTrackingNotifyFailure performs a POST /telemetry/v3/uptime-tracking/notify-failure (the `PostTelemetryV3UptimeTrackingNotifyFailure` operationId) request.
-// Takes a body of the `application/json` content type.
-//
-// Mark an availability item's operation as failure on uptime tracking mechanism.
-func (c *Client) PostTelemetryV3UptimeTrackingNotifyFailure(ctx context.Context, body PostTelemetryV3UptimeTrackingNotifyFailureJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostTelemetryV3UptimeTrackingNotifyFailureRequest(c.Server, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PostTelemetryV3UptimeTrackingNotifySuccessWithBody performs a POST /telemetry/v3/uptime-tracking/notify-success (the `PostTelemetryV3UptimeTrackingNotifySuccess` operationId) request,
-// with any type of body and a specified content type.
-//
-// Mark an availability item's operation as success on uptime tracking mechanism.
-func (c *Client) PostTelemetryV3UptimeTrackingNotifySuccessWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostTelemetryV3UptimeTrackingNotifySuccessRequestWithBody(c.Server, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// PostTelemetryV3UptimeTrackingNotifySuccess performs a POST /telemetry/v3/uptime-tracking/notify-success (the `PostTelemetryV3UptimeTrackingNotifySuccess` operationId) request.
-// Takes a body of the `application/json` content type.
-//
-// Mark an availability item's operation as success on uptime tracking mechanism.
-func (c *Client) PostTelemetryV3UptimeTrackingNotifySuccess(ctx context.Context, body PostTelemetryV3UptimeTrackingNotifySuccessJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostTelemetryV3UptimeTrackingNotifySuccessRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -61217,6 +61060,46 @@ func NewGetLolGameflowV1PlayerKickedVanguardRequest(server string) (*http.Reques
 	return req, nil
 }
 
+// NewPostLolGameflowV1PostgameRmsMessageRequest calls the generic PostLolGameflowV1PostgameRmsMessage builder with application/json body
+func NewPostLolGameflowV1PostgameRmsMessageRequest(server string, body PostLolGameflowV1PostgameRmsMessageJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostLolGameflowV1PostgameRmsMessageRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostLolGameflowV1PostgameRmsMessageRequestWithBody constructs an http.Request for the PostLolGameflowV1PostgameRmsMessage method, with any body, and a specified content type
+func NewPostLolGameflowV1PostgameRmsMessageRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/lol-gameflow/v1/postgame/rms-message")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewPostLolGameflowV1PreEndGameTransitionRequest calls the generic PostLolGameflowV1PreEndGameTransition builder with application/json body
 func NewPostLolGameflowV1PreEndGameTransitionRequest(server string, body PostLolGameflowV1PreEndGameTransitionJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -61391,19 +61274,8 @@ func NewPostLolGameflowV1SessionDodgeRequestWithBody(server string, contentType 
 	return req, nil
 }
 
-// NewPostLolGameflowV1SessionEventRequest calls the generic PostLolGameflowV1SessionEvent builder with application/json body
-func NewPostLolGameflowV1SessionEventRequest(server string, body PostLolGameflowV1SessionEventJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewPostLolGameflowV1SessionEventRequestWithBody(server, "application/json", bodyReader)
-}
-
-// NewPostLolGameflowV1SessionEventRequestWithBody constructs an http.Request for the PostLolGameflowV1SessionEvent method, with any body, and a specified content type
-func NewPostLolGameflowV1SessionEventRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+// NewPostLolGameflowV1SessionEventRequest constructs an http.Request for the PostLolGameflowV1SessionEvent method
+func NewPostLolGameflowV1SessionEventRequest(server string, params *PostLolGameflowV1SessionEventParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -61421,12 +61293,57 @@ func NewPostLolGameflowV1SessionEventRequestWithBody(server string, contentType 
 		return nil, err
 	}
 
-	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "session", params.Session, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+			return nil, err
+		} else {
+			for _, qp := range strings.Split(queryFrag, "&") {
+				rawQueryFragments = append(rawQueryFragments, qp)
+			}
+		}
+
+		if params.GameId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "gameId", *params.GameId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: "int64"}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.GameEndUtcTimestampMillis != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "gameEndUtcTimestampMillis", *params.GameEndUtcTimestampMillis, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: "uint64"}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
-
-	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -69923,88 +69840,6 @@ func NewPostLolLoginV1ServiceProxyAsyncRequestsByServiceNameByMethodNameRequestW
 	return req, nil
 }
 
-// NewPostLolLoginV1ServiceProxyUuidRequestsRequest constructs an http.Request for the PostLolLoginV1ServiceProxyUuidRequests method
-func NewPostLolLoginV1ServiceProxyUuidRequestsRequest(server string, params *PostLolLoginV1ServiceProxyUuidRequestsParams) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/lol-login/v1/service-proxy-uuid-requests")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	if params != nil {
-		// queryValues collects non-styled parameters (passthrough, JSON)
-		// that are safe to round-trip through url.Values.Encode().
-		queryValues := queryURL.Query()
-		// rawQueryFragments collects pre-encoded query fragments from
-		// styled parameters, preserving literal commas as delimiters
-		// per the OpenAPI spec (e.g. "color=blue,black,brown").
-		var rawQueryFragments []string
-
-		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "serviceName", params.ServiceName, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
-			return nil, err
-		} else {
-			for _, qp := range strings.Split(queryFrag, "&") {
-				rawQueryFragments = append(rawQueryFragments, qp)
-			}
-		}
-
-		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "methodName", params.MethodName, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
-			return nil, err
-		} else {
-			for _, qp := range strings.Split(queryFrag, "&") {
-				rawQueryFragments = append(rawQueryFragments, qp)
-			}
-		}
-
-		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "pluginId", params.PluginId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: "uint32"}); err != nil {
-			return nil, err
-		} else {
-			for _, qp := range strings.Split(queryFrag, "&") {
-				rawQueryFragments = append(rawQueryFragments, qp)
-			}
-		}
-
-		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "timeoutMillis", params.TimeoutMillis, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: "uint64"}); err != nil {
-			return nil, err
-		} else {
-			for _, qp := range strings.Split(queryFrag, "&") {
-				rawQueryFragments = append(rawQueryFragments, qp)
-			}
-		}
-
-		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "payload", params.Payload, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
-			return nil, err
-		} else {
-			for _, qp := range strings.Split(queryFrag, "&") {
-				rawQueryFragments = append(rawQueryFragments, qp)
-			}
-		}
-
-		if encoded := queryValues.Encode(); encoded != "" {
-			rawQueryFragments = append(rawQueryFragments, encoded)
-		}
-		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
-	}
-
-	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
 // NewDeleteLolLoginV1SessionRequest constructs an http.Request for the DeleteLolLoginV1Session method
 func NewDeleteLolLoginV1SessionRequest(server string) (*http.Request, error) {
 	var err error
@@ -70052,76 +69887,6 @@ func NewGetLolLoginV1SessionRequest(server string) (*http.Request, error) {
 	}
 
 	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewPostLolLoginV1SessionInvokeRequest constructs an http.Request for the PostLolLoginV1SessionInvoke method
-func NewPostLolLoginV1SessionInvokeRequest(server string, params *PostLolLoginV1SessionInvokeParams) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/lol-login/v1/session/invoke")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	if params != nil {
-		// queryValues collects non-styled parameters (passthrough, JSON)
-		// that are safe to round-trip through url.Values.Encode().
-		queryValues := queryURL.Query()
-		// rawQueryFragments collects pre-encoded query fragments from
-		// styled parameters, preserving literal commas as delimiters
-		// per the OpenAPI spec (e.g. "color=blue,black,brown").
-		var rawQueryFragments []string
-
-		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "destination", params.Destination, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
-			return nil, err
-		} else {
-			for _, qp := range strings.Split(queryFrag, "&") {
-				rawQueryFragments = append(rawQueryFragments, qp)
-			}
-		}
-
-		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "method", params.Method, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
-			return nil, err
-		} else {
-			for _, qp := range strings.Split(queryFrag, "&") {
-				rawQueryFragments = append(rawQueryFragments, qp)
-			}
-		}
-
-		if params.Args != nil {
-
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "args", params.Args, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "array", Format: ""}); err != nil {
-				return nil, err
-			} else {
-				for _, qp := range strings.Split(queryFrag, "&") {
-					rawQueryFragments = append(rawQueryFragments, qp)
-				}
-			}
-
-		}
-
-		if encoded := queryValues.Encode(); encoded != "" {
-			rawQueryFragments = append(rawQueryFragments, encoded)
-		}
-		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
-	}
-
-	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -86670,6 +86435,384 @@ func NewGetLolTastesV1TftOverviewModelRequest(server string) (*http.Request, err
 	return req, nil
 }
 
+// NewDeleteLolTeamVoiceV1InternalPreparePartyVoiceSessionRequest constructs an http.Request for the DeleteLolTeamVoiceV1InternalPreparePartyVoiceSession method
+func NewDeleteLolTeamVoiceV1InternalPreparePartyVoiceSessionRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/lol-team-voice/v1/internal/prepare-party-voice-session")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostLolTeamVoiceV1InternalPreparePartyVoiceSessionRequest calls the generic PostLolTeamVoiceV1InternalPreparePartyVoiceSession builder with application/json body
+func NewPostLolTeamVoiceV1InternalPreparePartyVoiceSessionRequest(server string, body PostLolTeamVoiceV1InternalPreparePartyVoiceSessionJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostLolTeamVoiceV1InternalPreparePartyVoiceSessionRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostLolTeamVoiceV1InternalPreparePartyVoiceSessionRequestWithBody constructs an http.Request for the PostLolTeamVoiceV1InternalPreparePartyVoiceSession method, with any body, and a specified content type
+func NewPostLolTeamVoiceV1InternalPreparePartyVoiceSessionRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/lol-team-voice/v1/internal/prepare-party-voice-session")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMutedRequest constructs an http.Request for the PutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMuted method
+func NewPutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMutedRequest(server string, participantId string, isMuted bool) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "participantId", participantId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "isMuted", isMuted, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "boolean", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/lol-team-voice/v1/participants/%s/mute/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolumeRequest constructs an http.Request for the PutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolume method
+func NewPutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolumeRequest(server string, participantId string, volume uint32) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "participantId", participantId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "volume", volume, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: "uint32"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/lol-team-voice/v1/participants/%s/volume/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewDeleteLolTeamVoiceV1SessionRequest constructs an http.Request for the DeleteLolTeamVoiceV1Session method
+func NewDeleteLolTeamVoiceV1SessionRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/lol-team-voice/v1/session")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetLolTeamVoiceV1SessionRequest constructs an http.Request for the GetLolTeamVoiceV1Session method
+func NewGetLolTeamVoiceV1SessionRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/lol-team-voice/v1/session")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostLolTeamVoiceV1SessionRequest constructs an http.Request for the PostLolTeamVoiceV1Session method
+func NewPostLolTeamVoiceV1SessionRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/lol-team-voice/v1/session")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPutLolTeamVoiceV1SessionRequest calls the generic PutLolTeamVoiceV1Session builder with application/json body
+func NewPutLolTeamVoiceV1SessionRequest(server string, body PutLolTeamVoiceV1SessionJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPutLolTeamVoiceV1SessionRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPutLolTeamVoiceV1SessionRequestWithBody constructs an http.Request for the PutLolTeamVoiceV1Session method, with any body, and a specified content type
+func NewPutLolTeamVoiceV1SessionRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/lol-team-voice/v1/session")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetLolTeamVoiceV1VoiceFontsRequest constructs an http.Request for the GetLolTeamVoiceV1VoiceFonts method
+func NewGetLolTeamVoiceV1VoiceFontsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/lol-team-voice/v1/voice-fonts")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetLolTeamVoiceV1VoiceFontsHardwareSupportedRequest constructs an http.Request for the GetLolTeamVoiceV1VoiceFontsHardwareSupported method
+func NewGetLolTeamVoiceV1VoiceFontsHardwareSupportedRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/lol-team-voice/v1/voice-fonts/hardware-supported")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetLolTeamVoiceV1VoiceFontsStatusRequest constructs an http.Request for the GetLolTeamVoiceV1VoiceFontsStatus method
+func NewGetLolTeamVoiceV1VoiceFontsStatusRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/lol-team-voice/v1/voice-fonts/status")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetLolTeamVoiceV2AvailabilityRequest constructs an http.Request for the GetLolTeamVoiceV2Availability method
+func NewGetLolTeamVoiceV2AvailabilityRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/lol-team-voice/v2/availability")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewGetLolTftEventPveV1BuddiesRequest constructs an http.Request for the GetLolTftEventPveV1Buddies method
 func NewGetLolTftEventPveV1BuddiesRequest(server string) (*http.Request, error) {
 	var err error
@@ -93803,326 +93946,6 @@ func NewPostTelemetryV1EventsByEventTypeRequestWithBody(server string, eventType
 	return req, nil
 }
 
-// NewPatchTelemetryV3SlisAddBoolDiagnosticRequest calls the generic PatchTelemetryV3SlisAddBoolDiagnostic builder with application/json body
-func NewPatchTelemetryV3SlisAddBoolDiagnosticRequest(server string, body PatchTelemetryV3SlisAddBoolDiagnosticJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewPatchTelemetryV3SlisAddBoolDiagnosticRequestWithBody(server, "application/json", bodyReader)
-}
-
-// NewPatchTelemetryV3SlisAddBoolDiagnosticRequestWithBody constructs an http.Request for the PatchTelemetryV3SlisAddBoolDiagnostic method, with any body, and a specified content type
-func NewPatchTelemetryV3SlisAddBoolDiagnosticRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/telemetry/v3/slis/add-bool-diagnostic")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewPatchTelemetryV3SlisAddDoubleDiagnosticRequest calls the generic PatchTelemetryV3SlisAddDoubleDiagnostic builder with application/json body
-func NewPatchTelemetryV3SlisAddDoubleDiagnosticRequest(server string, body PatchTelemetryV3SlisAddDoubleDiagnosticJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewPatchTelemetryV3SlisAddDoubleDiagnosticRequestWithBody(server, "application/json", bodyReader)
-}
-
-// NewPatchTelemetryV3SlisAddDoubleDiagnosticRequestWithBody constructs an http.Request for the PatchTelemetryV3SlisAddDoubleDiagnostic method, with any body, and a specified content type
-func NewPatchTelemetryV3SlisAddDoubleDiagnosticRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/telemetry/v3/slis/add-double-diagnostic")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewPatchTelemetryV3SlisAddIntDiagnosticRequest calls the generic PatchTelemetryV3SlisAddIntDiagnostic builder with application/json body
-func NewPatchTelemetryV3SlisAddIntDiagnosticRequest(server string, body PatchTelemetryV3SlisAddIntDiagnosticJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewPatchTelemetryV3SlisAddIntDiagnosticRequestWithBody(server, "application/json", bodyReader)
-}
-
-// NewPatchTelemetryV3SlisAddIntDiagnosticRequestWithBody constructs an http.Request for the PatchTelemetryV3SlisAddIntDiagnostic method, with any body, and a specified content type
-func NewPatchTelemetryV3SlisAddIntDiagnosticRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/telemetry/v3/slis/add-int-diagnostic")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewPatchTelemetryV3SlisAddLabelRequest calls the generic PatchTelemetryV3SlisAddLabel builder with application/json body
-func NewPatchTelemetryV3SlisAddLabelRequest(server string, body PatchTelemetryV3SlisAddLabelJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewPatchTelemetryV3SlisAddLabelRequestWithBody(server, "application/json", bodyReader)
-}
-
-// NewPatchTelemetryV3SlisAddLabelRequestWithBody constructs an http.Request for the PatchTelemetryV3SlisAddLabel method, with any body, and a specified content type
-func NewPatchTelemetryV3SlisAddLabelRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/telemetry/v3/slis/add-label")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewPatchTelemetryV3SlisAddStringDiagnosticRequest calls the generic PatchTelemetryV3SlisAddStringDiagnostic builder with application/json body
-func NewPatchTelemetryV3SlisAddStringDiagnosticRequest(server string, body PatchTelemetryV3SlisAddStringDiagnosticJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewPatchTelemetryV3SlisAddStringDiagnosticRequestWithBody(server, "application/json", bodyReader)
-}
-
-// NewPatchTelemetryV3SlisAddStringDiagnosticRequestWithBody constructs an http.Request for the PatchTelemetryV3SlisAddStringDiagnostic method, with any body, and a specified content type
-func NewPatchTelemetryV3SlisAddStringDiagnosticRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/telemetry/v3/slis/add-string-diagnostic")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewPostTelemetryV3SlisCountsRequest calls the generic PostTelemetryV3SlisCounts builder with application/json body
-func NewPostTelemetryV3SlisCountsRequest(server string, body PostTelemetryV3SlisCountsJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewPostTelemetryV3SlisCountsRequestWithBody(server, "application/json", bodyReader)
-}
-
-// NewPostTelemetryV3SlisCountsRequestWithBody constructs an http.Request for the PostTelemetryV3SlisCounts method, with any body, and a specified content type
-func NewPostTelemetryV3SlisCountsRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/telemetry/v3/slis/counts")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewPostTelemetryV3UptimeTrackingNotifyFailureRequest calls the generic PostTelemetryV3UptimeTrackingNotifyFailure builder with application/json body
-func NewPostTelemetryV3UptimeTrackingNotifyFailureRequest(server string, body PostTelemetryV3UptimeTrackingNotifyFailureJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewPostTelemetryV3UptimeTrackingNotifyFailureRequestWithBody(server, "application/json", bodyReader)
-}
-
-// NewPostTelemetryV3UptimeTrackingNotifyFailureRequestWithBody constructs an http.Request for the PostTelemetryV3UptimeTrackingNotifyFailure method, with any body, and a specified content type
-func NewPostTelemetryV3UptimeTrackingNotifyFailureRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/telemetry/v3/uptime-tracking/notify-failure")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewPostTelemetryV3UptimeTrackingNotifySuccessRequest calls the generic PostTelemetryV3UptimeTrackingNotifySuccess builder with application/json body
-func NewPostTelemetryV3UptimeTrackingNotifySuccessRequest(server string, body PostTelemetryV3UptimeTrackingNotifySuccessJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewPostTelemetryV3UptimeTrackingNotifySuccessRequestWithBody(server, "application/json", bodyReader)
-}
-
-// NewPostTelemetryV3UptimeTrackingNotifySuccessRequestWithBody constructs an http.Request for the PostTelemetryV3UptimeTrackingNotifySuccess method, with any body, and a specified content type
-func NewPostTelemetryV3UptimeTrackingNotifySuccessRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/telemetry/v3/uptime-tracking/notify-success")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
 // NewDeleteTracingV1PerformanceByNameRequest constructs an http.Request for the DeleteTracingV1PerformanceByName method
 func NewDeleteTracingV1PerformanceByNameRequest(server string, name string) (*http.Request, error) {
 	var err error
@@ -97531,6 +97354,16 @@ type ClientWithResponsesInterface interface {
 	// Returns a wrapper object for the known response body format(s).
 	GetLolGameflowV1PlayerKickedVanguardWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolGameflowV1PlayerKickedVanguardResponse, error)
 
+	// PostLolGameflowV1PostgameRmsMessageWithBodyWithResponse performs a POST /lol-gameflow/v1/postgame/rms-message (the `PostLolGameflowV1PostgameRmsMessage` operationId) request,
+	// with any type of body and a specified content type.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	PostLolGameflowV1PostgameRmsMessageWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostLolGameflowV1PostgameRmsMessageResponse, error)
+
+	// PostLolGameflowV1PostgameRmsMessageWithResponse performs a POST /lol-gameflow/v1/postgame/rms-message (the `PostLolGameflowV1PostgameRmsMessage` operationId) request.
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	PostLolGameflowV1PostgameRmsMessageWithResponse(ctx context.Context, body PostLolGameflowV1PostgameRmsMessageJSONRequestBody, reqEditors ...RequestEditorFn) (*PostLolGameflowV1PostgameRmsMessageResponse, error)
+
 	// PostLolGameflowV1PreEndGameTransitionWithBodyWithResponse performs a POST /lol-gameflow/v1/pre-end-game-transition (the `PostLolGameflowV1PreEndGameTransition` operationId) request,
 	// with any type of body and a specified content type.
 	//
@@ -97571,15 +97404,10 @@ type ClientWithResponsesInterface interface {
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	PostLolGameflowV1SessionDodgeWithResponse(ctx context.Context, body PostLolGameflowV1SessionDodgeJSONRequestBody, reqEditors ...RequestEditorFn) (*PostLolGameflowV1SessionDodgeResponse, error)
 
-	// PostLolGameflowV1SessionEventWithBodyWithResponse performs a POST /lol-gameflow/v1/session/event (the `PostLolGameflowV1SessionEvent` operationId) request,
-	// with any type of body and a specified content type.
+	// PostLolGameflowV1SessionEventWithResponse performs a POST /lol-gameflow/v1/session/event (the `PostLolGameflowV1SessionEvent` operationId) request.
 	//
 	// Returns a wrapper object for the known response body format(s).
-	PostLolGameflowV1SessionEventWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostLolGameflowV1SessionEventResponse, error)
-
-	// PostLolGameflowV1SessionEventWithResponse performs a POST /lol-gameflow/v1/session/event (the `PostLolGameflowV1SessionEvent` operationId) request.
-	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-	PostLolGameflowV1SessionEventWithResponse(ctx context.Context, body PostLolGameflowV1SessionEventJSONRequestBody, reqEditors ...RequestEditorFn) (*PostLolGameflowV1SessionEventResponse, error)
+	PostLolGameflowV1SessionEventWithResponse(ctx context.Context, params *PostLolGameflowV1SessionEventParams, reqEditors ...RequestEditorFn) (*PostLolGameflowV1SessionEventResponse, error)
 
 	// PostLolGameflowV1SessionGameConfigurationWithBodyWithResponse performs a POST /lol-gameflow/v1/session/game-configuration (the `PostLolGameflowV1SessionGameConfiguration` operationId) request,
 	// with any type of body and a specified content type.
@@ -99091,11 +98919,6 @@ type ClientWithResponsesInterface interface {
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	PostLolLoginV1ServiceProxyAsyncRequestsByServiceNameByMethodNameWithResponse(ctx context.Context, serviceName string, methodName string, body PostLolLoginV1ServiceProxyAsyncRequestsByServiceNameByMethodNameJSONRequestBody, reqEditors ...RequestEditorFn) (*PostLolLoginV1ServiceProxyAsyncRequestsByServiceNameByMethodNameResponse, error)
 
-	// PostLolLoginV1ServiceProxyUuidRequestsWithResponse performs a POST /lol-login/v1/service-proxy-uuid-requests (the `PostLolLoginV1ServiceProxyUuidRequests` operationId) request.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	PostLolLoginV1ServiceProxyUuidRequestsWithResponse(ctx context.Context, params *PostLolLoginV1ServiceProxyUuidRequestsParams, reqEditors ...RequestEditorFn) (*PostLolLoginV1ServiceProxyUuidRequestsResponse, error)
-
 	// DeleteLolLoginV1SessionWithResponse performs a DELETE /lol-login/v1/session (the `DeleteLolLoginV1Session` operationId) request.
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -99105,11 +98928,6 @@ type ClientWithResponsesInterface interface {
 	//
 	// Returns a wrapper object for the known response body format(s).
 	GetLolLoginV1SessionWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolLoginV1SessionResponse, error)
-
-	// PostLolLoginV1SessionInvokeWithResponse performs a POST /lol-login/v1/session/invoke (the `PostLolLoginV1SessionInvoke` operationId) request.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	PostLolLoginV1SessionInvokeWithResponse(ctx context.Context, params *PostLolLoginV1SessionInvokeParams, reqEditors ...RequestEditorFn) (*PostLolLoginV1SessionInvokeResponse, error)
 
 	// DeleteLolLoginV1ShutdownLocksByLockNameWithResponse performs a DELETE /lol-login/v1/shutdown-locks/{lockName} (the `DeleteLolLoginV1ShutdownLocksByLockName` operationId) request.
 	//
@@ -102021,6 +101839,76 @@ type ClientWithResponsesInterface interface {
 	// Returns a wrapper object for the known response body format(s).
 	GetLolTastesV1TftOverviewModelWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolTastesV1TftOverviewModelResponse, error)
 
+	// DeleteLolTeamVoiceV1InternalPreparePartyVoiceSessionWithResponse performs a DELETE /lol-team-voice/v1/internal/prepare-party-voice-session (the `DeleteLolTeamVoiceV1InternalPreparePartyVoiceSession` operationId) request.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	DeleteLolTeamVoiceV1InternalPreparePartyVoiceSessionWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*DeleteLolTeamVoiceV1InternalPreparePartyVoiceSessionResponse, error)
+
+	// PostLolTeamVoiceV1InternalPreparePartyVoiceSessionWithBodyWithResponse performs a POST /lol-team-voice/v1/internal/prepare-party-voice-session (the `PostLolTeamVoiceV1InternalPreparePartyVoiceSession` operationId) request,
+	// with any type of body and a specified content type.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	PostLolTeamVoiceV1InternalPreparePartyVoiceSessionWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostLolTeamVoiceV1InternalPreparePartyVoiceSessionResponse, error)
+
+	// PostLolTeamVoiceV1InternalPreparePartyVoiceSessionWithResponse performs a POST /lol-team-voice/v1/internal/prepare-party-voice-session (the `PostLolTeamVoiceV1InternalPreparePartyVoiceSession` operationId) request.
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	PostLolTeamVoiceV1InternalPreparePartyVoiceSessionWithResponse(ctx context.Context, body PostLolTeamVoiceV1InternalPreparePartyVoiceSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*PostLolTeamVoiceV1InternalPreparePartyVoiceSessionResponse, error)
+
+	// PutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMutedWithResponse performs a PUT /lol-team-voice/v1/participants/{participantId}/mute/{isMuted} (the `PutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMuted` operationId) request.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	PutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMutedWithResponse(ctx context.Context, participantId string, isMuted bool, reqEditors ...RequestEditorFn) (*PutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMutedResponse, error)
+
+	// PutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolumeWithResponse performs a PUT /lol-team-voice/v1/participants/{participantId}/volume/{volume} (the `PutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolume` operationId) request.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	PutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolumeWithResponse(ctx context.Context, participantId string, volume uint32, reqEditors ...RequestEditorFn) (*PutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolumeResponse, error)
+
+	// DeleteLolTeamVoiceV1SessionWithResponse performs a DELETE /lol-team-voice/v1/session (the `DeleteLolTeamVoiceV1Session` operationId) request.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	DeleteLolTeamVoiceV1SessionWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*DeleteLolTeamVoiceV1SessionResponse, error)
+
+	// GetLolTeamVoiceV1SessionWithResponse performs a GET /lol-team-voice/v1/session (the `GetLolTeamVoiceV1Session` operationId) request.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	GetLolTeamVoiceV1SessionWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolTeamVoiceV1SessionResponse, error)
+
+	// PostLolTeamVoiceV1SessionWithResponse performs a POST /lol-team-voice/v1/session (the `PostLolTeamVoiceV1Session` operationId) request.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	PostLolTeamVoiceV1SessionWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostLolTeamVoiceV1SessionResponse, error)
+
+	// PutLolTeamVoiceV1SessionWithBodyWithResponse performs a PUT /lol-team-voice/v1/session (the `PutLolTeamVoiceV1Session` operationId) request,
+	// with any type of body and a specified content type.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	PutLolTeamVoiceV1SessionWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutLolTeamVoiceV1SessionResponse, error)
+
+	// PutLolTeamVoiceV1SessionWithResponse performs a PUT /lol-team-voice/v1/session (the `PutLolTeamVoiceV1Session` operationId) request.
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	PutLolTeamVoiceV1SessionWithResponse(ctx context.Context, body PutLolTeamVoiceV1SessionJSONRequestBody, reqEditors ...RequestEditorFn) (*PutLolTeamVoiceV1SessionResponse, error)
+
+	// GetLolTeamVoiceV1VoiceFontsWithResponse performs a GET /lol-team-voice/v1/voice-fonts (the `GetLolTeamVoiceV1VoiceFonts` operationId) request.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	GetLolTeamVoiceV1VoiceFontsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolTeamVoiceV1VoiceFontsResponse, error)
+
+	// GetLolTeamVoiceV1VoiceFontsHardwareSupportedWithResponse performs a GET /lol-team-voice/v1/voice-fonts/hardware-supported (the `GetLolTeamVoiceV1VoiceFontsHardwareSupported` operationId) request.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	GetLolTeamVoiceV1VoiceFontsHardwareSupportedWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolTeamVoiceV1VoiceFontsHardwareSupportedResponse, error)
+
+	// GetLolTeamVoiceV1VoiceFontsStatusWithResponse performs a GET /lol-team-voice/v1/voice-fonts/status (the `GetLolTeamVoiceV1VoiceFontsStatus` operationId) request.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	GetLolTeamVoiceV1VoiceFontsStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolTeamVoiceV1VoiceFontsStatusResponse, error)
+
+	// GetLolTeamVoiceV2AvailabilityWithResponse performs a GET /lol-team-voice/v2/availability (the `GetLolTeamVoiceV2Availability` operationId) request.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	GetLolTeamVoiceV2AvailabilityWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolTeamVoiceV2AvailabilityResponse, error)
+
 	// GetLolTftEventPveV1BuddiesWithResponse performs a GET /lol-tft-event-pve/v1/buddies (the `GetLolTftEventPveV1Buddies` operationId) request.
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -103473,118 +103361,6 @@ type ClientWithResponsesInterface interface {
 	//
 	// Adds a new event to be sent to Dradis and/or other analytics/monitoring data sinks. All events will have their eventType prefixed with "riot__rclient__"
 	PostTelemetryV1EventsByEventTypeWithResponse(ctx context.Context, eventType string, body PostTelemetryV1EventsByEventTypeJSONRequestBody, reqEditors ...RequestEditorFn) (*PostTelemetryV1EventsByEventTypeResponse, error)
-
-	// PatchTelemetryV3SlisAddBoolDiagnosticWithBodyWithResponse performs a PATCH /telemetry/v3/slis/add-bool-diagnostic (the `PatchTelemetryV3SlisAddBoolDiagnostic` operationId) request,
-	// with any type of body and a specified content type.
-	//
-	// Add bool diagnostic to be sent with SLIs.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	PatchTelemetryV3SlisAddBoolDiagnosticWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchTelemetryV3SlisAddBoolDiagnosticResponse, error)
-
-	// PatchTelemetryV3SlisAddBoolDiagnosticWithResponse performs a PATCH /telemetry/v3/slis/add-bool-diagnostic (the `PatchTelemetryV3SlisAddBoolDiagnostic` operationId) request.
-	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-	//
-	// Add bool diagnostic to be sent with SLIs.
-	PatchTelemetryV3SlisAddBoolDiagnosticWithResponse(ctx context.Context, body PatchTelemetryV3SlisAddBoolDiagnosticJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchTelemetryV3SlisAddBoolDiagnosticResponse, error)
-
-	// PatchTelemetryV3SlisAddDoubleDiagnosticWithBodyWithResponse performs a PATCH /telemetry/v3/slis/add-double-diagnostic (the `PatchTelemetryV3SlisAddDoubleDiagnostic` operationId) request,
-	// with any type of body and a specified content type.
-	//
-	// Add double diagnostic to be sent with SLIs.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	PatchTelemetryV3SlisAddDoubleDiagnosticWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchTelemetryV3SlisAddDoubleDiagnosticResponse, error)
-
-	// PatchTelemetryV3SlisAddDoubleDiagnosticWithResponse performs a PATCH /telemetry/v3/slis/add-double-diagnostic (the `PatchTelemetryV3SlisAddDoubleDiagnostic` operationId) request.
-	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-	//
-	// Add double diagnostic to be sent with SLIs.
-	PatchTelemetryV3SlisAddDoubleDiagnosticWithResponse(ctx context.Context, body PatchTelemetryV3SlisAddDoubleDiagnosticJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchTelemetryV3SlisAddDoubleDiagnosticResponse, error)
-
-	// PatchTelemetryV3SlisAddIntDiagnosticWithBodyWithResponse performs a PATCH /telemetry/v3/slis/add-int-diagnostic (the `PatchTelemetryV3SlisAddIntDiagnostic` operationId) request,
-	// with any type of body and a specified content type.
-	//
-	// Add int diagnostic to be sent with SLIs.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	PatchTelemetryV3SlisAddIntDiagnosticWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchTelemetryV3SlisAddIntDiagnosticResponse, error)
-
-	// PatchTelemetryV3SlisAddIntDiagnosticWithResponse performs a PATCH /telemetry/v3/slis/add-int-diagnostic (the `PatchTelemetryV3SlisAddIntDiagnostic` operationId) request.
-	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-	//
-	// Add int diagnostic to be sent with SLIs.
-	PatchTelemetryV3SlisAddIntDiagnosticWithResponse(ctx context.Context, body PatchTelemetryV3SlisAddIntDiagnosticJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchTelemetryV3SlisAddIntDiagnosticResponse, error)
-
-	// PatchTelemetryV3SlisAddLabelWithBodyWithResponse performs a PATCH /telemetry/v3/slis/add-label (the `PatchTelemetryV3SlisAddLabel` operationId) request,
-	// with any type of body and a specified content type.
-	//
-	// Add label to be sent with SLIs.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	PatchTelemetryV3SlisAddLabelWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchTelemetryV3SlisAddLabelResponse, error)
-
-	// PatchTelemetryV3SlisAddLabelWithResponse performs a PATCH /telemetry/v3/slis/add-label (the `PatchTelemetryV3SlisAddLabel` operationId) request.
-	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-	//
-	// Add label to be sent with SLIs.
-	PatchTelemetryV3SlisAddLabelWithResponse(ctx context.Context, body PatchTelemetryV3SlisAddLabelJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchTelemetryV3SlisAddLabelResponse, error)
-
-	// PatchTelemetryV3SlisAddStringDiagnosticWithBodyWithResponse performs a PATCH /telemetry/v3/slis/add-string-diagnostic (the `PatchTelemetryV3SlisAddStringDiagnostic` operationId) request,
-	// with any type of body and a specified content type.
-	//
-	// Add string diagnostic to be sent with SLIs.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	PatchTelemetryV3SlisAddStringDiagnosticWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchTelemetryV3SlisAddStringDiagnosticResponse, error)
-
-	// PatchTelemetryV3SlisAddStringDiagnosticWithResponse performs a PATCH /telemetry/v3/slis/add-string-diagnostic (the `PatchTelemetryV3SlisAddStringDiagnostic` operationId) request.
-	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-	//
-	// Add string diagnostic to be sent with SLIs.
-	PatchTelemetryV3SlisAddStringDiagnosticWithResponse(ctx context.Context, body PatchTelemetryV3SlisAddStringDiagnosticJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchTelemetryV3SlisAddStringDiagnosticResponse, error)
-
-	// PostTelemetryV3SlisCountsWithBodyWithResponse performs a POST /telemetry/v3/slis/counts (the `PostTelemetryV3SlisCounts` operationId) request,
-	// with any type of body and a specified content type.
-	//
-	// Report an SLI to the collector.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	PostTelemetryV3SlisCountsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostTelemetryV3SlisCountsResponse, error)
-
-	// PostTelemetryV3SlisCountsWithResponse performs a POST /telemetry/v3/slis/counts (the `PostTelemetryV3SlisCounts` operationId) request.
-	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-	//
-	// Report an SLI to the collector.
-	PostTelemetryV3SlisCountsWithResponse(ctx context.Context, body PostTelemetryV3SlisCountsJSONRequestBody, reqEditors ...RequestEditorFn) (*PostTelemetryV3SlisCountsResponse, error)
-
-	// PostTelemetryV3UptimeTrackingNotifyFailureWithBodyWithResponse performs a POST /telemetry/v3/uptime-tracking/notify-failure (the `PostTelemetryV3UptimeTrackingNotifyFailure` operationId) request,
-	// with any type of body and a specified content type.
-	//
-	// Mark an availability item's operation as failure on uptime tracking mechanism.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	PostTelemetryV3UptimeTrackingNotifyFailureWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostTelemetryV3UptimeTrackingNotifyFailureResponse, error)
-
-	// PostTelemetryV3UptimeTrackingNotifyFailureWithResponse performs a POST /telemetry/v3/uptime-tracking/notify-failure (the `PostTelemetryV3UptimeTrackingNotifyFailure` operationId) request.
-	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-	//
-	// Mark an availability item's operation as failure on uptime tracking mechanism.
-	PostTelemetryV3UptimeTrackingNotifyFailureWithResponse(ctx context.Context, body PostTelemetryV3UptimeTrackingNotifyFailureJSONRequestBody, reqEditors ...RequestEditorFn) (*PostTelemetryV3UptimeTrackingNotifyFailureResponse, error)
-
-	// PostTelemetryV3UptimeTrackingNotifySuccessWithBodyWithResponse performs a POST /telemetry/v3/uptime-tracking/notify-success (the `PostTelemetryV3UptimeTrackingNotifySuccess` operationId) request,
-	// with any type of body and a specified content type.
-	//
-	// Mark an availability item's operation as success on uptime tracking mechanism.
-	//
-	// Returns a wrapper object for the known response body format(s).
-	PostTelemetryV3UptimeTrackingNotifySuccessWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostTelemetryV3UptimeTrackingNotifySuccessResponse, error)
-
-	// PostTelemetryV3UptimeTrackingNotifySuccessWithResponse performs a POST /telemetry/v3/uptime-tracking/notify-success (the `PostTelemetryV3UptimeTrackingNotifySuccess` operationId) request.
-	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-	//
-	// Mark an availability item's operation as success on uptime tracking mechanism.
-	PostTelemetryV3UptimeTrackingNotifySuccessWithResponse(ctx context.Context, body PostTelemetryV3UptimeTrackingNotifySuccessJSONRequestBody, reqEditors ...RequestEditorFn) (*PostTelemetryV3UptimeTrackingNotifySuccessResponse, error)
 
 	// DeleteTracingV1PerformanceByNameWithResponse performs a DELETE /tracing/v1/performance/{name} (the `DeleteTracingV1PerformanceByName` operationId) request.
 	//
@@ -121769,6 +121545,40 @@ func (r GetLolGameflowV1PlayerKickedVanguardResponse) ContentType() string {
 	return ""
 }
 
+type PostLolGameflowV1PostgameRmsMessageResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// GetBody returns the raw response body bytes
+func (r PostLolGameflowV1PostgameRmsMessageResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PostLolGameflowV1PostgameRmsMessageResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostLolGameflowV1PostgameRmsMessageResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PostLolGameflowV1PostgameRmsMessageResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type PostLolGameflowV1PreEndGameTransitionResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -132244,47 +132054,6 @@ func (r PostLolLoginV1ServiceProxyAsyncRequestsByServiceNameByMethodNameResponse
 	return ""
 }
 
-type PostLolLoginV1ServiceProxyUuidRequestsResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON2XX the response for an HTTP 2XX `application/json` response
-	JSON2XX *string
-}
-
-// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
-func (r PostLolLoginV1ServiceProxyUuidRequestsResponse) GetJSON2XX() *string {
-	return r.JSON2XX
-}
-
-// GetBody returns the raw response body bytes
-func (r PostLolLoginV1ServiceProxyUuidRequestsResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r PostLolLoginV1ServiceProxyUuidRequestsResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r PostLolLoginV1ServiceProxyUuidRequestsResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r PostLolLoginV1ServiceProxyUuidRequestsResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
 type DeleteLolLoginV1SessionResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -132354,47 +132123,6 @@ func (r GetLolLoginV1SessionResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r GetLolLoginV1SessionResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type PostLolLoginV1SessionInvokeResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON2XX the response for an HTTP 2XX `application/json` response
-	JSON2XX *LolLoginLcdsResponse
-}
-
-// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
-func (r PostLolLoginV1SessionInvokeResponse) GetJSON2XX() *LolLoginLcdsResponse {
-	return r.JSON2XX
-}
-
-// GetBody returns the raw response body bytes
-func (r PostLolLoginV1SessionInvokeResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r PostLolLoginV1SessionInvokeResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r PostLolLoginV1SessionInvokeResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r PostLolLoginV1SessionInvokeResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -151563,6 +151291,456 @@ func (r GetLolTastesV1TftOverviewModelResponse) ContentType() string {
 	return ""
 }
 
+type DeleteLolTeamVoiceV1InternalPreparePartyVoiceSessionResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// GetBody returns the raw response body bytes
+func (r DeleteLolTeamVoiceV1InternalPreparePartyVoiceSessionResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteLolTeamVoiceV1InternalPreparePartyVoiceSessionResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteLolTeamVoiceV1InternalPreparePartyVoiceSessionResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteLolTeamVoiceV1InternalPreparePartyVoiceSessionResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type PostLolTeamVoiceV1InternalPreparePartyVoiceSessionResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// GetBody returns the raw response body bytes
+func (r PostLolTeamVoiceV1InternalPreparePartyVoiceSessionResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PostLolTeamVoiceV1InternalPreparePartyVoiceSessionResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostLolTeamVoiceV1InternalPreparePartyVoiceSessionResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PostLolTeamVoiceV1InternalPreparePartyVoiceSessionResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type PutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMutedResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// GetBody returns the raw response body bytes
+func (r PutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMutedResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMutedResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMutedResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMutedResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type PutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolumeResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// GetBody returns the raw response body bytes
+func (r PutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolumeResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolumeResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolumeResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolumeResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type DeleteLolTeamVoiceV1SessionResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// GetBody returns the raw response body bytes
+func (r DeleteLolTeamVoiceV1SessionResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteLolTeamVoiceV1SessionResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteLolTeamVoiceV1SessionResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DeleteLolTeamVoiceV1SessionResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetLolTeamVoiceV1SessionResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON2XX the response for an HTTP 2XX `application/json` response
+	JSON2XX *LolTeamVoiceVoiceSession
+}
+
+// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
+func (r GetLolTeamVoiceV1SessionResponse) GetJSON2XX() *LolTeamVoiceVoiceSession {
+	return r.JSON2XX
+}
+
+// GetBody returns the raw response body bytes
+func (r GetLolTeamVoiceV1SessionResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetLolTeamVoiceV1SessionResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetLolTeamVoiceV1SessionResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetLolTeamVoiceV1SessionResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type PostLolTeamVoiceV1SessionResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON2XX the response for an HTTP 2XX `application/json` response
+	JSON2XX *LolTeamVoiceVoiceSession
+}
+
+// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
+func (r PostLolTeamVoiceV1SessionResponse) GetJSON2XX() *LolTeamVoiceVoiceSession {
+	return r.JSON2XX
+}
+
+// GetBody returns the raw response body bytes
+func (r PostLolTeamVoiceV1SessionResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PostLolTeamVoiceV1SessionResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostLolTeamVoiceV1SessionResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PostLolTeamVoiceV1SessionResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type PutLolTeamVoiceV1SessionResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// GetBody returns the raw response body bytes
+func (r PutLolTeamVoiceV1SessionResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PutLolTeamVoiceV1SessionResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PutLolTeamVoiceV1SessionResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PutLolTeamVoiceV1SessionResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetLolTeamVoiceV1VoiceFontsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON2XX the response for an HTTP 2XX `application/json` response
+	JSON2XX *[]LolTeamVoiceVoiceFontResource
+}
+
+// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
+func (r GetLolTeamVoiceV1VoiceFontsResponse) GetJSON2XX() *[]LolTeamVoiceVoiceFontResource {
+	return r.JSON2XX
+}
+
+// GetBody returns the raw response body bytes
+func (r GetLolTeamVoiceV1VoiceFontsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetLolTeamVoiceV1VoiceFontsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetLolTeamVoiceV1VoiceFontsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetLolTeamVoiceV1VoiceFontsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetLolTeamVoiceV1VoiceFontsHardwareSupportedResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON2XX the response for an HTTP 2XX `application/json` response
+	JSON2XX *bool
+}
+
+// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
+func (r GetLolTeamVoiceV1VoiceFontsHardwareSupportedResponse) GetJSON2XX() *bool {
+	return r.JSON2XX
+}
+
+// GetBody returns the raw response body bytes
+func (r GetLolTeamVoiceV1VoiceFontsHardwareSupportedResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetLolTeamVoiceV1VoiceFontsHardwareSupportedResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetLolTeamVoiceV1VoiceFontsHardwareSupportedResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetLolTeamVoiceV1VoiceFontsHardwareSupportedResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetLolTeamVoiceV1VoiceFontsStatusResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON2XX the response for an HTTP 2XX `application/json` response
+	JSON2XX *string
+}
+
+// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
+func (r GetLolTeamVoiceV1VoiceFontsStatusResponse) GetJSON2XX() *string {
+	return r.JSON2XX
+}
+
+// GetBody returns the raw response body bytes
+func (r GetLolTeamVoiceV1VoiceFontsStatusResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetLolTeamVoiceV1VoiceFontsStatusResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetLolTeamVoiceV1VoiceFontsStatusResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetLolTeamVoiceV1VoiceFontsStatusResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type GetLolTeamVoiceV2AvailabilityResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON2XX the response for an HTTP 2XX `application/json` response
+	JSON2XX *LolTeamVoiceTeamVoiceAvailabilityDto
+}
+
+// GetJSON2XX returns the response for an HTTP 2XX `application/json` response
+func (r GetLolTeamVoiceV2AvailabilityResponse) GetJSON2XX() *LolTeamVoiceTeamVoiceAvailabilityDto {
+	return r.JSON2XX
+}
+
+// GetBody returns the raw response body bytes
+func (r GetLolTeamVoiceV2AvailabilityResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r GetLolTeamVoiceV2AvailabilityResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetLolTeamVoiceV2AvailabilityResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r GetLolTeamVoiceV2AvailabilityResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type GetLolTftEventPveV1BuddiesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -159999,278 +160177,6 @@ func (r PostTelemetryV1EventsByEventTypeResponse) ContentType() string {
 	return ""
 }
 
-type PatchTelemetryV3SlisAddBoolDiagnosticResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-}
-
-// GetBody returns the raw response body bytes
-func (r PatchTelemetryV3SlisAddBoolDiagnosticResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r PatchTelemetryV3SlisAddBoolDiagnosticResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r PatchTelemetryV3SlisAddBoolDiagnosticResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r PatchTelemetryV3SlisAddBoolDiagnosticResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type PatchTelemetryV3SlisAddDoubleDiagnosticResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-}
-
-// GetBody returns the raw response body bytes
-func (r PatchTelemetryV3SlisAddDoubleDiagnosticResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r PatchTelemetryV3SlisAddDoubleDiagnosticResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r PatchTelemetryV3SlisAddDoubleDiagnosticResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r PatchTelemetryV3SlisAddDoubleDiagnosticResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type PatchTelemetryV3SlisAddIntDiagnosticResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-}
-
-// GetBody returns the raw response body bytes
-func (r PatchTelemetryV3SlisAddIntDiagnosticResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r PatchTelemetryV3SlisAddIntDiagnosticResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r PatchTelemetryV3SlisAddIntDiagnosticResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r PatchTelemetryV3SlisAddIntDiagnosticResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type PatchTelemetryV3SlisAddLabelResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-}
-
-// GetBody returns the raw response body bytes
-func (r PatchTelemetryV3SlisAddLabelResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r PatchTelemetryV3SlisAddLabelResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r PatchTelemetryV3SlisAddLabelResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r PatchTelemetryV3SlisAddLabelResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type PatchTelemetryV3SlisAddStringDiagnosticResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-}
-
-// GetBody returns the raw response body bytes
-func (r PatchTelemetryV3SlisAddStringDiagnosticResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r PatchTelemetryV3SlisAddStringDiagnosticResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r PatchTelemetryV3SlisAddStringDiagnosticResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r PatchTelemetryV3SlisAddStringDiagnosticResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type PostTelemetryV3SlisCountsResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-}
-
-// GetBody returns the raw response body bytes
-func (r PostTelemetryV3SlisCountsResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r PostTelemetryV3SlisCountsResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r PostTelemetryV3SlisCountsResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r PostTelemetryV3SlisCountsResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type PostTelemetryV3UptimeTrackingNotifyFailureResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-}
-
-// GetBody returns the raw response body bytes
-func (r PostTelemetryV3UptimeTrackingNotifyFailureResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r PostTelemetryV3UptimeTrackingNotifyFailureResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r PostTelemetryV3UptimeTrackingNotifyFailureResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r PostTelemetryV3UptimeTrackingNotifyFailureResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type PostTelemetryV3UptimeTrackingNotifySuccessResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-}
-
-// GetBody returns the raw response body bytes
-func (r PostTelemetryV3UptimeTrackingNotifySuccessResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r PostTelemetryV3UptimeTrackingNotifySuccessResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r PostTelemetryV3UptimeTrackingNotifySuccessResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r PostTelemetryV3UptimeTrackingNotifySuccessResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
 type DeleteTracingV1PerformanceByNameResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -166564,6 +166470,28 @@ func (c *ClientWithResponses) GetLolGameflowV1PlayerKickedVanguardWithResponse(c
 	return ParseGetLolGameflowV1PlayerKickedVanguardResponse(rsp)
 }
 
+// PostLolGameflowV1PostgameRmsMessageWithBodyWithResponse performs a POST /lol-gameflow/v1/postgame/rms-message (the `PostLolGameflowV1PostgameRmsMessage` operationId) request,
+// with any type of body and a specified content type.
+//
+// Returns a wrapper object for the known response body format(s).
+func (c *ClientWithResponses) PostLolGameflowV1PostgameRmsMessageWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostLolGameflowV1PostgameRmsMessageResponse, error) {
+	rsp, err := c.PostLolGameflowV1PostgameRmsMessageWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostLolGameflowV1PostgameRmsMessageResponse(rsp)
+}
+
+// PostLolGameflowV1PostgameRmsMessageWithResponse performs a POST /lol-gameflow/v1/postgame/rms-message (the `PostLolGameflowV1PostgameRmsMessage` operationId) request.
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+func (c *ClientWithResponses) PostLolGameflowV1PostgameRmsMessageWithResponse(ctx context.Context, body PostLolGameflowV1PostgameRmsMessageJSONRequestBody, reqEditors ...RequestEditorFn) (*PostLolGameflowV1PostgameRmsMessageResponse, error) {
+	rsp, err := c.PostLolGameflowV1PostgameRmsMessage(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostLolGameflowV1PostgameRmsMessageResponse(rsp)
+}
+
 // PostLolGameflowV1PreEndGameTransitionWithBodyWithResponse performs a POST /lol-gameflow/v1/pre-end-game-transition (the `PostLolGameflowV1PreEndGameTransition` operationId) request,
 // with any type of body and a specified content type.
 //
@@ -166652,22 +166580,11 @@ func (c *ClientWithResponses) PostLolGameflowV1SessionDodgeWithResponse(ctx cont
 	return ParsePostLolGameflowV1SessionDodgeResponse(rsp)
 }
 
-// PostLolGameflowV1SessionEventWithBodyWithResponse performs a POST /lol-gameflow/v1/session/event (the `PostLolGameflowV1SessionEvent` operationId) request,
-// with any type of body and a specified content type.
+// PostLolGameflowV1SessionEventWithResponse performs a POST /lol-gameflow/v1/session/event (the `PostLolGameflowV1SessionEvent` operationId) request.
 //
 // Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) PostLolGameflowV1SessionEventWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostLolGameflowV1SessionEventResponse, error) {
-	rsp, err := c.PostLolGameflowV1SessionEventWithBody(ctx, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePostLolGameflowV1SessionEventResponse(rsp)
-}
-
-// PostLolGameflowV1SessionEventWithResponse performs a POST /lol-gameflow/v1/session/event (the `PostLolGameflowV1SessionEvent` operationId) request.
-// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) PostLolGameflowV1SessionEventWithResponse(ctx context.Context, body PostLolGameflowV1SessionEventJSONRequestBody, reqEditors ...RequestEditorFn) (*PostLolGameflowV1SessionEventResponse, error) {
-	rsp, err := c.PostLolGameflowV1SessionEvent(ctx, body, reqEditors...)
+func (c *ClientWithResponses) PostLolGameflowV1SessionEventWithResponse(ctx context.Context, params *PostLolGameflowV1SessionEventParams, reqEditors ...RequestEditorFn) (*PostLolGameflowV1SessionEventResponse, error) {
+	rsp, err := c.PostLolGameflowV1SessionEvent(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -169996,17 +169913,6 @@ func (c *ClientWithResponses) PostLolLoginV1ServiceProxyAsyncRequestsByServiceNa
 	return ParsePostLolLoginV1ServiceProxyAsyncRequestsByServiceNameByMethodNameResponse(rsp)
 }
 
-// PostLolLoginV1ServiceProxyUuidRequestsWithResponse performs a POST /lol-login/v1/service-proxy-uuid-requests (the `PostLolLoginV1ServiceProxyUuidRequests` operationId) request.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) PostLolLoginV1ServiceProxyUuidRequestsWithResponse(ctx context.Context, params *PostLolLoginV1ServiceProxyUuidRequestsParams, reqEditors ...RequestEditorFn) (*PostLolLoginV1ServiceProxyUuidRequestsResponse, error) {
-	rsp, err := c.PostLolLoginV1ServiceProxyUuidRequests(ctx, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePostLolLoginV1ServiceProxyUuidRequestsResponse(rsp)
-}
-
 // DeleteLolLoginV1SessionWithResponse performs a DELETE /lol-login/v1/session (the `DeleteLolLoginV1Session` operationId) request.
 //
 // Returns a wrapper object for the known response body format(s).
@@ -170027,17 +169933,6 @@ func (c *ClientWithResponses) GetLolLoginV1SessionWithResponse(ctx context.Conte
 		return nil, err
 	}
 	return ParseGetLolLoginV1SessionResponse(rsp)
-}
-
-// PostLolLoginV1SessionInvokeWithResponse performs a POST /lol-login/v1/session/invoke (the `PostLolLoginV1SessionInvoke` operationId) request.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) PostLolLoginV1SessionInvokeWithResponse(ctx context.Context, params *PostLolLoginV1SessionInvokeParams, reqEditors ...RequestEditorFn) (*PostLolLoginV1SessionInvokeResponse, error) {
-	rsp, err := c.PostLolLoginV1SessionInvoke(ctx, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePostLolLoginV1SessionInvokeResponse(rsp)
 }
 
 // DeleteLolLoginV1ShutdownLocksByLockNameWithResponse performs a DELETE /lol-login/v1/shutdown-locks/{lockName} (the `DeleteLolLoginV1ShutdownLocksByLockName` operationId) request.
@@ -176442,6 +176337,160 @@ func (c *ClientWithResponses) GetLolTastesV1TftOverviewModelWithResponse(ctx con
 	return ParseGetLolTastesV1TftOverviewModelResponse(rsp)
 }
 
+// DeleteLolTeamVoiceV1InternalPreparePartyVoiceSessionWithResponse performs a DELETE /lol-team-voice/v1/internal/prepare-party-voice-session (the `DeleteLolTeamVoiceV1InternalPreparePartyVoiceSession` operationId) request.
+//
+// Returns a wrapper object for the known response body format(s).
+func (c *ClientWithResponses) DeleteLolTeamVoiceV1InternalPreparePartyVoiceSessionWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*DeleteLolTeamVoiceV1InternalPreparePartyVoiceSessionResponse, error) {
+	rsp, err := c.DeleteLolTeamVoiceV1InternalPreparePartyVoiceSession(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteLolTeamVoiceV1InternalPreparePartyVoiceSessionResponse(rsp)
+}
+
+// PostLolTeamVoiceV1InternalPreparePartyVoiceSessionWithBodyWithResponse performs a POST /lol-team-voice/v1/internal/prepare-party-voice-session (the `PostLolTeamVoiceV1InternalPreparePartyVoiceSession` operationId) request,
+// with any type of body and a specified content type.
+//
+// Returns a wrapper object for the known response body format(s).
+func (c *ClientWithResponses) PostLolTeamVoiceV1InternalPreparePartyVoiceSessionWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostLolTeamVoiceV1InternalPreparePartyVoiceSessionResponse, error) {
+	rsp, err := c.PostLolTeamVoiceV1InternalPreparePartyVoiceSessionWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostLolTeamVoiceV1InternalPreparePartyVoiceSessionResponse(rsp)
+}
+
+// PostLolTeamVoiceV1InternalPreparePartyVoiceSessionWithResponse performs a POST /lol-team-voice/v1/internal/prepare-party-voice-session (the `PostLolTeamVoiceV1InternalPreparePartyVoiceSession` operationId) request.
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+func (c *ClientWithResponses) PostLolTeamVoiceV1InternalPreparePartyVoiceSessionWithResponse(ctx context.Context, body PostLolTeamVoiceV1InternalPreparePartyVoiceSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*PostLolTeamVoiceV1InternalPreparePartyVoiceSessionResponse, error) {
+	rsp, err := c.PostLolTeamVoiceV1InternalPreparePartyVoiceSession(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostLolTeamVoiceV1InternalPreparePartyVoiceSessionResponse(rsp)
+}
+
+// PutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMutedWithResponse performs a PUT /lol-team-voice/v1/participants/{participantId}/mute/{isMuted} (the `PutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMuted` operationId) request.
+//
+// Returns a wrapper object for the known response body format(s).
+func (c *ClientWithResponses) PutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMutedWithResponse(ctx context.Context, participantId string, isMuted bool, reqEditors ...RequestEditorFn) (*PutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMutedResponse, error) {
+	rsp, err := c.PutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMuted(ctx, participantId, isMuted, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMutedResponse(rsp)
+}
+
+// PutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolumeWithResponse performs a PUT /lol-team-voice/v1/participants/{participantId}/volume/{volume} (the `PutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolume` operationId) request.
+//
+// Returns a wrapper object for the known response body format(s).
+func (c *ClientWithResponses) PutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolumeWithResponse(ctx context.Context, participantId string, volume uint32, reqEditors ...RequestEditorFn) (*PutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolumeResponse, error) {
+	rsp, err := c.PutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolume(ctx, participantId, volume, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolumeResponse(rsp)
+}
+
+// DeleteLolTeamVoiceV1SessionWithResponse performs a DELETE /lol-team-voice/v1/session (the `DeleteLolTeamVoiceV1Session` operationId) request.
+//
+// Returns a wrapper object for the known response body format(s).
+func (c *ClientWithResponses) DeleteLolTeamVoiceV1SessionWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*DeleteLolTeamVoiceV1SessionResponse, error) {
+	rsp, err := c.DeleteLolTeamVoiceV1Session(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteLolTeamVoiceV1SessionResponse(rsp)
+}
+
+// GetLolTeamVoiceV1SessionWithResponse performs a GET /lol-team-voice/v1/session (the `GetLolTeamVoiceV1Session` operationId) request.
+//
+// Returns a wrapper object for the known response body format(s).
+func (c *ClientWithResponses) GetLolTeamVoiceV1SessionWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolTeamVoiceV1SessionResponse, error) {
+	rsp, err := c.GetLolTeamVoiceV1Session(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetLolTeamVoiceV1SessionResponse(rsp)
+}
+
+// PostLolTeamVoiceV1SessionWithResponse performs a POST /lol-team-voice/v1/session (the `PostLolTeamVoiceV1Session` operationId) request.
+//
+// Returns a wrapper object for the known response body format(s).
+func (c *ClientWithResponses) PostLolTeamVoiceV1SessionWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostLolTeamVoiceV1SessionResponse, error) {
+	rsp, err := c.PostLolTeamVoiceV1Session(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostLolTeamVoiceV1SessionResponse(rsp)
+}
+
+// PutLolTeamVoiceV1SessionWithBodyWithResponse performs a PUT /lol-team-voice/v1/session (the `PutLolTeamVoiceV1Session` operationId) request,
+// with any type of body and a specified content type.
+//
+// Returns a wrapper object for the known response body format(s).
+func (c *ClientWithResponses) PutLolTeamVoiceV1SessionWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutLolTeamVoiceV1SessionResponse, error) {
+	rsp, err := c.PutLolTeamVoiceV1SessionWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutLolTeamVoiceV1SessionResponse(rsp)
+}
+
+// PutLolTeamVoiceV1SessionWithResponse performs a PUT /lol-team-voice/v1/session (the `PutLolTeamVoiceV1Session` operationId) request.
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+func (c *ClientWithResponses) PutLolTeamVoiceV1SessionWithResponse(ctx context.Context, body PutLolTeamVoiceV1SessionJSONRequestBody, reqEditors ...RequestEditorFn) (*PutLolTeamVoiceV1SessionResponse, error) {
+	rsp, err := c.PutLolTeamVoiceV1Session(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutLolTeamVoiceV1SessionResponse(rsp)
+}
+
+// GetLolTeamVoiceV1VoiceFontsWithResponse performs a GET /lol-team-voice/v1/voice-fonts (the `GetLolTeamVoiceV1VoiceFonts` operationId) request.
+//
+// Returns a wrapper object for the known response body format(s).
+func (c *ClientWithResponses) GetLolTeamVoiceV1VoiceFontsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolTeamVoiceV1VoiceFontsResponse, error) {
+	rsp, err := c.GetLolTeamVoiceV1VoiceFonts(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetLolTeamVoiceV1VoiceFontsResponse(rsp)
+}
+
+// GetLolTeamVoiceV1VoiceFontsHardwareSupportedWithResponse performs a GET /lol-team-voice/v1/voice-fonts/hardware-supported (the `GetLolTeamVoiceV1VoiceFontsHardwareSupported` operationId) request.
+//
+// Returns a wrapper object for the known response body format(s).
+func (c *ClientWithResponses) GetLolTeamVoiceV1VoiceFontsHardwareSupportedWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolTeamVoiceV1VoiceFontsHardwareSupportedResponse, error) {
+	rsp, err := c.GetLolTeamVoiceV1VoiceFontsHardwareSupported(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetLolTeamVoiceV1VoiceFontsHardwareSupportedResponse(rsp)
+}
+
+// GetLolTeamVoiceV1VoiceFontsStatusWithResponse performs a GET /lol-team-voice/v1/voice-fonts/status (the `GetLolTeamVoiceV1VoiceFontsStatus` operationId) request.
+//
+// Returns a wrapper object for the known response body format(s).
+func (c *ClientWithResponses) GetLolTeamVoiceV1VoiceFontsStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolTeamVoiceV1VoiceFontsStatusResponse, error) {
+	rsp, err := c.GetLolTeamVoiceV1VoiceFontsStatus(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetLolTeamVoiceV1VoiceFontsStatusResponse(rsp)
+}
+
+// GetLolTeamVoiceV2AvailabilityWithResponse performs a GET /lol-team-voice/v2/availability (the `GetLolTeamVoiceV2Availability` operationId) request.
+//
+// Returns a wrapper object for the known response body format(s).
+func (c *ClientWithResponses) GetLolTeamVoiceV2AvailabilityWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLolTeamVoiceV2AvailabilityResponse, error) {
+	rsp, err := c.GetLolTeamVoiceV2Availability(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetLolTeamVoiceV2AvailabilityResponse(rsp)
+}
+
 // GetLolTftEventPveV1BuddiesWithResponse performs a GET /lol-tft-event-pve/v1/buddies (the `GetLolTftEventPveV1Buddies` operationId) request.
 //
 // Returns a wrapper object for the known response body format(s).
@@ -179447,214 +179496,6 @@ func (c *ClientWithResponses) PostTelemetryV1EventsByEventTypeWithResponse(ctx c
 		return nil, err
 	}
 	return ParsePostTelemetryV1EventsByEventTypeResponse(rsp)
-}
-
-// PatchTelemetryV3SlisAddBoolDiagnosticWithBodyWithResponse performs a PATCH /telemetry/v3/slis/add-bool-diagnostic (the `PatchTelemetryV3SlisAddBoolDiagnostic` operationId) request,
-// with any type of body and a specified content type.
-//
-// Add bool diagnostic to be sent with SLIs.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) PatchTelemetryV3SlisAddBoolDiagnosticWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchTelemetryV3SlisAddBoolDiagnosticResponse, error) {
-	rsp, err := c.PatchTelemetryV3SlisAddBoolDiagnosticWithBody(ctx, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePatchTelemetryV3SlisAddBoolDiagnosticResponse(rsp)
-}
-
-// PatchTelemetryV3SlisAddBoolDiagnosticWithResponse performs a PATCH /telemetry/v3/slis/add-bool-diagnostic (the `PatchTelemetryV3SlisAddBoolDiagnostic` operationId) request.
-// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-//
-// Add bool diagnostic to be sent with SLIs.
-func (c *ClientWithResponses) PatchTelemetryV3SlisAddBoolDiagnosticWithResponse(ctx context.Context, body PatchTelemetryV3SlisAddBoolDiagnosticJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchTelemetryV3SlisAddBoolDiagnosticResponse, error) {
-	rsp, err := c.PatchTelemetryV3SlisAddBoolDiagnostic(ctx, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePatchTelemetryV3SlisAddBoolDiagnosticResponse(rsp)
-}
-
-// PatchTelemetryV3SlisAddDoubleDiagnosticWithBodyWithResponse performs a PATCH /telemetry/v3/slis/add-double-diagnostic (the `PatchTelemetryV3SlisAddDoubleDiagnostic` operationId) request,
-// with any type of body and a specified content type.
-//
-// Add double diagnostic to be sent with SLIs.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) PatchTelemetryV3SlisAddDoubleDiagnosticWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchTelemetryV3SlisAddDoubleDiagnosticResponse, error) {
-	rsp, err := c.PatchTelemetryV3SlisAddDoubleDiagnosticWithBody(ctx, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePatchTelemetryV3SlisAddDoubleDiagnosticResponse(rsp)
-}
-
-// PatchTelemetryV3SlisAddDoubleDiagnosticWithResponse performs a PATCH /telemetry/v3/slis/add-double-diagnostic (the `PatchTelemetryV3SlisAddDoubleDiagnostic` operationId) request.
-// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-//
-// Add double diagnostic to be sent with SLIs.
-func (c *ClientWithResponses) PatchTelemetryV3SlisAddDoubleDiagnosticWithResponse(ctx context.Context, body PatchTelemetryV3SlisAddDoubleDiagnosticJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchTelemetryV3SlisAddDoubleDiagnosticResponse, error) {
-	rsp, err := c.PatchTelemetryV3SlisAddDoubleDiagnostic(ctx, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePatchTelemetryV3SlisAddDoubleDiagnosticResponse(rsp)
-}
-
-// PatchTelemetryV3SlisAddIntDiagnosticWithBodyWithResponse performs a PATCH /telemetry/v3/slis/add-int-diagnostic (the `PatchTelemetryV3SlisAddIntDiagnostic` operationId) request,
-// with any type of body and a specified content type.
-//
-// Add int diagnostic to be sent with SLIs.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) PatchTelemetryV3SlisAddIntDiagnosticWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchTelemetryV3SlisAddIntDiagnosticResponse, error) {
-	rsp, err := c.PatchTelemetryV3SlisAddIntDiagnosticWithBody(ctx, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePatchTelemetryV3SlisAddIntDiagnosticResponse(rsp)
-}
-
-// PatchTelemetryV3SlisAddIntDiagnosticWithResponse performs a PATCH /telemetry/v3/slis/add-int-diagnostic (the `PatchTelemetryV3SlisAddIntDiagnostic` operationId) request.
-// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-//
-// Add int diagnostic to be sent with SLIs.
-func (c *ClientWithResponses) PatchTelemetryV3SlisAddIntDiagnosticWithResponse(ctx context.Context, body PatchTelemetryV3SlisAddIntDiagnosticJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchTelemetryV3SlisAddIntDiagnosticResponse, error) {
-	rsp, err := c.PatchTelemetryV3SlisAddIntDiagnostic(ctx, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePatchTelemetryV3SlisAddIntDiagnosticResponse(rsp)
-}
-
-// PatchTelemetryV3SlisAddLabelWithBodyWithResponse performs a PATCH /telemetry/v3/slis/add-label (the `PatchTelemetryV3SlisAddLabel` operationId) request,
-// with any type of body and a specified content type.
-//
-// Add label to be sent with SLIs.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) PatchTelemetryV3SlisAddLabelWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchTelemetryV3SlisAddLabelResponse, error) {
-	rsp, err := c.PatchTelemetryV3SlisAddLabelWithBody(ctx, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePatchTelemetryV3SlisAddLabelResponse(rsp)
-}
-
-// PatchTelemetryV3SlisAddLabelWithResponse performs a PATCH /telemetry/v3/slis/add-label (the `PatchTelemetryV3SlisAddLabel` operationId) request.
-// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-//
-// Add label to be sent with SLIs.
-func (c *ClientWithResponses) PatchTelemetryV3SlisAddLabelWithResponse(ctx context.Context, body PatchTelemetryV3SlisAddLabelJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchTelemetryV3SlisAddLabelResponse, error) {
-	rsp, err := c.PatchTelemetryV3SlisAddLabel(ctx, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePatchTelemetryV3SlisAddLabelResponse(rsp)
-}
-
-// PatchTelemetryV3SlisAddStringDiagnosticWithBodyWithResponse performs a PATCH /telemetry/v3/slis/add-string-diagnostic (the `PatchTelemetryV3SlisAddStringDiagnostic` operationId) request,
-// with any type of body and a specified content type.
-//
-// Add string diagnostic to be sent with SLIs.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) PatchTelemetryV3SlisAddStringDiagnosticWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchTelemetryV3SlisAddStringDiagnosticResponse, error) {
-	rsp, err := c.PatchTelemetryV3SlisAddStringDiagnosticWithBody(ctx, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePatchTelemetryV3SlisAddStringDiagnosticResponse(rsp)
-}
-
-// PatchTelemetryV3SlisAddStringDiagnosticWithResponse performs a PATCH /telemetry/v3/slis/add-string-diagnostic (the `PatchTelemetryV3SlisAddStringDiagnostic` operationId) request.
-// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-//
-// Add string diagnostic to be sent with SLIs.
-func (c *ClientWithResponses) PatchTelemetryV3SlisAddStringDiagnosticWithResponse(ctx context.Context, body PatchTelemetryV3SlisAddStringDiagnosticJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchTelemetryV3SlisAddStringDiagnosticResponse, error) {
-	rsp, err := c.PatchTelemetryV3SlisAddStringDiagnostic(ctx, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePatchTelemetryV3SlisAddStringDiagnosticResponse(rsp)
-}
-
-// PostTelemetryV3SlisCountsWithBodyWithResponse performs a POST /telemetry/v3/slis/counts (the `PostTelemetryV3SlisCounts` operationId) request,
-// with any type of body and a specified content type.
-//
-// Report an SLI to the collector.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) PostTelemetryV3SlisCountsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostTelemetryV3SlisCountsResponse, error) {
-	rsp, err := c.PostTelemetryV3SlisCountsWithBody(ctx, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePostTelemetryV3SlisCountsResponse(rsp)
-}
-
-// PostTelemetryV3SlisCountsWithResponse performs a POST /telemetry/v3/slis/counts (the `PostTelemetryV3SlisCounts` operationId) request.
-// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-//
-// Report an SLI to the collector.
-func (c *ClientWithResponses) PostTelemetryV3SlisCountsWithResponse(ctx context.Context, body PostTelemetryV3SlisCountsJSONRequestBody, reqEditors ...RequestEditorFn) (*PostTelemetryV3SlisCountsResponse, error) {
-	rsp, err := c.PostTelemetryV3SlisCounts(ctx, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePostTelemetryV3SlisCountsResponse(rsp)
-}
-
-// PostTelemetryV3UptimeTrackingNotifyFailureWithBodyWithResponse performs a POST /telemetry/v3/uptime-tracking/notify-failure (the `PostTelemetryV3UptimeTrackingNotifyFailure` operationId) request,
-// with any type of body and a specified content type.
-//
-// Mark an availability item's operation as failure on uptime tracking mechanism.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) PostTelemetryV3UptimeTrackingNotifyFailureWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostTelemetryV3UptimeTrackingNotifyFailureResponse, error) {
-	rsp, err := c.PostTelemetryV3UptimeTrackingNotifyFailureWithBody(ctx, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePostTelemetryV3UptimeTrackingNotifyFailureResponse(rsp)
-}
-
-// PostTelemetryV3UptimeTrackingNotifyFailureWithResponse performs a POST /telemetry/v3/uptime-tracking/notify-failure (the `PostTelemetryV3UptimeTrackingNotifyFailure` operationId) request.
-// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-//
-// Mark an availability item's operation as failure on uptime tracking mechanism.
-func (c *ClientWithResponses) PostTelemetryV3UptimeTrackingNotifyFailureWithResponse(ctx context.Context, body PostTelemetryV3UptimeTrackingNotifyFailureJSONRequestBody, reqEditors ...RequestEditorFn) (*PostTelemetryV3UptimeTrackingNotifyFailureResponse, error) {
-	rsp, err := c.PostTelemetryV3UptimeTrackingNotifyFailure(ctx, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePostTelemetryV3UptimeTrackingNotifyFailureResponse(rsp)
-}
-
-// PostTelemetryV3UptimeTrackingNotifySuccessWithBodyWithResponse performs a POST /telemetry/v3/uptime-tracking/notify-success (the `PostTelemetryV3UptimeTrackingNotifySuccess` operationId) request,
-// with any type of body and a specified content type.
-//
-// Mark an availability item's operation as success on uptime tracking mechanism.
-//
-// Returns a wrapper object for the known response body format(s).
-func (c *ClientWithResponses) PostTelemetryV3UptimeTrackingNotifySuccessWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostTelemetryV3UptimeTrackingNotifySuccessResponse, error) {
-	rsp, err := c.PostTelemetryV3UptimeTrackingNotifySuccessWithBody(ctx, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePostTelemetryV3UptimeTrackingNotifySuccessResponse(rsp)
-}
-
-// PostTelemetryV3UptimeTrackingNotifySuccessWithResponse performs a POST /telemetry/v3/uptime-tracking/notify-success (the `PostTelemetryV3UptimeTrackingNotifySuccess` operationId) request.
-// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-//
-// Mark an availability item's operation as success on uptime tracking mechanism.
-func (c *ClientWithResponses) PostTelemetryV3UptimeTrackingNotifySuccessWithResponse(ctx context.Context, body PostTelemetryV3UptimeTrackingNotifySuccessJSONRequestBody, reqEditors ...RequestEditorFn) (*PostTelemetryV3UptimeTrackingNotifySuccessResponse, error) {
-	rsp, err := c.PostTelemetryV3UptimeTrackingNotifySuccess(ctx, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParsePostTelemetryV3UptimeTrackingNotifySuccessResponse(rsp)
 }
 
 // DeleteTracingV1PerformanceByNameWithResponse performs a DELETE /tracing/v1/performance/{name} (the `DeleteTracingV1PerformanceByName` operationId) request.
@@ -191203,6 +191044,22 @@ func ParseGetLolGameflowV1PlayerKickedVanguardResponse(rsp *http.Response) (*Get
 	return response, nil
 }
 
+// ParsePostLolGameflowV1PostgameRmsMessageResponse parses an HTTP response from a PostLolGameflowV1PostgameRmsMessageWithResponse call
+func ParsePostLolGameflowV1PostgameRmsMessageResponse(rsp *http.Response) (*PostLolGameflowV1PostgameRmsMessageResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostLolGameflowV1PostgameRmsMessageResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
 // ParsePostLolGameflowV1PreEndGameTransitionResponse parses an HTTP response from a PostLolGameflowV1PreEndGameTransitionWithResponse call
 func ParsePostLolGameflowV1PreEndGameTransitionResponse(rsp *http.Response) (*PostLolGameflowV1PreEndGameTransitionResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -197601,32 +197458,6 @@ func ParsePostLolLoginV1ServiceProxyAsyncRequestsByServiceNameByMethodNameRespon
 	return response, nil
 }
 
-// ParsePostLolLoginV1ServiceProxyUuidRequestsResponse parses an HTTP response from a PostLolLoginV1ServiceProxyUuidRequestsWithResponse call
-func ParsePostLolLoginV1ServiceProxyUuidRequestsResponse(rsp *http.Response) (*PostLolLoginV1ServiceProxyUuidRequestsResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PostLolLoginV1ServiceProxyUuidRequestsResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
-		var dest string
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON2XX = &dest
-
-	}
-
-	return response, nil
-}
-
 // ParseDeleteLolLoginV1SessionResponse parses an HTTP response from a DeleteLolLoginV1SessionWithResponse call
 func ParseDeleteLolLoginV1SessionResponse(rsp *http.Response) (*DeleteLolLoginV1SessionResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -197659,32 +197490,6 @@ func ParseGetLolLoginV1SessionResponse(rsp *http.Response) (*GetLolLoginV1Sessio
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
 		var dest LolLoginLoginSession
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON2XX = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParsePostLolLoginV1SessionInvokeResponse parses an HTTP response from a PostLolLoginV1SessionInvokeWithResponse call
-func ParsePostLolLoginV1SessionInvokeResponse(rsp *http.Response) (*PostLolLoginV1SessionInvokeResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PostLolLoginV1SessionInvokeResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
-		var dest LolLoginLcdsResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -209435,6 +209240,258 @@ func ParseGetLolTastesV1TftOverviewModelResponse(rsp *http.Response) (*GetLolTas
 	return response, nil
 }
 
+// ParseDeleteLolTeamVoiceV1InternalPreparePartyVoiceSessionResponse parses an HTTP response from a DeleteLolTeamVoiceV1InternalPreparePartyVoiceSessionWithResponse call
+func ParseDeleteLolTeamVoiceV1InternalPreparePartyVoiceSessionResponse(rsp *http.Response) (*DeleteLolTeamVoiceV1InternalPreparePartyVoiceSessionResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteLolTeamVoiceV1InternalPreparePartyVoiceSessionResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParsePostLolTeamVoiceV1InternalPreparePartyVoiceSessionResponse parses an HTTP response from a PostLolTeamVoiceV1InternalPreparePartyVoiceSessionWithResponse call
+func ParsePostLolTeamVoiceV1InternalPreparePartyVoiceSessionResponse(rsp *http.Response) (*PostLolTeamVoiceV1InternalPreparePartyVoiceSessionResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostLolTeamVoiceV1InternalPreparePartyVoiceSessionResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParsePutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMutedResponse parses an HTTP response from a PutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMutedWithResponse call
+func ParsePutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMutedResponse(rsp *http.Response) (*PutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMutedResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMutedResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParsePutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolumeResponse parses an HTTP response from a PutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolumeWithResponse call
+func ParsePutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolumeResponse(rsp *http.Response) (*PutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolumeResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolumeResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseDeleteLolTeamVoiceV1SessionResponse parses an HTTP response from a DeleteLolTeamVoiceV1SessionWithResponse call
+func ParseDeleteLolTeamVoiceV1SessionResponse(rsp *http.Response) (*DeleteLolTeamVoiceV1SessionResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteLolTeamVoiceV1SessionResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseGetLolTeamVoiceV1SessionResponse parses an HTTP response from a GetLolTeamVoiceV1SessionWithResponse call
+func ParseGetLolTeamVoiceV1SessionResponse(rsp *http.Response) (*GetLolTeamVoiceV1SessionResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetLolTeamVoiceV1SessionResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
+		var dest LolTeamVoiceVoiceSession
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON2XX = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostLolTeamVoiceV1SessionResponse parses an HTTP response from a PostLolTeamVoiceV1SessionWithResponse call
+func ParsePostLolTeamVoiceV1SessionResponse(rsp *http.Response) (*PostLolTeamVoiceV1SessionResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostLolTeamVoiceV1SessionResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
+		var dest LolTeamVoiceVoiceSession
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON2XX = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePutLolTeamVoiceV1SessionResponse parses an HTTP response from a PutLolTeamVoiceV1SessionWithResponse call
+func ParsePutLolTeamVoiceV1SessionResponse(rsp *http.Response) (*PutLolTeamVoiceV1SessionResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PutLolTeamVoiceV1SessionResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseGetLolTeamVoiceV1VoiceFontsResponse parses an HTTP response from a GetLolTeamVoiceV1VoiceFontsWithResponse call
+func ParseGetLolTeamVoiceV1VoiceFontsResponse(rsp *http.Response) (*GetLolTeamVoiceV1VoiceFontsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetLolTeamVoiceV1VoiceFontsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
+		var dest []LolTeamVoiceVoiceFontResource
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON2XX = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetLolTeamVoiceV1VoiceFontsHardwareSupportedResponse parses an HTTP response from a GetLolTeamVoiceV1VoiceFontsHardwareSupportedWithResponse call
+func ParseGetLolTeamVoiceV1VoiceFontsHardwareSupportedResponse(rsp *http.Response) (*GetLolTeamVoiceV1VoiceFontsHardwareSupportedResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetLolTeamVoiceV1VoiceFontsHardwareSupportedResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
+		var dest bool
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON2XX = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetLolTeamVoiceV1VoiceFontsStatusResponse parses an HTTP response from a GetLolTeamVoiceV1VoiceFontsStatusWithResponse call
+func ParseGetLolTeamVoiceV1VoiceFontsStatusResponse(rsp *http.Response) (*GetLolTeamVoiceV1VoiceFontsStatusResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetLolTeamVoiceV1VoiceFontsStatusResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
+		var dest string
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON2XX = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetLolTeamVoiceV2AvailabilityResponse parses an HTTP response from a GetLolTeamVoiceV2AvailabilityWithResponse call
+func ParseGetLolTeamVoiceV2AvailabilityResponse(rsp *http.Response) (*GetLolTeamVoiceV2AvailabilityResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetLolTeamVoiceV2AvailabilityResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode/100 == 2:
+		var dest LolTeamVoiceTeamVoiceAvailabilityDto
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON2XX = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseGetLolTftEventPveV1BuddiesResponse parses an HTTP response from a GetLolTftEventPveV1BuddiesWithResponse call
 func ParseGetLolTftEventPveV1BuddiesResponse(rsp *http.Response) (*GetLolTftEventPveV1BuddiesResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -214444,134 +214501,6 @@ func ParsePostTelemetryV1EventsByEventTypeResponse(rsp *http.Response) (*PostTel
 	}
 
 	response := &PostTelemetryV1EventsByEventTypeResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	return response, nil
-}
-
-// ParsePatchTelemetryV3SlisAddBoolDiagnosticResponse parses an HTTP response from a PatchTelemetryV3SlisAddBoolDiagnosticWithResponse call
-func ParsePatchTelemetryV3SlisAddBoolDiagnosticResponse(rsp *http.Response) (*PatchTelemetryV3SlisAddBoolDiagnosticResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PatchTelemetryV3SlisAddBoolDiagnosticResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	return response, nil
-}
-
-// ParsePatchTelemetryV3SlisAddDoubleDiagnosticResponse parses an HTTP response from a PatchTelemetryV3SlisAddDoubleDiagnosticWithResponse call
-func ParsePatchTelemetryV3SlisAddDoubleDiagnosticResponse(rsp *http.Response) (*PatchTelemetryV3SlisAddDoubleDiagnosticResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PatchTelemetryV3SlisAddDoubleDiagnosticResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	return response, nil
-}
-
-// ParsePatchTelemetryV3SlisAddIntDiagnosticResponse parses an HTTP response from a PatchTelemetryV3SlisAddIntDiagnosticWithResponse call
-func ParsePatchTelemetryV3SlisAddIntDiagnosticResponse(rsp *http.Response) (*PatchTelemetryV3SlisAddIntDiagnosticResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PatchTelemetryV3SlisAddIntDiagnosticResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	return response, nil
-}
-
-// ParsePatchTelemetryV3SlisAddLabelResponse parses an HTTP response from a PatchTelemetryV3SlisAddLabelWithResponse call
-func ParsePatchTelemetryV3SlisAddLabelResponse(rsp *http.Response) (*PatchTelemetryV3SlisAddLabelResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PatchTelemetryV3SlisAddLabelResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	return response, nil
-}
-
-// ParsePatchTelemetryV3SlisAddStringDiagnosticResponse parses an HTTP response from a PatchTelemetryV3SlisAddStringDiagnosticWithResponse call
-func ParsePatchTelemetryV3SlisAddStringDiagnosticResponse(rsp *http.Response) (*PatchTelemetryV3SlisAddStringDiagnosticResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PatchTelemetryV3SlisAddStringDiagnosticResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	return response, nil
-}
-
-// ParsePostTelemetryV3SlisCountsResponse parses an HTTP response from a PostTelemetryV3SlisCountsWithResponse call
-func ParsePostTelemetryV3SlisCountsResponse(rsp *http.Response) (*PostTelemetryV3SlisCountsResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PostTelemetryV3SlisCountsResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	return response, nil
-}
-
-// ParsePostTelemetryV3UptimeTrackingNotifyFailureResponse parses an HTTP response from a PostTelemetryV3UptimeTrackingNotifyFailureWithResponse call
-func ParsePostTelemetryV3UptimeTrackingNotifyFailureResponse(rsp *http.Response) (*PostTelemetryV3UptimeTrackingNotifyFailureResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PostTelemetryV3UptimeTrackingNotifyFailureResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	return response, nil
-}
-
-// ParsePostTelemetryV3UptimeTrackingNotifySuccessResponse parses an HTTP response from a PostTelemetryV3UptimeTrackingNotifySuccessWithResponse call
-func ParsePostTelemetryV3UptimeTrackingNotifySuccessResponse(rsp *http.Response) (*PostTelemetryV3UptimeTrackingNotifySuccessResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PostTelemetryV3UptimeTrackingNotifySuccessResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

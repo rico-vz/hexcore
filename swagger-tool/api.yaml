@@ -26986,6 +26986,24 @@ components:
             required:
                 - canInviteOthersAtEog
             type: object
+        LolGameflowPostGameRmsMessage:
+            additionalProperties: false
+            description: ""
+            properties:
+                gameId:
+                    format: int64
+                    type: integer
+                messageType:
+                    type: string
+                timestampUtcMillis:
+                    format: uint64
+                    minimum: 0
+                    type: integer
+            required:
+                - gameId
+                - messageType
+                - timestampUtcMillis
+            type: object
         LolGameflowQueue:
             additionalProperties: false
             description: ""
@@ -33968,19 +33986,6 @@ components:
             required:
                 - token
                 - expiry
-            type: object
-        LolLoginLcdsResponse:
-            additionalProperties: false
-            description: ""
-            properties:
-                body:
-                    additionalProperties: true
-                    type: object
-                typeName:
-                    type: string
-            required:
-                - typeName
-                - body
             type: object
         LolLoginLcdsServiceProxyResponse:
             additionalProperties: false
@@ -58895,6 +58900,533 @@ components:
                 - responseCode
                 - modelData
             type: object
+        LolTeamVoiceAccountSettingsData:
+            additionalProperties: false
+            description: ""
+            properties:
+                autoJoin:
+                    type: boolean
+                autoJoinTeamVoice:
+                    type: boolean
+                inputMode:
+                    $ref: '#/components/schemas/LolTeamVoiceInputMode'
+                muteOnConnect:
+                    type: boolean
+                pushToTalkKey:
+                    type: string
+                pushToTalkTeamKey:
+                    type: string
+                showFirstExperienceInGame:
+                    type: boolean
+                showFirstExperienceInLCU:
+                    type: boolean
+                voiceFontEnabledForParty:
+                    type: boolean
+                voiceFontEnabledForTeam:
+                    type: boolean
+            required:
+                - autoJoin
+                - autoJoinTeamVoice
+                - muteOnConnect
+                - inputMode
+                - pushToTalkKey
+                - pushToTalkTeamKey
+                - voiceFontEnabledForParty
+                - voiceFontEnabledForTeam
+                - showFirstExperienceInLCU
+                - showFirstExperienceInGame
+            type: object
+        LolTeamVoiceAccountSettingsResource:
+            additionalProperties: false
+            description: ""
+            properties:
+                data:
+                    $ref: '#/components/schemas/LolTeamVoiceAccountSettingsData'
+                schemaVersion:
+                    format: uint32
+                    minimum: 0
+                    type: integer
+            required:
+                - schemaVersion
+            type: object
+        LolTeamVoiceExternalSession:
+            additionalProperties: false
+            description: ""
+            properties:
+                patchlineFullName:
+                    type: string
+                patchlineId:
+                    type: string
+                productId:
+                    type: string
+            required:
+                - patchlineFullName
+                - patchlineId
+                - productId
+            type: object
+        LolTeamVoiceGameData:
+            additionalProperties: false
+            description: ""
+            properties:
+                gameId:
+                    format: int64
+                    type: integer
+                queue:
+                    $ref: '#/components/schemas/LolTeamVoiceQueue'
+            required:
+                - gameId
+                - queue
+            type: object
+        LolTeamVoiceGameflowPhase:
+            additionalProperties: false
+            description: ""
+            enum:
+                - TerminatedInError
+                - EndOfGame
+                - PreEndOfGame
+                - WaitingForStats
+                - Reconnect
+                - InProgress
+                - FailedToLaunch
+                - GameStart
+                - ChampSelect
+                - ReadyCheck
+                - CheckedIntoTournament
+                - Matchmaking
+                - Lobby
+                - None
+            type: string
+        LolTeamVoiceGameflowSession:
+            additionalProperties: false
+            description: ""
+            properties:
+                gameData:
+                    $ref: '#/components/schemas/LolTeamVoiceGameData'
+                phase:
+                    $ref: '#/components/schemas/LolTeamVoiceGameflowPhase'
+            required:
+                - phase
+                - gameData
+            type: object
+        LolTeamVoiceHonorView:
+            additionalProperties: false
+            description: ""
+            properties:
+                honorLevel:
+                    format: int32
+                    type: integer
+            required:
+                - honorLevel
+            type: object
+        LolTeamVoiceInputMode:
+            additionalProperties: false
+            description: ""
+            enum:
+                - pushToTalk
+                - voiceActivity
+            type: string
+        LolTeamVoiceKeyCombo:
+            additionalProperties: false
+            description: ""
+            properties:
+                keyBindings:
+                    items:
+                        $ref: '#/components/schemas/LolTeamVoicePushToTalkKey'
+                    type: array
+                sessionId:
+                    type: string
+            required:
+                - keyBindings
+                - sessionId
+            type: object
+        LolTeamVoiceKeycodePushToTalkResource:
+            additionalProperties: false
+            description: ""
+            properties:
+                enabled:
+                    type: boolean
+                keyCombos:
+                    items:
+                        $ref: '#/components/schemas/LolTeamVoiceKeyCombo'
+                    type: array
+            required:
+                - enabled
+            type: object
+        LolTeamVoiceLobbyDto:
+            additionalProperties: false
+            description: ""
+            properties:
+                gameConfig:
+                    $ref: '#/components/schemas/LolTeamVoiceLobbyGameConfigDto'
+            required:
+                - gameConfig
+            type: object
+        LolTeamVoiceLobbyGameConfigDto:
+            additionalProperties: false
+            description: ""
+            properties:
+                queueId:
+                    format: int32
+                    type: integer
+            required:
+                - queueId
+            type: object
+        LolTeamVoiceNavigationSettingsData:
+            additionalProperties: false
+            description: ""
+            properties:
+                voiceComplianceAgreementAuthorized:
+                    type: boolean
+            required:
+                - voiceComplianceAgreementAuthorized
+            type: object
+        LolTeamVoiceNavigationSettingsResource:
+            additionalProperties: false
+            description: ""
+            properties:
+                data:
+                    $ref: '#/components/schemas/LolTeamVoiceNavigationSettingsData'
+                schemaVersion:
+                    format: uint32
+                    minimum: 0
+                    type: integer
+            required:
+                - schemaVersion
+            type: object
+        LolTeamVoiceParentalControlsStatus:
+            additionalProperties: false
+            description: ""
+            properties:
+                enabled:
+                    type: boolean
+                isFriendingRestricted:
+                    type: boolean
+                isTextChatRestricted:
+                    type: boolean
+                isVoiceChatRestricted:
+                    type: boolean
+            required:
+                - enabled
+                - isTextChatRestricted
+                - isVoiceChatRestricted
+                - isFriendingRestricted
+            type: object
+        LolTeamVoiceParticipantResource:
+            additionalProperties: false
+            description: ""
+            properties:
+                energy:
+                    format: uint32
+                    minimum: 0
+                    type: integer
+                id:
+                    type: string
+                isMuted:
+                    type: boolean
+                isSpeaking:
+                    type: boolean
+                name:
+                    type: string
+                volume:
+                    format: uint32
+                    minimum: 0
+                    type: integer
+            required:
+                - id
+                - name
+                - volume
+                - energy
+                - isMuted
+                - isSpeaking
+            type: object
+        LolTeamVoicePartyDto:
+            additionalProperties: false
+            description: ""
+            properties:
+                commsEnabled:
+                    type: boolean
+                partyId:
+                    type: string
+                players:
+                    additionalProperties:
+                        $ref: '#/components/schemas/LolTeamVoicePlayerDto'
+                    type: object
+            required:
+                - partyId
+                - commsEnabled
+                - players
+            type: object
+        LolTeamVoicePlayerCredentialsDto:
+            additionalProperties: false
+            description: ""
+            properties:
+                tvJwt:
+                    type: string
+            required:
+                - tvJwt
+            type: object
+        LolTeamVoicePlayerDto:
+            additionalProperties: false
+            description: ""
+            properties:
+                partyId:
+                    type: string
+                puuid:
+                    type: string
+            required:
+                - puuid
+                - partyId
+            type: object
+        LolTeamVoicePushToTalkKey:
+            additionalProperties: false
+            description: ""
+            properties:
+                key:
+                    format: uint32
+                    minimum: 0
+                    type: integer
+            required:
+                - key
+            type: object
+        LolTeamVoiceQueue:
+            additionalProperties: false
+            description: ""
+            properties:
+                id:
+                    format: int32
+                    type: integer
+            required:
+                - id
+            type: object
+        LolTeamVoiceQueueDto:
+            additionalProperties: false
+            description: ""
+            properties:
+                id:
+                    format: int32
+                    type: integer
+                teamVoiceEnabled:
+                    type: boolean
+            required:
+                - id
+                - teamVoiceEnabled
+            type: object
+        LolTeamVoiceSessionResource:
+            additionalProperties: false
+            description: ""
+            properties:
+                handle:
+                    type: string
+                id:
+                    type: string
+                isMuted:
+                    type: boolean
+                isTransmitEnabled:
+                    type: boolean
+                isVoiceFontEnabled:
+                    type: boolean
+                participants:
+                    items:
+                        $ref: '#/components/schemas/LolTeamVoiceParticipantResource'
+                    type: array
+                status:
+                    $ref: '#/components/schemas/LolTeamVoiceSessionStatus'
+                volume:
+                    format: uint32
+                    minimum: 0
+                    type: integer
+            required:
+                - id
+                - handle
+                - status
+                - participants
+                - volume
+                - isMuted
+                - isTransmitEnabled
+                - isVoiceFontEnabled
+            type: object
+        LolTeamVoiceSessionStatus:
+            additionalProperties: false
+            description: ""
+            enum:
+                - OnHold
+                - active
+            type: string
+        LolTeamVoiceTeamVoiceAvailabilityDto:
+            additionalProperties: false
+            description: ""
+            properties:
+                available:
+                    type: boolean
+                reason:
+                    type: string
+            required:
+                - available
+                - reason
+            type: object
+        LolTeamVoiceVoiceFontResource:
+            additionalProperties: false
+            description: ""
+            properties:
+                fetchStatus:
+                    type: string
+                id:
+                    type: string
+                name:
+                    type: string
+                nameLocalizationKey:
+                    type: string
+            required:
+                - id
+                - name
+                - nameLocalizationKey
+                - fetchStatus
+            type: object
+        LolTeamVoiceVoiceModLicenseConfig:
+            additionalProperties: false
+            description: ""
+            properties:
+                appVersion:
+                    type: string
+                bundleId:
+                    type: string
+                clientKey:
+                    type: string
+            required:
+                - clientKey
+                - appVersion
+                - bundleId
+            type: object
+        LolTeamVoiceVoiceParticipant:
+            additionalProperties: false
+            description: ""
+            properties:
+                energy:
+                    format: uint32
+                    minimum: 0
+                    type: integer
+                id:
+                    type: string
+                isMuted:
+                    type: boolean
+                isSpeaking:
+                    type: boolean
+                puuid:
+                    type: string
+                volume:
+                    format: uint32
+                    minimum: 0
+                    type: integer
+            required:
+                - id
+                - puuid
+                - volume
+                - energy
+                - isMuted
+                - isSpeaking
+            type: object
+        LolTeamVoiceVoiceParticipantDto:
+            additionalProperties: false
+            description: ""
+            properties:
+                energy:
+                    format: uint32
+                    minimum: 0
+                    type: integer
+                id:
+                    type: string
+                isMuted:
+                    type: boolean
+                isSpeaking:
+                    type: boolean
+                name:
+                    type: string
+                volume:
+                    format: uint32
+                    minimum: 0
+                    type: integer
+            required:
+                - id
+                - name
+                - volume
+                - energy
+                - isMuted
+                - isSpeaking
+            type: object
+        LolTeamVoiceVoiceSession:
+            additionalProperties: false
+            description: ""
+            properties:
+                handle:
+                    type: string
+                id:
+                    type: string
+                isMuted:
+                    type: boolean
+                isRestricted:
+                    type: boolean
+                isTransmitEnabled:
+                    type: boolean
+                isVoiceFontEnabled:
+                    type: boolean
+                participants:
+                    items:
+                        $ref: '#/components/schemas/LolTeamVoiceVoiceParticipant'
+                    type: array
+                status:
+                    $ref: '#/components/schemas/LolTeamVoiceSessionStatus'
+                volume:
+                    format: uint32
+                    minimum: 0
+                    type: integer
+            required:
+                - id
+                - handle
+                - status
+                - participants
+                - volume
+                - isMuted
+                - isTransmitEnabled
+                - isRestricted
+                - isVoiceFontEnabled
+            type: object
+        LolTeamVoiceVoiceSessionDto:
+            additionalProperties: false
+            description: ""
+            properties:
+                handle:
+                    type: string
+                id:
+                    type: string
+                isMuted:
+                    type: boolean
+                isRestricted:
+                    type: boolean
+                isTransmitEnabled:
+                    type: boolean
+                isVoiceFontEnabled:
+                    type: boolean
+                participants:
+                    items:
+                        $ref: '#/components/schemas/LolTeamVoiceVoiceParticipantDto'
+                    type: array
+                status:
+                    $ref: '#/components/schemas/LolTeamVoiceSessionStatus'
+                volume:
+                    format: uint32
+                    minimum: 0
+                    type: integer
+            required:
+                - id
+                - handle
+                - status
+                - participants
+                - volume
+                - isMuted
+                - isTransmitEnabled
+                - isRestricted
+                - isVoiceFontEnabled
+            type: object
         LolTftDataModelResponse:
             additionalProperties: false
             description: ""
@@ -72041,27 +72573,6 @@ components:
                 - value
                 - unit
             type: object
-        NotifyFailureRequest:
-            additionalProperties: false
-            description: ""
-            properties:
-                availabilityItemName:
-                    type: string
-                failureInfo:
-                    type: string
-            required:
-                - availabilityItemName
-                - failureInfo
-            type: object
-        NotifySuccessRequest:
-            additionalProperties: false
-            description: ""
-            properties:
-                availabilityItemName:
-                    type: string
-            required:
-                - availabilityItemName
-            type: object
         NpeReward:
             additionalProperties: false
             description: ""
@@ -74365,123 +74876,6 @@ components:
                 - gameStartBufferMs
                 - voteWithdrawMembers
                 - declineWithdrawMembers
-            type: object
-        SLIBoolDiagnostic:
-            additionalProperties: false
-            description: ""
-            properties:
-                key:
-                    type: string
-                value:
-                    type: boolean
-            required:
-                - key
-                - value
-            type: object
-        SLICount:
-            additionalProperties: false
-            description: ""
-            properties:
-                boolDiagnostics:
-                    additionalProperties:
-                        type: boolean
-                    type: object
-                doubleDiagnostics:
-                    additionalProperties:
-                        format: double
-                        type: number
-                    type: object
-                endTimeEpochMs:
-                    format: int64
-                    type: integer
-                failures:
-                    format: double
-                    type: number
-                idempotencyKey:
-                    type: string
-                intDiagnostics:
-                    additionalProperties:
-                        format: int64
-                        type: integer
-                    type: object
-                labels:
-                    additionalProperties:
-                        type: string
-                    type: object
-                sliName:
-                    type: string
-                startTimeEpochMs:
-                    format: int64
-                    type: integer
-                stringDiagnostics:
-                    additionalProperties:
-                        type: string
-                    type: object
-                successes:
-                    format: double
-                    type: number
-            required:
-                - sliName
-                - idempotencyKey
-                - successes
-                - failures
-                - startTimeEpochMs
-                - endTimeEpochMs
-                - labels
-                - boolDiagnostics
-                - doubleDiagnostics
-                - intDiagnostics
-                - stringDiagnostics
-            type: object
-        SLIDoubleDiagnostic:
-            additionalProperties: false
-            description: ""
-            properties:
-                key:
-                    type: string
-                value:
-                    format: double
-                    type: number
-            required:
-                - key
-                - value
-            type: object
-        SLIIntDiagnostic:
-            additionalProperties: false
-            description: ""
-            properties:
-                key:
-                    type: string
-                value:
-                    format: int64
-                    type: integer
-            required:
-                - key
-                - value
-            type: object
-        SLILabel:
-            additionalProperties: false
-            description: ""
-            properties:
-                key:
-                    type: string
-                value:
-                    type: string
-            required:
-                - key
-                - value
-            type: object
-        SLIStringDiagnostic:
-            additionalProperties: false
-            description: ""
-            properties:
-                key:
-                    type: string
-                value:
-                    type: string
-            required:
-                - key
-                - value
             type: object
         SanitizerContainsSanitizedRequest:
             additionalProperties: false
@@ -79122,7 +79516,7 @@ externalDocs:
 info:
     description: "Schema of the League Client Update (LCU) Rest API. Auto-generated using LCU's /help endpoint\n\n### Rules\n\n1.  No interacting with shop\n2.  No interacting with chat\n3.  No interacting with anything authentication related\n4.  Don't automate anything Riot doesn't want you to (e.g. ready check, picks and bans)\n5.  If you can do it using the official Riot API, then don't do it using LCU. Don't spam requests\n6.  Don't try to expose data that Riot wants to hide (e.g. names in ranked champ select)\n7.  Just because something is not listed here does not mean it is allowed\n8.  Register your application with Riot (https://developer.riotgames.com/)\n\n### Disclaimer\n\ndysolix.dev is not endorsed by Riot Games and does not reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. \nRiot Games and all associated properties are trademarks or registered trademarks of Riot Games, Inc"
     title: LCU SCHEMA
-    version: 16.20.827.0198
+    version: 16.21.829.8620
 openapi: 3.0.0
 paths:
     /{plugin}/assets/{+path}:
@@ -87320,6 +87714,21 @@ paths:
                     description: Success response
             tags:
                 - Plugin lol-gameflow
+    /lol-gameflow/v1/postgame/rms-message:
+        post:
+            description: ""
+            operationId: PostLolGameflowV1PostgameRmsMessage
+            parameters: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/LolGameflowPostGameRmsMessage'
+            responses:
+                2XX:
+                    description: Success response
+            tags:
+                - Plugin lol-gameflow
     /lol-gameflow/v1/pre-end-game-transition:
         post:
             description: ""
@@ -87400,12 +87809,25 @@ paths:
         post:
             description: ""
             operationId: PostLolGameflowV1SessionEvent
-            parameters: []
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            type: string
+            parameters:
+                - in: query
+                  name: session
+                  required: true
+                  schema:
+                    type: string
+                - in: query
+                  name: gameId
+                  required: false
+                  schema:
+                    format: int64
+                    type: integer
+                - in: query
+                  name: gameEndUtcTimestampMillis
+                  required: false
+                  schema:
+                    format: uint64
+                    minimum: 0
+                    type: integer
             responses:
                 2XX:
                     description: Success response
@@ -91874,49 +92296,6 @@ paths:
                     description: Success response
             tags:
                 - Plugin lol-login
-    /lol-login/v1/service-proxy-uuid-requests:
-        post:
-            description: ""
-            operationId: PostLolLoginV1ServiceProxyUuidRequests
-            parameters:
-                - in: query
-                  name: serviceName
-                  required: true
-                  schema:
-                    type: string
-                - in: query
-                  name: methodName
-                  required: true
-                  schema:
-                    type: string
-                - in: query
-                  name: pluginId
-                  required: true
-                  schema:
-                    format: uint32
-                    minimum: 0
-                    type: integer
-                - in: query
-                  name: timeoutMillis
-                  required: true
-                  schema:
-                    format: uint64
-                    minimum: 0
-                    type: integer
-                - in: query
-                  name: payload
-                  required: true
-                  schema:
-                    type: string
-            responses:
-                2XX:
-                    content:
-                        application/json:
-                            schema:
-                                type: string
-                    description: Success response
-            tags:
-                - Plugin lol-login
     /lol-login/v1/session:
         delete:
             description: ""
@@ -91937,38 +92316,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/LolLoginLoginSession'
-                    description: Success response
-            tags:
-                - Plugin lol-login
-    /lol-login/v1/session/invoke:
-        post:
-            description: ""
-            operationId: PostLolLoginV1SessionInvoke
-            parameters:
-                - in: query
-                  name: destination
-                  required: true
-                  schema:
-                    type: string
-                - in: query
-                  name: method
-                  required: true
-                  schema:
-                    type: string
-                - in: query
-                  name: args
-                  required: true
-                  schema:
-                    items:
-                        additionalProperties: true
-                        type: object
-                    type: array
-            responses:
-                2XX:
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/LolLoginLcdsResponse'
                     description: Success response
             tags:
                 - Plugin lol-login
@@ -100431,6 +100778,180 @@ paths:
                     description: Success response
             tags:
                 - Plugin lol-tastes
+    /lol-team-voice/v1/internal/prepare-party-voice-session:
+        delete:
+            description: ""
+            operationId: DeleteLolTeamVoiceV1InternalPreparePartyVoiceSession
+            parameters: []
+            responses:
+                2XX:
+                    description: Success response
+            tags:
+                - Plugin lol-team-voice
+        post:
+            description: ""
+            operationId: PostLolTeamVoiceV1InternalPreparePartyVoiceSession
+            parameters: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: string
+            responses:
+                2XX:
+                    description: Success response
+            tags:
+                - Plugin lol-team-voice
+    /lol-team-voice/v1/participants/{participantId}/mute/{isMuted}:
+        put:
+            description: ""
+            operationId: PutLolTeamVoiceV1ParticipantsByParticipantIdMuteByIsMuted
+            parameters:
+                - in: path
+                  name: participantId
+                  required: true
+                  schema:
+                    type: string
+                - in: path
+                  name: isMuted
+                  required: true
+                  schema:
+                    type: boolean
+            responses:
+                2XX:
+                    description: Success response
+            tags:
+                - Plugin lol-team-voice
+    /lol-team-voice/v1/participants/{participantId}/volume/{volume}:
+        put:
+            description: ""
+            operationId: PutLolTeamVoiceV1ParticipantsByParticipantIdVolumeByVolume
+            parameters:
+                - in: path
+                  name: participantId
+                  required: true
+                  schema:
+                    type: string
+                - in: path
+                  name: volume
+                  required: true
+                  schema:
+                    format: uint32
+                    minimum: 0
+                    type: integer
+            responses:
+                2XX:
+                    description: Success response
+            tags:
+                - Plugin lol-team-voice
+    /lol-team-voice/v1/session:
+        delete:
+            description: ""
+            operationId: DeleteLolTeamVoiceV1Session
+            parameters: []
+            responses:
+                2XX:
+                    description: Success response
+            tags:
+                - Plugin lol-team-voice
+        get:
+            description: ""
+            operationId: GetLolTeamVoiceV1Session
+            parameters: []
+            responses:
+                2XX:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/LolTeamVoiceVoiceSession'
+                    description: Success response
+            tags:
+                - Plugin lol-team-voice
+        post:
+            description: ""
+            operationId: PostLolTeamVoiceV1Session
+            parameters: []
+            responses:
+                2XX:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/LolTeamVoiceVoiceSession'
+                    description: Success response
+            tags:
+                - Plugin lol-team-voice
+        put:
+            description: ""
+            operationId: PutLolTeamVoiceV1Session
+            parameters: []
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: boolean
+            responses:
+                2XX:
+                    description: Success response
+            tags:
+                - Plugin lol-team-voice
+    /lol-team-voice/v1/voice-fonts:
+        get:
+            description: ""
+            operationId: GetLolTeamVoiceV1VoiceFonts
+            parameters: []
+            responses:
+                2XX:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: '#/components/schemas/LolTeamVoiceVoiceFontResource'
+                                type: array
+                    description: Success response
+            tags:
+                - Plugin lol-team-voice
+    /lol-team-voice/v1/voice-fonts/hardware-supported:
+        get:
+            description: ""
+            operationId: GetLolTeamVoiceV1VoiceFontsHardwareSupported
+            parameters: []
+            responses:
+                2XX:
+                    content:
+                        application/json:
+                            schema:
+                                type: boolean
+                    description: Success response
+            tags:
+                - Plugin lol-team-voice
+    /lol-team-voice/v1/voice-fonts/status:
+        get:
+            description: ""
+            operationId: GetLolTeamVoiceV1VoiceFontsStatus
+            parameters: []
+            responses:
+                2XX:
+                    content:
+                        application/json:
+                            schema:
+                                type: string
+                    description: Success response
+            tags:
+                - Plugin lol-team-voice
+    /lol-team-voice/v2/availability:
+        get:
+            description: ""
+            operationId: GetLolTeamVoiceV2Availability
+            parameters: []
+            responses:
+                2XX:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/LolTeamVoiceTeamVoiceAvailabilityDto'
+                    description: Success response
+            tags:
+                - Plugin lol-team-voice
     /lol-tft-event-pve/v1/buddies:
         get:
             description: ""
@@ -104031,126 +104552,6 @@ paths:
                     description: Success response
             tags:
                 - telemetry
-    /telemetry/v3/slis/add-bool-diagnostic:
-        patch:
-            description: Add bool diagnostic to be sent with SLIs.
-            operationId: PatchTelemetryV3SlisAddBoolDiagnostic
-            parameters: []
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/SLIBoolDiagnostic'
-            responses:
-                2XX:
-                    description: Success response
-            tags:
-                - telemetry
-    /telemetry/v3/slis/add-double-diagnostic:
-        patch:
-            description: Add double diagnostic to be sent with SLIs.
-            operationId: PatchTelemetryV3SlisAddDoubleDiagnostic
-            parameters: []
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/SLIDoubleDiagnostic'
-            responses:
-                2XX:
-                    description: Success response
-            tags:
-                - telemetry
-    /telemetry/v3/slis/add-int-diagnostic:
-        patch:
-            description: Add int diagnostic to be sent with SLIs.
-            operationId: PatchTelemetryV3SlisAddIntDiagnostic
-            parameters: []
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/SLIIntDiagnostic'
-            responses:
-                2XX:
-                    description: Success response
-            tags:
-                - telemetry
-    /telemetry/v3/slis/add-label:
-        patch:
-            description: Add label to be sent with SLIs.
-            operationId: PatchTelemetryV3SlisAddLabel
-            parameters: []
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/SLILabel'
-            responses:
-                2XX:
-                    description: Success response
-            tags:
-                - telemetry
-    /telemetry/v3/slis/add-string-diagnostic:
-        patch:
-            description: Add string diagnostic to be sent with SLIs.
-            operationId: PatchTelemetryV3SlisAddStringDiagnostic
-            parameters: []
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/SLIStringDiagnostic'
-            responses:
-                2XX:
-                    description: Success response
-            tags:
-                - telemetry
-    /telemetry/v3/slis/counts:
-        post:
-            description: Report an SLI to the collector
-            operationId: PostTelemetryV3SlisCounts
-            parameters: []
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/SLICount'
-            responses:
-                2XX:
-                    description: Success response
-            tags:
-                - telemetry
-    /telemetry/v3/uptime-tracking/notify-failure:
-        post:
-            description: Mark an availability item's operation as failure on uptime tracking mechanism.
-            operationId: PostTelemetryV3UptimeTrackingNotifyFailure
-            parameters: []
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/NotifyFailureRequest'
-            responses:
-                2XX:
-                    description: Success response
-            tags:
-                - telemetry
-    /telemetry/v3/uptime-tracking/notify-success:
-        post:
-            description: Mark an availability item's operation as success on uptime tracking mechanism.
-            operationId: PostTelemetryV3UptimeTrackingNotifySuccess
-            parameters: []
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/NotifySuccessRequest'
-            responses:
-                2XX:
-                    description: Success response
-            tags:
-                - telemetry
     /tracing/v1/performance/{name}:
         delete:
             description: Ends recording of a performance metric.
@@ -104498,6 +104899,7 @@ tags:
     - name: Plugin lol-summoner
     - name: Plugin lol-summoner-profiles
     - name: Plugin lol-tastes
+    - name: Plugin lol-team-voice
     - name: Plugin lol-tft
     - name: Plugin lol-tft-event
     - name: Plugin lol-tft-event-pve
